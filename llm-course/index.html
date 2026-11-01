@@ -1732,7 +1732,12 @@ function md2html(text) {
 }
 
 // ── Conversation Log Persistence ──
+// 仅在本地起服务调试时把对话写到 /api/log；静态托管（GitHub Pages）没有该端点，
+// 跳过可避免每个访问者的控制台刷 405。
+const LOG_ENDPOINT_ENABLED = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+
 async function saveConversationLog(cardId, type, messages) {
+  if (!LOG_ENDPOINT_ENABLED) return;
   const payload = {
     cardId: String(cardId),
     type: type,
