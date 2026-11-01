@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zhuangzhaoyeye 的个人主页</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 40px 48px;
+      max-width: 520px;
+      width: 90%;
+      text-align: center;
+    }
+    h1 { font-size: 28px; margin-bottom: 12px; }
+    p { line-height: 1.8; opacity: 0.9; }
+    .ok { color: #7CFC9A; font-weight: bold; }
+    .info {
+      margin-top: 24px;
+      font-size: 14px;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .info div { margin: 4px 0; word-break: break-all; }
+    button {
+      margin-top: 20px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #2a5298;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>你好，我是 zhuangzhaoyeye</h1>
+    <p>看到这个页面，说明 <span class="ok">GitHub Pages 部署成功</span>。</p>
+    <div class="info">
+      <div>当前地址：<span id="url"></span></div>
+      <div>页面版本：v1（2026-11-01）</div>
+      <div>你打开的时间：<span id="now"></span></div>
+    </div>
+    <button id="btn">点我测试 JS</button>
+    <p id="msg"></p>
+  </div>
+  <script>
+    document.getElementById('url').textContent = location.href;
+    document.getElementById('now').textContent = new Date().toLocaleString('zh-CN');
+    let count = 0;
+    document.getElementById('btn').addEventListener('click', () => {
+      count += 1;
+      document.getElementById('msg').textContent = `JS 正常运行，已点击 ${count} 次`;
+    });
+  </script>
+</body>
+</html>
