@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zhuangzhaoyeye.github.io/sitemap.xml
