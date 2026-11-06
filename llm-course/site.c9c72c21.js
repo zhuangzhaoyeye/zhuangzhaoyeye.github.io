@@ -13,8 +13,8 @@ window.Stats = (function () {
   var isProd = location.protocol === 'https:' && !/^(localhost|127\.|\[::1\]|.*\.local)$/.test(host);
   var K_SID = 'stats_sid', K_COUNTED = 'stats_counted';
   // 服务器端是否已经开通统计存储（Cloudflare D1）。sendBeacon 读不到响应，前端无法自己判断，只能在这里声明。
-  // 目前没有开通：服务器收到事件后直接丢弃。开通 D1 并绑定后，把它改成 true、重新构建发布（见 proxy/wrangler.toml 的 D1 注释）。
-  var STATS_STORED = false;
+  // 2026-11-06 起已开通：Cloudflare D1 已创建并绑定到 /e，事件会落库（见 proxy/wrangler.toml）。
+  var STATS_STORED = true;
   var t0 = Date.now(), sid = '', buf = [], localLog = [], dwell = {}, paused = [], booted = false, ids = null;
 
   function ls(k, v) {
