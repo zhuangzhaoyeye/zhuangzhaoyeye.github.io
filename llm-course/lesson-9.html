@@ -396,6 +396,20 @@
           <div class="step-desc" style="margin-top:4px;">实践是<strong>组合使用</strong>：MLPerf / NVIDIA NeMo 的 405B 参考配置标注为 TP=8、PP=9、CP=2、DP=4。选择依据是<strong>通信开销</strong>——TP 优先放在同一台机器内（NVLink），PP 与 DP 跨机器。总卡数等于各并行维度之积（8×9×2×4 = <strong>576</strong>）；但 NVIDIA 某文档把同一组并行度记作 <strong>512</strong> 张（https://docs.nvidia.com/dl-cuda-graph/examples/llama-31-405b.html），与连乘结果对不上——这是官方文档之间自身不一致，引用时两处数字与来源都要写明，不要替它选定一个。</div>
         </div>
       </div>
+      <!-- 交互式分步动画：405B 显存账（可播放） -->
+      <div class="anim-panel" id="animPanel">
+        <div class="anim-head">
+          <div class="anim-title">🎬 分步动画 · 显存账：为什么必须切分</div>
+          <div class="anim-controls">
+            <button class="anim-btn" id="animPrev" title="回退到上一步">⏮ 上一步</button>
+            <button class="anim-btn primary" id="animPlay" title="播放/暂停">▶ 播放</button>
+            <button class="anim-btn" id="animNext" title="推进到下一步">下一步 ⏭</button>
+          </div>
+        </div>
+        <div class="anim-stepbar" id="animStepbar"></div>
+        <div class="anim-stage"><canvas id="animCanvas"></canvas></div>
+        <div class="anim-caption" id="animCaption"></div>
+      </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>并行策略不是"为了快"，而是"<strong>为了装得下</strong>"：405B 的训练状态就要 <strong>6.48 TB</strong>，单卡 80GB 至少需要 81 张卡，实际配置往往上千张。<strong>选哪种并行的核心判据是通信开销</strong>——通信量最大的张量并行放在机内高速互联，通信量小的数据并行放到跨机器。</p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','9-3')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','9-3')">🤔 你可能还想问</button></div>
       <div id="tab-ai-9-3" class="llm-section"><button class="llm-btn" onclick="startChat('9-3')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="9-3"><div class="chat-toolbar"><button onclick="copyChat('9-3')">📋 复制对话</button><button onclick="clearChat('9-3')">🗑 清空</button><button onclick="stopLLM('9-3')" id="stop-btn-9-3" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('9-3')" id="regen-btn-9-3" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="9-3"><div class="role-label">AI 助教</div><div class="msg-content">👋 对并行策略有疑问？比如"为什么 TP 不能跨机器？""流水线空泡怎么消？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="9-3" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('9-3')}" rows="1" placeholder="例如：ZeRO 和 TP 有什么区别？"></textarea><button onclick="sendLLM('9-3')">发送</button></div></div></div>
@@ -499,7 +513,7 @@
 
 
 
-<script>window.__SITE__={"lesson":9,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html"},"index":"search-index.4d539133.json","sem":{"vec":"sem-index.90f5b893.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[9]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.56582d69.js"></script>
+<script>window.__SITE__={"lesson":9,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html"},"index":"search-index.3ba5584b.json","sem":{"vec":"sem-index.90f5b893.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[9]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.42910735.js"></script>
 </body>
 </html>
