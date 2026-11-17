@@ -1072,6 +1072,46 @@ const allCardTopics = {
   "23-4": '正在讲解：把内网工单系统包成 MCP Server——声明四个 tool、写清描述与 schema，宿主不用改代码就能用。',
   "23-5": '正在讲解：传输与鉴权——本地 stdio 继承进程权限、远程 Streamable HTTP 用 OAuth token；工具即任意代码执行，描述不可全信、调用前需用户同意。',
 },
+  44: {
+  "44-1": '正在讲解：harness 诞生——LLM 只是一次前向计算，不会自己循环；10 步循环里模型只做 10 个决策，harness 接管 20 个动作（工具执行 + 状态更新）。',
+  "44-2": '正在讲解：harness 三职责——状态 / 工具执行 / 权限，三件事是「与」不是「或」；结果回填让 context 从 5400 涨到 6000 token。',
+  "44-3": '正在讲解：可恢复性——checkpoint 断点恢复，20 步任务第 19 步失败从头重跑白花 19000 token、恢复只花 1000，省 18000。',
+  "44-4": '正在讲解：subagent 隔离——读 50 个文件（25000 token）只回传结论（500），主 context 省 24500，占窗口从 12.5% 降到 0.25%。',
+  "44-5": '正在讲解：hooks 确定性兜底——PreToolUse 在工具执行前拦、PostToolUse 事后审计；10 次调用拦下 2 次危险动作。',
+  "44-6": '正在讲解：总纲——agent = 概率核心 + 确定性外壳，五件事收口成外壳职责，引出后续 rule / skill / 标准三课。',
+},
+  45: {
+  "45-1": '正在讲解：软约束靠不住——模型每步是采样不是执行，靠 prompt 求它别越界 100 次漏 5 次，硬约束（代码拦截）漏 0。',
+  "45-2": '正在讲解：rule 三种形态——持久指令（CLAUDE.md / rules，软）、生命周期钩子（PreToolUse，硬）、guardrail（输入输出，硬）；10 步任务硬约束触发 12 次。',
+  "45-3": '正在讲解：软硬分界——执行者是模型即软（可绕过）、是代码即硬（0 绕过）；分界划在「执行者是谁」。',
+  "45-4": '正在讲解：guardrail 并行 vs 阻塞——并行 max(5,10)=10s 但可能白烧 800 token，阻塞 5+10=15s 但恶意请求 0 成本。',
+  "45-5": '正在讲解：rule 边界——它管「这一步该不该发生」，不管鉴权（你是谁）与幂等（做两遍是否一样）；把这些甩给 rule 防线会漏。',
+  "45-6": '正在讲解：收口——rule 把「什么不能变」从模型手里拿走交给确定性代码（100 次漏 5→0），下一课把「怎么做」沉淀成 skill。',
+},
+  46: {
+  "46-1": '正在讲解：skill 诞生——工具只能执行一个函数、带不了程序性知识；部署流程每次重写 300 token、一年 100 次 3 万 token，skill 只预载约 100 token 描述。',
+  "46-2": '正在讲解：skill 结构与渐进披露——SKILL.md 含 name+description+正文；100 个 skill 只载描述 1 万 token、全载正文 20 万，用到才加载 1 个正文。',
+  "46-3": '正在讲解：Agent Skills 开放标准——2025-10 Claude 首发、2025-12 开放发布、2026-10-22 捐给 AAIF；70+ 平台、100 万 skill、2.8 亿安装。',
+  "46-4": '正在讲解：skill vs tool 分工——tool 是连接层（执行函数）、skill 是知识层（存流程）；只有工具时模型要自己猜 3 步顺序。',
+  "46-5": '正在讲解：skill vs subagent 划界——复用固定流程用 skill（主线程、约 100 token）、隔离中间过程用 subagent（读 50 文件省 24,500）。',
+  "46-6": '正在讲解：收口能力地图——tool 管「连」、skill 管「会」、rule 管「不能变」，三件正交；引 MCP/Skills/A2A 标准生态。',
+},
+  47: {
+  "47-1": '正在讲解：互通为什么需要标准——3 个 agent 点对点要 3×2=6 根线、统一标准只要 3 根，10 个要 90 根 vs 10 根，把 N² 网格坍缩成 N 条对标准线。',
+  "47-2": '正在讲解：三标准各管一维——MCP 连（agent↔工具）、Skills 会（agent↔知识）、A2A 通（agent↔agent），正交不重叠。',
+  "47-3": '正在讲解：A2A 的 AgentCard 数字名片——放在 /.well-known/agent-card.json，3 种发现方式（well-known 路径/注册表/直接配置）+ 3 种绑定（JSON-RPC/gRPC/HTTP+JSON）。',
+  "47-4": '正在讲解：按任务配标准——标准数=任务维度数；查天气 1 个 MCP、部署 2 个、多 agent 客服 3 个。',
+  "47-5": '正在讲解：标准 vs 直接代码——一次性 N=1 直接写、反复 N=100 才上标准（抽象成本 100、复用 100 次省 1000）。',
+  "47-6": '正在讲解：收口标准生态——MCP 连/Skills 会/A2A 通是通用层，编排运行交给 harness；四家各用 context/agent/runtime/state 四种哲学落地，引第 48 课。',
+},
+  48: {
+  "48-1": '正在讲解：四种设计哲学——四家 harness 各把不同东西当第一公民：Claude Code=context、OpenAI=agent、ADK=runtime、LangGraph=state。',
+  "48-2": '正在讲解：Claude Code context-first——subagent 隔离省 24,500、skill 渐进披露省 190,000，一切设计围着省 context 转。',
+  "48-3": '正在讲解：OpenAI agent-first——handoff 传控制权+上下文（1 个 triage + 2 个专业 agent 接力），guardrail 并行盯输入输出。',
+  "48-4": '正在讲解：Google ADK runtime-first——1 个 event loop 统一 LLM agent 与确定性 workflow agent（取事件→处理→产生下一步）。',
+  "48-5": '正在讲解：LangGraph state-first——State 存结果 + Node 拆步骤 + Edge 决定下一步（循环/分支/并行）+ checkpoint 支持 human-in-the-loop。',
+  "48-6": '正在讲解：按瓶颈选——context 爆→Claude、流程显式→LangGraph、多 agent 分工→OpenAI、LLM+workflow 统一→ADK。',
+},
   20: {
   "20-1": '正在讲解：提示能左右结果——prompt 是模型这次作答的条件；换问法挪的是每个候选的 logits，logits 只动 0.2，Top-1 就可能翻转（softmax(2.1,2.0)=0.525/0.475 → softmax(1.9,2.2)=0.4256/0.5744）。',
   "20-2": '正在讲解：zero-shot / one-shot / few-shot（不改参数的 in-context learning）——TriviaQA 上 GPT-3 175B 从 64.3% → 68.0% → 71.2%（arXiv:2005.14165）；代价是例子按条数线性抬价：40 + 60K，K=5 时 340 token（8.5 倍）。',
@@ -2554,7 +2594,227 @@ const allHardcodedQnA = {
     { "q": "有没有一个「永远不要选」的方法？", "a": "没有绝对禁用的方法，只有「不匹配」的组合：例如有可验证对错却硬用 DPO 学「算对」，信号错配。<table><tr><th>错配</th><th>后果</th></tr><tr><td>用偏好信号训「算对」</td><td>学不会正确性</td></tr><tr><td>用 0/1 训风格</td><td>僵硬、丢多样性</td></tr></table>依据：信号必须匹配任务——这是本部分反复出现的判据（第 36 课）。" },
     { "q": "学完这 8 课，遇到一个新方法怎么快速归类？", "a": "看它动了三个变量里的哪一个：新信号（如过程奖励）、新探索方式、还是省资源。<table><tr><th>新方法动了什么</th><th>归类</th><th>举例</th></tr><tr><td>信号</td><td>奖励/对错</td><td>过程奖励</td></tr><tr><td>探索</td><td>在线/离线</td><td>自对弈</td></tr><tr><td>资源</td><td>驻留模型数（4→2→1）</td><td>删 critic/参考</td></tr></table>依据：三变量是分类的骨架，3 个变量对应 3 个归类，任何新方法都能落进这张表。" }
   ]
-}
+},
+  44: {
+    "44-1": [
+      { "q": "harness 和「框架」是一回事吗？", "a": "不完全。framework（框架，如 LangGraph、ADK）是 harness 的一类<strong>实现</strong>，它帮你把「跑循环」的代码搭好；harness 是「运行时」这个<strong>概念</strong>，框架是「把运行时落成代码」的产品。<table><tr><th>词</th><th>性质</th><th>例子</th></tr><tr><td>harness</td><td>概念（谁在跑循环）</td><td>任何驱动循环的软件</td></tr><tr><td>framework</td><td>实现（代码帮你搭好）</td><td>LangGraph / ADK</td></tr><tr><td>Runner</td><td>运行时组件</td><td>OpenAI Agents SDK 的 Runner</td></tr></table>依据：harness 是职责层（本课拆成 6 件事），framework 是产品层（帮你省掉手写这 6 件事的代码）。" },
+      { "q": "我不写框架，自己写个 for 循环调模型，算不算有 harness？", "a": "算，只是极简版。for 循环里你仍要手写三件事：把结果拼回 context、执行工具、判断何时停——这三件事<strong>恰恰就是 harness</strong>。<table><tr><th>形态</th><th>三件事谁写</th><th>可恢复/隔离</th></tr><tr><td>极简 for 循环</td><td>你手写</td><td>无</td></tr><tr><td>完整 harness</td><td>框架内置</td><td>有</td></tr></table>依据：只要「驱动循环」的代码存在就是 harness——10 步任务里那 20 个动作都要有代码驱动，区别只在完整度。" },
+      { "q": "为什么说 LLM「没有状态」？它明明能记得对话上下文。", "a": "它「记得」是因为你把历史<strong>拼进了 context</strong>，是 harness 每轮喂给它的；请求结束，模型权重不变，自己什么也不留。<table><tr><th>记忆方式</th><th>谁在维护</th><th>请求后还在吗</th></tr><tr><td>context 里拼历史</td><td>harness</td><td>否（要重传）</td></tr><tr><td>改权重</td><td>训练</td><td>是</td></tr></table>依据：请求结束模型权重不变、0 留存；「记忆」是外部给的 context，不是模型自带状态。" },
+      { "q": "harness 是必须的吗？没有它 agent 就不能用吗？", "a": "没有 harness 也能<strong>手动</strong>跑，但每个动作都要人来补。<table><tr><th>方式</th><th>10 步任务人的负担</th><th>能自动恢复吗</th></tr><tr><td>手动喂</td><td>20 个动作全手动</td><td>否</td></tr><tr><td>有 harness</td><td>0</td><td>能</td></tr></table>依据：无 harness 时那 20 个动作（工具执行 + 状态更新）全落到人身上。" },
+      { "q": "四件套里「终止条件」也是 harness 管的吗？", "a": "是，而且是最容易漏的一环——终止条件写在 harness 的循环判断里，模型自己不会「主动停」。<table><tr><th>四件套</th><th>归谁</th></tr><tr><td>模型 / 工具 / 状态</td><td>模型决策 + harness 执行</td></tr><tr><td>终止条件</td><td>harness 的循环判断</td></tr></table>依据：缺终止条件，循环要么永远不停、要么撑到 200,000 token 的窗口上限被强制停。" }
+    ],
+    "44-2": [
+      { "q": "权限为什么是 harness 管，不是工具自己管？", "a": "工具只负责「执行」，不该自己决定「能不能执行」——否则每个工具各写一套权限逻辑，容易漏、也难统一。<table><tr><th>权限放哪</th><th>一致性</th><th>维护成本</th></tr><tr><td>harness 统一管</td><td>一个地方</td><td>低</td></tr><tr><td>每个工具自己管</td><td>各写各的</td><td>高</td></tr></table>依据：N 个工具各写一套 = N 套逻辑易漏；收在 harness 里 1 处统一卡。" },
+      { "q": "状态放 context 里和放外部存储里，差在哪？", "a": "放 context = 每轮重传、但模型能全看到；放外部存储 = 只把摘要/引用进 context，省 token 但模型看不见全貌。<table><tr><th>方式</th><th>每轮成本</th><th>模型可见度</th></tr><tr><td>全放 context</td><td>高（重传全量）</td><td>全看到</td></tr><tr><td>外部存储 + 摘要</td><td>低（只传摘要）</td><td>看摘要</td></tr></table>依据：这是第 24 课「记忆工程化」的核心取舍，本课只点出状态有这两种放法。" },
+      { "q": "工具执行为什么不能由模型「直接」做？", "a": "模型只会输出文本 token，它「说」要调什么、传什么参数，真正执行函数的是 harness。<table><tr><th>环节</th><th>谁做</th></tr><tr><td>决定调哪个工具</td><td>模型</td></tr><tr><td>真正执行函数</td><td>harness</td></tr></table>依据：模型 1 次只能吐 token、0 次能直接执行代码，落地要靠确定性程序。" },
+      { "q": "这三件事谁先谁后？有依赖吗？", "a": "一个循环轮次里顺序固定：决策 → 权限 → 工具执行 → 状态更新。权限在工具执行<strong>之前</strong>，状态更新在<strong>最后</strong>。<table><tr><th>顺序</th><th>环节</th><th>谁</th></tr><tr><td>1</td><td>决策</td><td>模型</td></tr><tr><td>2</td><td>权限</td><td>harness</td></tr><tr><td>3</td><td>工具执行</td><td>harness</td></tr><tr><td>4</td><td>状态更新</td><td>harness</td></tr></table>依据：权限必须先于执行，状态更新必须在拿到结果之后，顺序反了会越权或丢状态。" },
+      { "q": "「最小权限」具体怎么做？", "a": "每个工具只授它<strong>必需</strong>的权限范围，而不是「整个账号全给」。<table><tr><th>做法</th><th>权限范围</th><th>出事影响</th></tr><tr><td>全权</td><td>整个账号</td><td>大</td></tr><tr><td>最小权限</td><td>只读某张表</td><td>小</td></tr></table>依据：工具即任意代码执行，权限越小、越权时破坏面越小（承接第 22 课「最小权限」）。" }
+    ],
+    "44-3": [
+      { "q": "checkpoint 和「上下文」是一回事吗？", "a": "不是。上下文是「给模型看的内容」，checkpoint 是「程序的状态快照」，包含但不限于上下文。<table><tr><th>概念</th><th>内容</th><th>用途</th></tr><tr><td>context</td><td>给模型的 token</td><td>模型推理</td></tr><tr><td>checkpoint</td><td>状态快照（含 context、变量、进度）</td><td>断点恢复</td></tr></table>依据：checkpoint 为「第 N 步恢复」而存、context 为「每 1 轮推理」而传，两者目的不同。" },
+      { "q": "什么情况下重试有用，什么情况下重试是浪费？", "a": "失败是「偶发/可恢复」的重试有用；「确定性错误」（参数写死错）重试 100 次也一个样，是浪费。<table><tr><th>失败类型</th><th>重试有用吗</th><th>例子</th></tr><tr><td>偶发（超时/抖动）</td><td>有用</td><td>网络超时</td></tr><tr><td>确定性（参数错）</td><td>浪费</td><td>日期格式写死错</td></tr></table>依据：重试只对「随机」失败有效，对「必然」失败无效。" },
+      { "q": "trace 和日志（log）差在哪？", "a": "log 是离散事件，trace 是「一次任务从头到尾的完整链路」，能串起每一步的输入输出。<table><tr><th>项</th><th>粒度</th><th>能定位到</th></tr><tr><td>log</td><td>孤立事件</td><td>某一时刻</td></tr><tr><td>trace</td><td>完整链路</td><td>某一步</td></tr></table>依据：trace 把离散日志串成一条线，所以能「直接定位第 19 步」。" },
+      { "q": "checkpoint 存状态会不会很占存储？", "a": "会，所以不是每步都存，而是「隔几步存」或「关键点存」。<table><tr><th>策略</th><th>存储量</th><th>恢复粒度</th></tr><tr><td>每步存</td><td>大</td><td>最细</td></tr><tr><td>隔 5 步存</td><td>小</td><td>粗（最多回退 5 步）</td></tr></table>依据：存储与恢复粒度是权衡，隔步存省空间、代价是最多回退几步。" },
+      { "q": "无限重试会怎样？要不要设上限？", "a": "要设上限，否则一个坏工具能让循环卡死、烧光预算。<table><tr><th>项</th><th>无上限</th><th>设上限 3 次</th></tr><tr><td>失败后</td><td>永远重试</td><td>3 次后放弃/转人工</td></tr><tr><td>预算</td><td>烧光</td><td>可控</td></tr></table>依据：重试是「有代价的兜底」，必须配上限（承接第 22 课「重试配上限」）。" }
+    ],
+    "44-4": [
+      { "q": "subagent 和普通工具调用差在哪？", "a": "工具调用 = 一个函数（无状态、单步）；subagent = 一个完整的 agent（有自己的循环和 context）。<table><tr><th>项</th><th>工具调用</th><th>subagent</th></tr><tr><td>有没有循环</td><td>无（单步）</td><td>有（多步）</td></tr><tr><td>有没有独立 context</td><td>无</td><td>有</td></tr></table>依据：subagent 是有独立循环与 context 的完整 agent（≥1 步），工具调用是单步（1 步）。" },
+      { "q": "什么时候该用 subagent，什么时候直接在主 agent 里做？", "a": "中间过程大、且只需结论回传时用 subagent；过程小、或结论需要主 agent 全程参与时直接做。<table><tr><th>判断</th><th>用谁</th></tr><tr><td>读 50 个文件、只要结论</td><td>subagent</td></tr><tr><td>改 2 行、需全程交互</td><td>主 agent</td></tr></table>依据：委派的收益来自「隔离中间过程」，过程小就没必要额外开一个 agent。" },
+      { "q": "subagent 是另一个「模型实例」吗？还是同一个模型？", "a": "通常<strong>同一个模型</strong>、另一个<strong>独立 context 窗口</strong>。模型是同一个，窗口是分开的。<table><tr><th>项</th><th>主 agent</th><th>subagent</th></tr><tr><td>模型</td><td>同一个</td><td>同一个</td></tr><tr><td>context 窗口</td><td>主窗口</td><td>独立窗口</td></tr></table>依据：隔离的是「上下文」不是「模型」——成本主要在多开的 1 个窗口上。" },
+      { "q": "委派给 subagent 的任务，谁来写？写不清楚会怎样？", "a": "主 agent 写（或用模板）。写不清楚，subagent 会跑偏或只回无关结论。<table><tr><th>委派描述</th><th>结果</th></tr><tr><td>清晰（目标+边界）</td><td>结论可用</td></tr><tr><td>含糊</td><td>跑偏/答非所问</td></tr></table>依据：subagent 只看得到你写的 1 段任务描述，描述质量直接决定结论质量。" },
+      { "q": "subagent 之间能互相通信吗？", "a": "默认不能直接通信，只能通过主 agent 转——这也是「隔离」的一部分。<table><tr><th>方式</th><th>谁中转</th><th>隔离性</th></tr><tr><td>直接通信</td><td>无</td><td>弱</td></tr><tr><td>主 agent 中转</td><td>主 agent</td><td>强</td></tr></table>依据：禁止 subagent 之间直接通信（0 直连），每个 subagent 的 context 才干净、可审计。" }
+    ],
+    "44-5": [
+      { "q": "hooks 和「系统提示里写规则」差在哪？", "a": "系统提示是「请求模型」，模型可能不听；hook 是「写死代码」，必然执行。<table><tr><th>约束</th><th>性质</th><th>可绕过吗</th></tr><tr><td>系统提示写规则</td><td>软约束</td><td>可能</td></tr><tr><td>hook 写死代码</td><td>硬约束</td><td>否</td></tr></table>依据：这正是「概率核心」与「确定性外壳」的分界——软约束靠模型自觉（可绕过），硬约束靠代码（0 绕过）。" },
+      { "q": "hook 自己会不会也出错？出错怎么办？", "a": "会，所以 hook 要尽量简单、可测试；出错时通常「失败即拦截」（fail-closed），宁可拦下也不放行。<table><tr><th>策略</th><th>含义</th><th>倾向</th></tr><tr><td>fail-open</td><td>出错就放行</td><td>宽松、危险</td></tr><tr><td>fail-closed</td><td>出错就拦下</td><td>保守、安全</td></tr></table>依据：安全兜底默认 fail-closed——不确定时先拦，2 种策略里选「拦」不选「放」。" },
+      { "q": "PreToolUse 和 PostToolUse 为什么分两个？", "a": "Pre 在「执行前」拦（能阻止），Post 在「执行后」审计（能记录）。一个管事前、一个管事后。<table><tr><th>钩子</th><th>时机</th><th>能做</th></tr><tr><td>PreToolUse</td><td>执行前</td><td>拦下危险调用</td></tr><tr><td>PostToolUse</td><td>完成后</td><td>审计结果</td></tr></table>依据：只有「执行前」的钩子能阻止动作，所以 Pre 用于拦截（在 0 次执行前）、Post 用于留痕。" },
+      { "q": "hook 能拦下「提示注入」吗？", "a": "能拦一部分——在模型想执行危险工具时，PreToolUse 可以校验参数来源、挡住可疑调用。<table><tr><th>注入场景</th><th>hook 能拦吗</th></tr><tr><td>诱导模型执行危险命令</td><td>能（Pre 校验参数）</td></tr><tr><td>诱导模型输出不当文本</td><td>部分（看 hook 规则）</td></tr></table>依据：hook 拦的是「动作」，对「纯文本诱导」能拦的有限（承接第 28 课提示注入）。" },
+      { "q": "hook 是同步的还是异步的？会拖慢循环吗？", "a": "通常是同步的（执行前必须跑完），有一点开销，但换来确定性兜底。<table><tr><th>项</th><th>数值（示意）</th></tr><tr><td>单次 hook 开销</td><td>毫秒级</td></tr><tr><td>相对一次 LLM 调用</td><td>占比很小</td></tr></table>依据：hook 是本地脚本，单次开销毫秒级，相对 1 次模型前向占比很小，属于「值得花的保险」。" }
+    ],
+    "44-6": [
+      { "q": "「概率核心 + 确定性外壳」是不是所有 agent 都这样？", "a": "是，只要用了 LLM，就必然有这个结构——区别只是「外壳厚不厚」。<table><tr><th>agent</th><th>外壳</th><th>核心</th></tr><tr><td>简单脚本</td><td>薄（一个 for 循环）</td><td>LLM</td></tr><tr><td>生产级 harness</td><td>厚（状态/权限/恢复/隔离）</td><td>LLM</td></tr></table>依据：核心都是同一个概率采样器，可靠性差别全在外壳厚度（0 层到 N 层）上。" },
+      { "q": "外壳越厚越好吗？会不会过重？", "a": "不是，外壳每加一层都有成本（代码、延迟、复杂度）。厚到「能拦住主要风险」就够，别过度设计。<table><tr><th>项</th><th>薄壳</th><th>厚壳</th><th>过度设计</th></tr><tr><td>成本</td><td>低</td><td>中</td><td>高</td></tr><tr><td>风险覆盖</td><td>低</td><td>够用</td><td>边际递减</td></tr></table>依据：外壳是「买保险」不是「堆功能」——按风险定厚度，3 种风险对应 3 层就够。" },
+      { "q": "为什么不能把「确定性」也交给模型自己保证？", "a": "因为模型是概率采样，无法「保证」；确定性只能来自写死的代码。<table><tr><th>保证者</th><th>能不能「保证」</th><th>性质</th></tr><tr><td>模型</td><td>不能（每次采样）</td><td>概率</td></tr><tr><td>写死的代码</td><td>能（除非有 bug）</td><td>确定</td></tr></table>依据：10 次决策错 2 次是模型的常态；确定性代码错了就是 bug、可修到 0。" },
+      { "q": "这套「核心+外壳」和第 21 课的四件套矛盾吗？", "a": "不矛盾，是同一件事的两个视角：四件套是「循环里有什么」，核心+外壳是「谁可靠谁不可靠」。<table><tr><th>视角</th><th>回答什么</th><th>来源</th></tr><tr><td>四件套</td><td>循环有哪些部件</td><td>第 21 课</td></tr><tr><td>核心 + 外壳</td><td>哪些部件可靠</td><td>本课</td></tr></table>依据：四件套里「模型」不可靠、其余三件（工具/状态/终止）由可靠的外壳兜住。" },
+      { "q": "下一课 rule 和本课的 hook 到底什么关系？", "a": "hook 是 rule 的「执行机制」之一——rule 是「什么不能变」的规则，hook 是「在什么时机强制它」的钩子。<table><tr><th>项</th><th>是什么</th></tr><tr><td>rule</td><td>规则（什么不能变）</td></tr><tr><td>hook</td><td>机制（何时强制）</td></tr></table>依据：本课的 hook 只是 rule 的 1 个落点，下一课把「规则」系统展开。" }
+    ]
+  },
+  45: {
+    "45-1": [
+      { "q": "模型为什么有时候会无视提示里的规则？", "a": "因为输出是「采样」不是「执行」——同一句提示下，模型按概率分布抽 token，规则只是把「遵守」的概率抬高，不是写死一道命令。<table><tr><th>机制</th><th>规则如何作用</th><th>必然性</th></tr><tr><td>采样</td><td>抬高遵守概率</td><td>无（可能漏）</td></tr><tr><td>确定性代码</td><td>直接拦截</td><td>有（0 漏）</td></tr></table>依据：模型每步是按分布采样，规则只是采样条件的一部分，非强约束。" },
+      { "q": "95% 照做率这个数字是哪来的？", "a": "是「示意」数字，用于说明「软约束即使高概率也有漏网」，不是任何实测统计。<table><tr><th>数字</th><th>性质</th><th>用途</th></tr><tr><td>95% 照做</td><td>示意/估算</td><td>说明软约束非必然</td></tr><tr><td>5% 漏网</td><td>示意/估算</td><td>推导漏网次数</td></tr></table>依据：这是教学用估算，无一手来源，标注「估算」。" },
+      { "q": "有没有办法让提示里的规则「变硬」？", "a": "有，把同一条规则从「写进 context 求模型」改成「写进 hook/guardrail 由代码执行」。<table><tr><th>写法</th><th>执行者</th><th>软硬</th></tr><tr><td>写进提示</td><td>模型</td><td>软</td></tr><tr><td>写进 hook/guardrail</td><td>代码</td><td>硬</td></tr></table>依据：软硬由执行者决定，改执行者即改软硬（漏网从 5% 降到 0）。" },
+      { "q": "软约束一点用都没有吗？", "a": "有用，它是硬约束的补充——先把规矩写清楚（软、覆盖广），再用代码在关键点兜底（硬、拦得住）。<table><tr><th>层</th><th>作用</th><th>覆盖</th></tr><tr><td>软（指令）</td><td>写清规矩</td><td>广</td></tr><tr><td>硬（代码）</td><td>关键点兜底</td><td>关键点</td></tr></table>依据：软硬分层互补——软覆盖 1 条广规则、硬在 10 个关键点兜底。" },
+      { "q": "漏网率怎么从 5% 降到 0？", "a": "换执行者——把「求模型别做」改成「代码直接拦下」，模型连做的机会都没有。<table><tr><th>方式</th><th>100 次漏网</th></tr><tr><td>求模型别做</td><td>5 次</td></tr><tr><td>代码拦下</td><td>0 次</td></tr></table>依据：漏网率由执行者决定，换执行者即从 5 降到 0。" }
+    ],
+    "45-2": [
+      { "q": "CLAUDE.md 和 .claude/rules/ 里的 Rules 差在哪？", "a": "都是持久指令（软），但加载方式不同：CLAUDE.md 常驻 context，Rules 可用 path-scoped（frontmatter 写 paths）只在匹配文件被碰时加载。<table><tr><th>文件</th><th>加载时机</th><th>context 成本</th></tr><tr><td>CLAUDE.md</td><td>会话开始常驻</td><td>高</td></tr><tr><td>Rules（path-scoped）</td><td>匹配文件被碰时</td><td>低</td></tr></table>依据：Anthropic 官方 steering 博客把 CLAUDE.md 与 Rules 列为 7 种方法里的 2 种。" },
+      { "q": "hooks 和 guardrail 会不会重叠？", "a": "会，都在「动作/输入输出」处做确定性拦截，但归属不同：hook 挂在生命周期事件（PreToolUse/PostToolUse），guardrail 挂在输入输出（input/output）。<table><tr><th>机制</th><th>挂在哪</th><th>例子</th></tr><tr><td>hooks</td><td>生命周期事件</td><td>PreToolUse</td></tr><tr><td>guardrail</td><td>输入/输出</td><td>input guardrail</td></tr></table>依据：两者都是硬约束，但触发点不同——hook 挂事件、guardrail 挂 2 个进出点。" },
+      { "q": "system prompt 里的规则算哪一类？", "a": "持久指令（软），写进 context 由模型读，不是硬约束。<table><tr><th>载体</th><th>形态</th><th>软硬</th></tr><tr><td>system prompt</td><td>持久指令</td><td>软</td></tr><tr><td>CLAUDE.md</td><td>持久指令</td><td>软</td></tr></table>依据：只要由模型读进去再决定，都是软约束（0 强制）。" },
+      { "q": "三种形态是必须全上吗？", "a": "不是，按风险分层——低风险只要持久指令，高风险才上 hooks/guardrail。<table><tr><th>风险</th><th>需要哪层</th></tr><tr><td>低（命名规范）</td><td>持久指令</td></tr><tr><td>高（删库）</td><td>hooks/guardrail</td></tr></table>依据：rule 按风险分层——低风险 1 层、高风险 3 层，不是越多越好。" },
+      { "q": "为什么持久指令只触发 1 次，却能「覆盖」全程？", "a": "它常驻 context，每一步模型都看得到；但「看得到」不等于「照做」，所以是软的。<table><tr><th>特性</th><th>说明</th></tr><tr><td>触发</td><td>1 次（会话开始）</td></tr><tr><td>可见</td><td>每步都在 context</td></tr><tr><td>强制</td><td>0（软）</td></tr></table>依据：常驻 ≠ 强制，这正是软约束的本质。" }
+    ],
+    "45-3": [
+      { "q": "system prompt 写「禁止删库」，算硬约束吗？", "a": "算软。执行者是模型，它「读到」≠「照做」。<table><tr><th>载体</th><th>执行者</th><th>软硬</th></tr><tr><td>system prompt</td><td>模型</td><td>软</td></tr><tr><td>PreToolUse hook</td><td>代码</td><td>硬</td></tr></table>依据：执行者是模型即软（100 次漏 5）、是代码即硬（漏 0）。" },
+      { "q": "能不能把软约束「升级」成硬约束？", "a": "能，把同一句约束改写成 hook/guardrail 的代码，让代码在动作前拦截。<table><tr><th>做法</th><th>结果</th></tr><tr><td>写进提示</td><td>软（可绕过）</td></tr><tr><td>写成代码</td><td>硬（0 绕过）</td></tr></table>依据：软硬由执行者决定，改写成代码即升级为硬（漏网 5→0）。" },
+      { "q": "模型「绕过」软约束是故意的吗？", "a": "不是「故意」，是采样——它没有「服从」的必然性，只是概率上倾向于服从。<table><tr><th>性质</th><th>说明</th></tr><tr><td>绕过原因</td><td>采样随机性</td></tr><tr><td>意图</td><td>无（非恶意）</td></tr></table>依据：模型输出是采样，绕过是概率事件（漏网 5%）、不是蓄意。" },
+      { "q": "硬约束就一定 0 绕过吗？", "a": "0 绕过是相对「模型」而言；代码本身有 bug 是另一回事（bug 可修）。<table><tr><th>绕过来源</th><th>能否清零</th></tr><tr><td>模型采样</td><td>不能（靠代码堵）</td></tr><tr><td>代码 bug</td><td>能（修 bug）</td></tr></table>依据：硬约束堵住「模型绕过」，代码 bug 是工程问题、可修到 0。" },
+      { "q": "判断一条规则软硬，最快的办法是什么？", "a": "问一句「最后一步是不是确定性代码在拦」。<table><tr><th>问题</th><th>答案→软硬</th></tr><tr><td>最后一步是代码吗</td><td>是→硬</td></tr><tr><td>最后一步是模型读</td><td>否→软</td></tr></table>依据：软硬由执行者唯一决定（1 个判据），问执行者即可。" }
+    ],
+    "45-4": [
+      { "q": "输出 guardrail 为什么没有 run_in_parallel？", "a": "输出 guardrail 只能在 agent 完成后跑，没有「并行」可谈。<table><tr><th>guardrail</th><th>能否并行</th></tr><tr><td>input</td><td>能（并行/阻塞）</td></tr><tr><td>output</td><td>不能（只能事后）</td></tr></table>依据：OpenAI 官方文档：output guardrail 总在 agent 完成后跑，不支持 run_in_parallel（只有 input 有 2 种模式）。" },
+      { "q": "什么时候该选阻塞？", "a": "模型贵 + 输入可能有恶意 + 副作用大时，阻塞省 token 且不执行工具。<table><tr><th>场景</th><th>选谁</th></tr><tr><td>贵模型 + 高风险</td><td>阻塞</td></tr><tr><td>便宜 + 高吞吐</td><td>并行</td></tr></table>依据：阻塞保成本（0 token）、并行保时延（省 5s），按模型价格与风险选。" },
+      { "q": "并行省下的 5s 是怎么算的？", "a": "max(5,10)=10 对比 5+10=15。<table><tr><th>模式</th><th>算式</th><th>时延</th></tr><tr><td>并行</td><td>max(5,10)</td><td>10s</td></tr><tr><td>阻塞</td><td>5+10</td><td>15s</td></tr></table>依据：并行取较大值、阻塞串行相加，差 5s。" },
+      { "q": "并行模式里 agent 白烧的 800 token 是固定的吗？", "a": "不是，是示意，取决于 agent 跑了多远才被叫停。<table><tr><th>数字</th><th>性质</th></tr><tr><td>800 token</td><td>示意/估算</td></tr></table>依据：这是教学用估算，无一手来源，标注「估算」。" },
+      { "q": "tool guardrail 和 input/output guardrail 是一回事吗？", "a": "不同，tool guardrail 挂在每个工具调用前后，input/output 挂在首个/末个 agent。<table><tr><th>guardrail</th><th>挂在哪</th></tr><tr><td>input</td><td>首个 agent 输入</td></tr><tr><td>output</td><td>末个 agent 输出</td></tr><tr><td>tool</td><td>每次工具调用</td></tr></table>依据：OpenAI 官方文档区分 3 类 guardrail 的触发边界。" }
+    ],
+    "45-5": [
+      { "q": "鉴权和 rule 到底怎么分工？", "a": "鉴权回答「你是谁、有没有权」，rule 回答「这一步动作危不危险」，两层都要。<table><tr><th>机制</th><th>回答什么</th></tr><tr><td>鉴权</td><td>你是谁、有没有权</td></tr><tr><td>rule</td><td>动作危不危险</td></tr></table>依据：鉴权管「人」、rule 管「动作」，2 层正交、都不可少。" },
+      { "q": "幂等能不能也交给 hook？", "a": "难，hook 看不到「这是第二次提交」，幂等要靠工具自身的幂等键。<table><tr><th>机制</th><th>能不能管幂等</th></tr><tr><td>hook/rule</td><td>不能（看不到重复）</td></tr><tr><td>幂等键</td><td>能（去重）</td></tr></table>依据：幂等是操作语义本身（同一请求 2 次结果 1 样），靠工具设计，不是 rule 的职责。" },
+      { "q": "有了鉴权还要 rule 吗？", "a": "要，鉴权管「人」，rule 管「动作」——模型有权限后仍可能手滑删错。<table><tr><th>防线</th><th>堵什么</th></tr><tr><td>鉴权</td><td>没权的人</td></tr><tr><td>rule</td><td>有权但手滑的模型</td></tr></table>依据：两者堵的是 2 个不同环节的漏，缺一不可。" },
+      { "q": "rule 拦「动作」具体拦什么？", "a": "拦动作发生前的那一步：参数校验、目标文件、命令黑名单等。<table><tr><th>拦截点</th><th>例子</th></tr><tr><td>参数</td><td>危险参数</td></tr><tr><td>目标</td><td>生产文件</td></tr><tr><td>命令</td><td>黑名单命令</td></tr></table>依据：rule 在动作落地前校验（0 次执行前），拦的是「这一步」。" },
+      { "q": "把边界划清楚有什么用？", "a": "避免把 rule 当万能保险，导致防线漏——该鉴权的地方没鉴权。<table><tr><th>认知</th><th>后果</th></tr><tr><td>清楚边界</td><td>防线不漏</td></tr><tr><td>把 rule 当万能</td><td>该鉴权处漏鉴权</td></tr></table>依据：划清 1 条边界是为了不误用 rule。" }
+    ],
+    "45-6": [
+      { "q": "rule 和上一课的 hook 是什么关系？", "a": "hook 是 rule 的一种形态（硬约束的落点之一），rule 是更宽的概念。<table><tr><th>项</th><th>是什么</th></tr><tr><td>rule</td><td>规则（什么不能变）</td></tr><tr><td>hook</td><td>机制（何时强制）</td></tr></table>依据：hook 是 rule 的 1 个落点，rule 还包含持久指令与 guardrail。" },
+      { "q": "「转移所有权」和「给模型加话」差在哪？", "a": "一个改执行者（模型→代码），一个只改上下文（还在模型手里）。<table><tr><th>做法</th><th>执行者</th></tr><tr><td>转移所有权</td><td>代码</td></tr><tr><td>给模型加话</td><td>模型</td></tr></table>依据：本质差别在 1 个执行者，所有权转移 = 换执行者。" },
+      { "q": "外壳越装越重，会不会过重？", "a": "会，rule 也只按风险加，低风险软约束就够。<table><tr><th>项</th><th>薄壳</th><th>过度设计</th></tr><tr><td>成本</td><td>低</td><td>高</td></tr><tr><td>风险覆盖</td><td>够用</td><td>边际递减</td></tr></table>依据：外壳按风险定厚度（3 种风险对应 3 层），过度设计边际递减。" },
+      { "q": "rule 和 skill 什么关系？", "a": "rule 管「什么不能变」，skill 管「怎么做可复用」，是外壳上的两件不同东西。<table><tr><th>项</th><th>管什么</th><th>哪一课</th></tr><tr><td>rule</td><td>什么不能变</td><td>本课</td></tr><tr><td>skill</td><td>怎么做可复用</td><td>第 46 课</td></tr></table>依据：rule 锁「不能变」、skill 存「怎么做」，各司其职。" },
+      { "q": "这套 rule 的东西和第 21 课四件套矛盾吗？", "a": "不矛盾，四件套讲「循环有什么」，rule 讲「循环里哪些不能越界」。<table><tr><th>视角</th><th>回答什么</th></tr><tr><td>四件套</td><td>循环有哪些部件</td></tr><tr><td>rule</td><td>哪些不能越界</td></tr></table>依据：四件套里的 1 个「模型」不可靠，rule 正是给这一环兜底。" }
+    ]
+  },
+  46: {
+    "46-1": [
+      { "q": "工具为什么带不了「流程知识」？", "a": "工具只有「输入参数 → 执行 → 返回」这 1 个接口，没有「先做什么再做什么」的位置。<table><tr><th>项</th><th>能装什么</th></tr><tr><td>工具</td><td>1 个函数</td></tr><tr><td>skill</td><td>1 条流程</td></tr></table>依据：工具是单函数接口，流程知识是多步顺序，装不进去。" },
+      { "q": "skill 和 prompt 差在哪？", "a": "prompt 是一次性的、每次重写；skill 是存下来的、复用 N 次。<table><tr><th>项</th><th>持久性</th><th>复用</th></tr><tr><td>prompt</td><td>不持久</td><td>每次重写</td></tr><tr><td>skill</td><td>持久</td><td>存 1 次用 N 次</td></tr></table>依据：skill 把「怎么做」落成文件，prompt 只是当次输入。" },
+      { "q": "300 token 的部署 prompt 这个数字是哪来的？", "a": "是「示意」数字，用于说明「每次重写流程」的累计成本，不是实测。<table><tr><th>数字</th><th>性质</th></tr><tr><td>300 token</td><td>示意/估算</td></tr><tr><td>100 次</td><td>示意</td></tr></table>依据：教学用估算，无一手来源，标注「估算」。" },
+      { "q": "「程序性知识」到底指什么？", "a": "先做什么、再做什么、遇到什么情况怎么办的流程与判断，而不是单个事实。<table><tr><th>类型</th><th>例子</th></tr><tr><td>程序性知识</td><td>先测后部署的 1 条顺序</td></tr><tr><td>陈述性知识</td><td>「部署是上线」这个事实</td></tr></table>依据：程序性知识是「怎么做」的流程，工具带不了。" },
+      { "q": "把流程写进 skill 之后，模型还会自己乱做吗？", "a": "不会，skill 把顺序写死了，模型按 1 条写好的流程走。<table><tr><th>方式</th><th>顺序谁定</th></tr><tr><td>只靠模型推</td><td>模型（易错）</td></tr><tr><td>有 skill</td><td>写死的流程</td></tr></table>依据：skill 把「先做什么」写死，模型只按流程执行。" }
+    ],
+    "46-2": [
+      { "q": "SKILL.md 的 YAML 里必须写哪两个字段？", "a": "name（名字）和 description（一句话描述何时用）这 2 个是必需字段。<table><tr><th>字段</th><th>必填</th><th>作用</th></tr><tr><td>name</td><td>是</td><td>技能名</td></tr><tr><td>description</td><td>是</td><td>何时用</td></tr></table>依据：Anthropic 官方：SKILL.md 的 frontmatter 必需 name 和 description。" },
+      { "q": "100 token 和 2000 token 是固定值吗？", "a": "是「示意」值——描述约 100 token、正文约 2000 token，真实随内容长短变。<table><tr><th>数字</th><th>性质</th></tr><tr><td>100 token</td><td>示意/估算</td></tr><tr><td>2000 token</td><td>示意/估算</td></tr></table>依据：教学用估算，无一手来源，标注「估算」。" },
+      { "q": "渐进披露为什么能省 context？", "a": "只把描述常驻，正文用到才加载——100 个 skill 只载描述约 1 万 token。<table><tr><th>方式</th><th>占用</th></tr><tr><td>只载描述</td><td>100×100=1 万 token</td></tr><tr><td>全载正文</td><td>100×2000=20 万 token</td></tr></table>依据：渐进披露按层加载，正文不进常驻 context。" },
+      { "q": "描述写得太长会怎样？", "a": "失去渐进披露的意义——描述是常驻成本，1 个 skill 写 500 token 描述，100 个就是 5 万 token。<table><tr><th>描述长度</th><th>100 个 skill 常驻</th></tr><tr><td>100 token</td><td>1 万 token</td></tr><tr><td>500 token</td><td>5 万 token</td></tr></table>依据：描述是常驻成本，越长越背离「只留一句话」的初衷。" },
+      { "q": "skill 正文被触发后，会一直留在 context 里吗？", "a": "不一定——按共享预算保留，最旧的先被丢（Claude Code 的 compaction 行为）。<table><tr><th>策略</th><th>行为</th></tr><tr><td>共享预算</td><td>总量封顶</td></tr><tr><td>淘汰</td><td>最旧先丢</td></tr></table>依据：Anthropic steering 博客：invoked skills 按共享预算 re-inject、旧的最先淘汰（1 个总量封顶）。" }
+    ],
+    "46-3": [
+      { "q": "AAIF 是什么？", "a": "Linux Foundation 旗下的 Agentic AI Foundation，Anthropic / Block / OpenAI 共同创立，也是 MCP 的家。<table><tr><th>项</th><th>说明</th></tr><tr><td>全称</td><td>Agentic AI Foundation</td></tr><tr><td>创始</td><td>Anthropic/Block/OpenAI</td></tr><tr><td>也管</td><td>MCP</td></tr></table>依据：anthropic.com 捐赠公告与 aaif.io（1 个中立基金会）。" },
+      { "q": "70+ 平台具体有哪些？", "a": "ChatGPT、Cursor、GitHub Copilot、VS Code 等 70 多个。<table><tr><th>平台</th><th>类别</th></tr><tr><td>ChatGPT</td><td>通用助手</td></tr><tr><td>Cursor/Copilot/VS Code</td><td>编程工具</td></tr></table>依据：Anthropic 捐赠公告点名的 4 个代表平台。" },
+      { "q": "100 万 skill、2.8 亿安装这两个数字可靠吗？", "a": "可靠，是一手来源——Anthropic 2026-10-22 捐赠公告原文。<table><tr><th>指标</th><th>数值</th></tr><tr><td>公开 skill</td><td>约 100 万个</td></tr><tr><td>累计安装</td><td>近 2.8 亿次</td></tr></table>依据：https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation。" },
+      { "q": "开放标准和私有格式差在哪？", "a": "开放标准可移植——同一份 skill 换工具照样跑；私有格式锁死一家。<table><tr><th>格式</th><th>你的 skill</th></tr><tr><td>开放标准</td><td>换工具照样跑</td></tr><tr><td>私有格式</td><td>锁死一家</td></tr></table>依据：开放标准 = 可移植（1 份 skill 跑 N 家工具），不被单一厂商锁定。" },
+      { "q": "为什么捐赠给 AAIF 很重要？", "a": "中立治理——社区对标准走向有发言权，不归单一厂商说了算。<table><tr><th>治理</th><th>谁说了算</th></tr><tr><td>单一厂商</td><td>1 家</td></tr><tr><td>AAIF</td><td>社区共治</td></tr></table>依据：捐赠公告：AAIF 提供中立之家，确保社区对走向有发言权。" }
+    ],
+    "46-4": [
+      { "q": "skill 里能调 MCP 工具吗？", "a": "能，skill 是「怎么组合工具」的知识，正文里可以写调用哪些工具。<table><tr><th>关系</th><th>说明</th></tr><tr><td>skill 调 tool</td><td>流程里用工具</td></tr><tr><td>tool 独立</td><td>也能单独被调</td></tr></table>依据：skill 是「用工具的方法」（1 个 skill 可调多个 tool），天然包含工具调用。" },
+      { "q": "能不能只用工具不用 skill？", "a": "能，但模型每次都要自己推流程、容易错——部署 3 步顺序猜错 1 步就失败。<table><tr><th>方式</th><th>流程谁定</th><th>风险</th></tr><tr><td>只用工具</td><td>模型推</td><td>易错</td></tr><tr><td>加 skill</td><td>写死</td><td>低</td></tr></table>依据：只有工具时模型自己推理顺序，缺了可复用的流程知识。" },
+      { "q": "「连接层」和「知识层」怎么记？", "a": "tool 连「能力」（接进函数），skill 存「怎么做」（写流程）——2 个正交层。<table><tr><th>层</th><th>管什么</th></tr><tr><td>连接层(tool)</td><td>能力</td></tr><tr><td>知识层(skill)</td><td>怎么做</td></tr></table>依据：连接层与知识层正交，各管一维。" },
+      { "q": "多工具就等于会做事吗？", "a": "不等于——工具再多，缺流程知识也串不起来（1 条顺序错误全盘失败）。<table><tr><th>条件</th><th>结果</th></tr><tr><td>只有多工具</td><td>串不起来</td></tr><tr><td>多工具 + skill</td><td>能正确串流程</td></tr></table>依据：能力 ≠ 会用，流程知识才是「会做事」的关键。" },
+      { "q": "skill 和 tool 是替代关系吗？", "a": "不是，是互补——skill 调 tool，tool 提供单个动作、skill 提供组合顺序。<table><tr><th>项</th><th>提供什么</th></tr><tr><td>tool</td><td>单个动作</td></tr><tr><td>skill</td><td>组合顺序</td></tr></table>依据：互补不是替代，1 个 skill 内部可调多个 tool。" }
+    ],
+    "46-5": [
+      { "q": "skill 和 subagent 都做子任务，怎么一句话区分？", "a": "要不要隔离——skill 在主线程可见可调、subagent 在独立窗口只回结论。<table><tr><th>项</th><th>skill</th><th>subagent</th></tr><tr><td>跑在哪</td><td>主线程</td><td>独立窗口</td></tr><tr><td>可见</td><td>全程</td><td>只结论</td></tr></table>依据：隔离性是最核心的 1 条分界判据。" },
+      { "q": "固定流程用哪个？", "a": "用 skill——复用流程只花描述成本约 100 token，比 subagent 每次开新窗口便宜。<table><tr><th>方式</th><th>每次成本</th></tr><tr><td>skill</td><td>≈100 token</td></tr><tr><td>subagent</td><td>重传整套上下文</td></tr></table>依据：固定流程反复用，skill 复用描述、subagent 重复开窗。" },
+      { "q": "隔离中间过程用哪个？", "a": "用 subagent——读 50 文件只回结论，省 24,500 token。<table><tr><th>方式</th><th>主 context 占用</th></tr><tr><td>全塞主窗口</td><td>50×500=25,000</td></tr><tr><td>subagent 回结论</td><td>500</td></tr></table>依据：隔离中间过程正是 subagent 的用途（承第 44 课）。" },
+      { "q": "subagent 每次开新窗口更贵，体现在哪？", "a": "重传整套上下文——固定流程也要把背景重新喂一遍，1 次就多花几百 token。<table><tr><th>项</th><th>成本</th></tr><tr><td>skill 复用</td><td>只载描述</td></tr><tr><td>subagent 新窗</td><td>重传背景</td></tr></table>依据：subagent 每次开独立窗口，背景要重传，固定流程不划算。" },
+      { "q": "把翻 50 文件的活写进 skill 会怎样？", "a": "中间草稿会撑爆主 context——skill 在主线程里，50×500=25,000 token 全进主窗口。<table><tr><th>做法</th><th>后果</th></tr><tr><td>写进 skill</td><td>主 context 撑爆</td></tr><tr><td>写进 subagent</td><td>只回 500 结论</td></tr></table>依据：skill 不隔离，中间过程进主 context；这类活该用 subagent。" }
+    ],
+    "46-6": [
+      { "q": "「连 / 会 / 不能变」分别对应谁？", "a": "tool / skill / rule——三个正交维度各管一位。<table><tr><th>维度</th><th>谁管</th></tr><tr><td>连</td><td>tool</td></tr><tr><td>会</td><td>skill</td></tr><tr><td>不能变</td><td>rule</td></tr></table>依据：tool=连接层、skill=知识层、rule=约束层，3 件正交。" },
+      { "q": "skill 和 MCP 什么关系？", "a": "正交——MCP 管「连」（工具/数据连接）、skill 管「会」（程序性知识）。<table><tr><th>标准</th><th>管什么</th></tr><tr><td>MCP</td><td>连</td></tr><tr><td>Agent Skills</td><td>会</td></tr></table>依据：2 个开放标准各管一维，互不替代。" },
+      { "q": "三件事会不会重叠？", "a": "不会，三个正交维度——连、会、不能变各管一维，拼成完整能力。<table><tr><th>件</th><th>维度</th></tr><tr><td>tool</td><td>连</td></tr><tr><td>skill</td><td>会</td></tr><tr><td>rule</td><td>不能变</td></tr></table>依据：3 件正交不重叠，缺哪一维补哪一维。" },
+      { "q": "标准生态是什么？", "a": "MCP + Agent Skills + A2A 三个开放标准，分别管「连 / 会 / 通」。<table><tr><th>标准</th><th>管什么</th></tr><tr><td>MCP</td><td>连</td></tr><tr><td>Agent Skills</td><td>会</td></tr><tr><td>A2A</td><td>通</td></tr></table>依据：三个开放标准构成第 47 课要讲的生态。" },
+      { "q": "skill 和 rule 什么关系？", "a": "rule 锁「不能变」、skill 存「怎么做」——一个管边界、一个管能力，互补。<table><tr><th>项</th><th>管什么</th></tr><tr><td>rule</td><td>不能变</td></tr><tr><td>skill</td><td>怎么做</td></tr></table>依据：rule（第 45 课）锁边界、skill（本课）存能力，各司其职。" }
+    ]
+  },
+  47: {
+    "47-1": [
+      { "q": "为什么连接器会按平方增长？", "a": "每两个 agent 之间都要单独接一根线，3 个 agent 两两互接 = 3×2 = 6 根，10 个就是 10×9 = 90 根。<table><tr><th>agent 数</th><th>点对点线数</th></tr><tr><td>3</td><td>3×2=6</td></tr><tr><td>10</td><td>10×9=90</td></tr></table>依据：点对点连接数 = N×(N−1)，随 agent 数平方增长。" },
+      { "q": "统一标准为什么能省线？", "a": "大家都接到同一个插座，每个 agent 只接 1 根对标准线，N 个 agent 只要 N 根。<table><tr><th>方式</th><th>线数</th></tr><tr><td>点对点</td><td>N×(N−1)</td></tr><tr><td>统一标准</td><td>N×1</td></tr></table>依据：标准把「N 对 N 网格」坍缩成「N 对 1」。" },
+      { "q": "3 个 agent 点对点要 6 根线这个数字对吗？", "a": "对，Python 复算 3×2=6。<table><tr><th>算式</th><th>结果</th></tr><tr><td>3×2</td><td>6</td></tr></table>依据：N×(N−1)=3×2=6，算术可保证。" },
+      { "q": "「互通」到底指什么？", "a": "两个系统能互相理解并调用对方的能力，不是简单地「能连上」。<table><tr><th>层级</th><th>含义</th></tr><tr><td>连上</td><td>物理/接口接通</td></tr><tr><td>互通</td><td>理解语义并互调能力</td></tr></table>依据：互通（interoperability）要「理解 + 调用」2 件事，高于「连上」这 1 件事。" },
+      { "q": "标准存在的第一性理由是什么？", "a": "把 N² 的网格坍缩成 N 条对标准线，10 个 agent 从 90 根降到 10 根。<table><tr><th>agent 数</th><th>点对点</th><th>标准</th></tr><tr><td>10</td><td>90</td><td>10</td></tr></table>依据：连接数按平方增长，标准是唯一能压回线性的解。" }
+    ],
+    "47-2": [
+      { "q": "MCP、Agent Skills、A2A 各管什么？", "a": "MCP 管「连」（工具/数据）、Skills 管「会」（怎么做）、A2A 管「通」（agent 间发现与委托）。<table><tr><th>标准</th><th>管什么</th></tr><tr><td>MCP</td><td>连</td></tr><tr><td>Agent Skills</td><td>会</td></tr><tr><td>A2A</td><td>通</td></tr></table>依据：三个正交维度，各由一个标准管。" },
+      { "q": "三个标准会不会重叠？", "a": "不会，三个正交维度——连、会、通各管一维，谁也替代不了谁。<table><tr><th>维度</th><th>主体</th></tr><tr><td>连</td><td>agent↔工具</td></tr><tr><td>会</td><td>agent↔知识</td></tr><tr><td>通</td><td>agent↔agent</td></tr></table>依据：3 个标准对应 3 种主体，正交不重叠。" },
+      { "q": "为什么不能用一个标准全包？", "a": "三个维度挤一起会又大又僵、改一处动全身；分三个才能各管一维、单独替换。<table><tr><th>做法</th><th>后果</th></tr><tr><td>1 个全包</td><td>又大又僵</td></tr><tr><td>3 个分工</td><td>可单独替换</td></tr></table>依据：正交设计比单体更可维护。" },
+      { "q": "MCP 是哪年提出、捐给了谁？", "a": "Anthropic 2024 年 11 月提出，2025 年 12 月捐给 AAIF（Linux Foundation 旗下）。<table><tr><th>时间</th><th>事件</th></tr><tr><td>2024-11</td><td>Anthropic 提出 MCP</td></tr><tr><td>2025-12</td><td>捐给 AAIF</td></tr></table>依据：MCP 官方时间线（Anthropic 提出、后捐 AAIF）。" },
+      { "q": "「连 / 会 / 通」怎么记？", "a": "连 = 能不能调工具（MCP）、会 = 会不会做（Skills）、通 = 能不能找到别的 agent（A2A）。<table><tr><th>字</th><th>问什么</th></tr><tr><td>连</td><td>能不能调工具</td></tr><tr><td>会</td><td>会不会做</td></tr><tr><td>通</td><td>能不能找到别的 agent</td></tr></table>依据：三个字各对一个问题，各对 1 个标准。" }
+    ],
+    "47-3": [
+      { "q": "AgentCard 是什么？", "a": "A2A 里 agent 的「数字名片」，一张 JSON 文档，写清我是谁、会什么、怎么连。<table><tr><th>字段</th><th>写什么</th></tr><tr><td>name</td><td>我是谁</td></tr><tr><td>skills</td><td>我会什么</td></tr><tr><td>url</td><td>怎么联系</td></tr></table>依据：A2A 规范里 AgentCard 是机器可读的 JSON 名片。" },
+      { "q": "AgentCard 放在哪个路径？", "a": "放在固定路径 /.well-known/agent-card.json，客户端照这个路径就能拉到。<table><tr><th>项</th><th>路径</th></tr><tr><td>well-known</td><td>/.well-known/agent-card.json</td></tr></table>依据：A2A 规范的 well-known URI 约定（1 条固定路径）。" },
+      { "q": "三种发现方式是什么？", "a": "well-known 路径、注册表/目录、直接配置，共 3 种。<table><tr><th>方式</th><th>怎么找</th></tr><tr><td>well-known</td><td>固定 URL 拉</td></tr><tr><td>注册表</td><td>查目录</td></tr><tr><td>直接配置</td><td>预先写 URL</td></tr></table>依据：A2A 规范列出的 3 种发现机制。" },
+      { "q": "三种绑定是什么？", "a": "JSON-RPC 2.0、gRPC、HTTP+JSON/REST，共 3 种通信绑定。<table><tr><th>绑定</th><th>协议</th></tr><tr><td>JSON-RPC 2.0</td><td>JSON 远程调用</td></tr><tr><td>gRPC</td><td>高性能二进制</td></tr><tr><td>HTTP+JSON/REST</td><td>纯 HTTP 传 JSON</td></tr></table>依据：A2A 规范支持 3 种传输绑定。" },
+      { "q": "A2A 是谁发起、现在归谁管？", "a": "Google 发起，已捐给 Linux Foundation，现为 AAIF 旗下 Growth Stage 项目，Apache 2.0 许可，v1.0 于 2026 年 3 月发布。<table><tr><th>项</th><th>值</th></tr><tr><td>发起</td><td>Google</td></tr><tr><td>现在</td><td>AAIF Growth Stage</td></tr><tr><td>v1.0</td><td>2026-03</td></tr></table>依据：agent2agent.info/about（1 个一手来源）。" }
+    ],
+    "47-4": [
+      { "q": "只连一个工具要几个标准？", "a": "1 个——MCP 就够，不用上 Skills 和 A2A。<table><tr><th>任务</th><th>标准数</th></tr><tr><td>查一次天气</td><td>1 个 MCP</td></tr></table>依据：标准数 = 任务里出现的维度数。" },
+      { "q": "多 agent 客服要几个标准？", "a": "3 个——MCP（连工具）+ Skills（复用流程）+ A2A（agent 互委托）。<table><tr><th>维度</th><th>标准</th></tr><tr><td>连工具</td><td>MCP</td></tr><tr><td>沉淀流程</td><td>Skills</td></tr><tr><td>agent 互委托</td><td>A2A</td></tr></table>依据：3 个维度全出现，就上 3 个标准。" },
+      { "q": "标准数是按什么定的？", "a": "按任务里实际出现的维度数——出现几个用几个，一个都不多上。<table><tr><th>维度出现</th><th>标准数</th></tr><tr><td>1 个</td><td>1 个</td></tr><tr><td>3 个</td><td>3 个</td></tr></table>依据：最小必要标准原则。" },
+      { "q": "硬给简单任务上全套三标准会怎样？", "a": "为 1 个简单动作背上 3 份协议成本，得不偿失。<table><tr><th>做法</th><th>后果</th></tr><tr><td>查天气上 3 标准</td><td>3 份成本做 1 件事</td></tr></table>依据：标准不是免费的，多一个多一份实现运维成本。" },
+      { "q": "「最小必要标准」原则是什么？", "a": "用最少的协议解决当前问题，复杂度随需求涨，不一开始就上全套。<table><tr><th>需求</th><th>标准</th></tr><tr><td>只连工具</td><td>MCP</td></tr><tr><td>+复用流程</td><td>+Skills</td></tr><tr><td>+互委托</td><td>+A2A</td></tr></table>依据：按需组合、逐级加标准。" }
+    ],
+    "47-5": [
+      { "q": "什么任务直接写代码、不上标准？", "a": "一次性、单方、内部的任务——复用次数 N=1、不跨边界，直接写死更快。<table><tr><th>任务</th><th>做法</th></tr><tr><td>临时取一次数</td><td>写死代码</td></tr><tr><td>长期反复接口</td><td>上标准</td></tr></table>依据：一次性任务抽象纯属负担。" },
+      { "q": "抽象成本 vs 复用收益怎么算？", "a": "接标准花固定成本 100；复用 1 次省 0、复用 100 次省 1000。<table><tr><th>复用次数</th><th>收益</th></tr><tr><td>1 次</td><td>省 0</td></tr><tr><td>100 次</td><td>省 100×10=1000</td></tr></table>依据：N 越大，标准的复用收益越摊薄固定成本。" },
+      { "q": "「上标准」和「直接写代码」的分界判据？", "a": "复用次数 + 跨不跨边界：一次性 + 不跨 → 代码；反复 + 跨 → 标准。<table><tr><th>判据</th><th>代码</th><th>标准</th></tr><tr><td>复用</td><td>N=1</td><td>N 大</td></tr><tr><td>边界</td><td>内部</td><td>跨团队</td></tr></table>依据：标准治「跨边界、反复发生」，代码治「一次性、内部」。" },
+      { "q": "一次性任务硬上标准会怎样？", "a": "接标准花 100、只用 1 次省 0，纯亏 100 的抽象成本。<table><tr><th>项</th><th>值</th></tr><tr><td>接标准成本</td><td>100</td></tr><tr><td>复用收益</td><td>0</td></tr></table>依据：为一次性的活背上长期协议负担不划算。" },
+      { "q": "复用多少次才值得上标准？", "a": "当复用收益超过接标准的固定成本时——示意：每次省 10、固定成本 100，超过 10 次就回本。<table><tr><th>复用次数</th><th>累计省</th></tr><tr><td>10 次</td><td>100（回本）</td></tr><tr><td>100 次</td><td>1000</td></tr></table>依据：抽象成本 ÷ 单次收益 = 回本次数（示意值）。" }
+    ],
+    "47-6": [
+      { "q": "标准层和 harness 层什么关系？", "a": "标准层定「接口长什么样」，harness 层定「怎么编排运行」——两层分工。<table><tr><th>层</th><th>管什么</th></tr><tr><td>标准层</td><td>接口/格式</td></tr><tr><td>harness 层</td><td>编排/运行</td></tr></table>依据：2 层分工——标准是通用图纸，harness 是具体机器。" },
+      { "q": "三个标准各给出什么？", "a": "MCP 给工具接口、Skills 给知识格式、A2A 给发现/委托。<table><tr><th>标准</th><th>给出</th></tr><tr><td>MCP</td><td>工具/数据接口</td></tr><tr><td>Skills</td><td>知识格式</td></tr><tr><td>A2A</td><td>发现/委托</td></tr></table>依据：三样通用件拼成标准生态。" },
+      { "q": "四家 harness 各用什么哲学？", "a": "Claude Code=context、OpenAI=agent、ADK=runtime、LangGraph=state。<table><tr><th>harness</th><th>哲学</th></tr><tr><td>Claude Code</td><td>context-first</td></tr><tr><td>OpenAI</td><td>agent-first</td></tr><tr><td>ADK</td><td>runtime-first</td></tr><tr><td>LangGraph</td><td>state-first</td></tr></table>依据：四家各把不同东西当第一公民（引第 48 课）。" },
+      { "q": "标准生态的「通用层」解决什么？", "a": "解决跨工具、跨平台的「即插即用」，但不解决单个 agent 怎么编排。<table><tr><th>层</th><th>解决</th></tr><tr><td>通用层（标准）</td><td>即插即用</td></tr><tr><td>harness</td><td>编排运行</td></tr></table>依据：标准只管接口这 1 层，不管编排。" },
+      { "q": "为什么标准不解决「怎么编排」？", "a": "编排是各家 harness 的「灵魂」选择，标准若规定死了，四家就没了差异空间。<table><tr><th>项</th><th>谁定</th></tr><tr><td>接口</td><td>标准</td></tr><tr><td>编排</td><td>harness</td></tr></table>依据：编排是 harness 这 1 层的设计哲学，不是标准该管的。" }
+    ]
+  },
+  48: {
+    "48-1": [
+      { "q": "「第一公民」到底指什么？", "a": "一个框架里「其余一切都围着它转、处处可见可操作」的中心概念。<table><tr><th>概念</th><th>含义</th></tr><tr><td>第一公民</td><td>处处可见的中心</td></tr><tr><td>其余部件</td><td>围着它转</td></tr></table>依据：第一公民 = 1 个框架的灵魂抽象。" },
+      { "q": "四家各选谁当第一公民？", "a": "Claude Code=context、OpenAI=agent、ADK=runtime、LangGraph=state，共 4 种。<table><tr><th>harness</th><th>第一公民</th></tr><tr><td>Claude Code</td><td>context</td></tr><tr><td>OpenAI</td><td>agent</td></tr><tr><td>ADK</td><td>runtime</td></tr><tr><td>LangGraph</td><td>state</td></tr></table>依据：4 种第一公民 = 4 种设计哲学。" },
+      { "q": "选不同第一公民的代价是什么？", "a": "选谁当中心就擅长谁、别扭谁——没有免费午餐。<table><tr><th>第一公民</th><th>擅长</th><th>别扭</th></tr><tr><td>context</td><td>省 context</td><td>流程不显式</td></tr><tr><td>agent</td><td>分工</td><td>流程难显式控</td></tr><tr><td>runtime</td><td>统一 LLM 与 workflow</td><td>抽象偏底层</td></tr><tr><td>state</td><td>显式流程</td><td>样板多</td></tr></table>依据：4 种中心抽象决定长短板。" },
+      { "q": "「设计哲学」这个词到底指什么？", "a": "指一个框架挑一样东西当中心的根本选择，它决定框架擅长什么、别扭什么。<table><tr><th>项</th><th>说明</th></tr><tr><td>哲学</td><td>挑什么当中心</td></tr><tr><td>结果</td><td>定长短板</td></tr></table>依据：哲学 = 1 个核心抽象的选择。" },
+      { "q": "四家都支持 MCP/Skills/A2A 吗？", "a": "是——它们都遵循同一套标准，差异只在核心抽象，不在标准支持。<table><tr><th>维度</th><th>四家</th></tr><tr><td>标准支持</td><td>一致</td></tr><tr><td>核心抽象</td><td>不同</td></tr></table>依据：3 个标准是通用层，哲学是 harness 这 1 层的选择。" }
+    ],
+    "48-2": [
+      { "q": "subagent 怎么省 context？", "a": "中间过程隔离到独立窗口、只回结论，读 50 文件从 25,000 token 降到 500。<table><tr><th>方式</th><th>占用</th></tr><tr><td>全塞主窗口</td><td>50×500=25,000</td></tr><tr><td>subagent</td><td>500</td></tr></table>依据：省 24,500 token（承第 44 课）。" },
+      { "q": "skill 怎么省 context？", "a": "渐进披露——描述常驻、正文按需，100 个 skill 从 20 万降到 1 万。<table><tr><th>方式</th><th>占用</th></tr><tr><td>只载描述</td><td>100×100=10,000</td></tr><tr><td>全载正文</td><td>100×2,000=200,000</td></tr></table>依据：省 190,000 token（承第 46 课）。" },
+      { "q": "context-first 的核心信念是什么？", "a": "context 是稀缺资源、能省就省，省下来的留给主任务。<table><tr><th>信念</th><th>推论</th></tr><tr><td>context 稀缺</td><td>能省就省</td></tr><tr><td>省下给主任务</td><td>主线程专注</td></tr></table>依据：2 条信念都指向省 context。" },
+      { "q": "context-first 的代价是什么？", "a": "流程不显式——没法像流程图一样一眼看清整个编排。<table><tr><th>哲学</th><th>代价</th></tr><tr><td>context-first</td><td>流程不显式</td></tr></table>依据：为省 context 牺牲了流程这 1 维的可视化。" },
+      { "q": "Claude Code 是哪家的 harness？", "a": "Anthropic 的编程/agent harness，context-first 的代表。<table><tr><th>项</th><th>值</th></tr><tr><td>出品</td><td>Anthropic</td></tr><tr><td>哲学</td><td>context-first</td></tr></table>依据：Anthropic steering 博客（1 个一手来源）。" }
+    ],
+    "48-3": [
+      { "q": "handoff 传的是什么？", "a": "控制权 + 上下文，共 2 样，接棒的 agent 无缝续上。<table><tr><th>交接物</th><th>内容</th></tr><tr><td>控制权</td><td>下一步谁说了算</td></tr><tr><td>上下文</td><td>前面聊了什么</td></tr></table>依据：handoff 一次传 2 样。" },
+      { "q": "guardrail 在边上盯什么？", "a": "输入护栏 + 输出护栏，共 2 道，出错就拦截。<table><tr><th>护栏</th><th>检查</th></tr><tr><td>输入</td><td>进来是否安全</td></tr><tr><td>输出</td><td>出去是否合格</td></tr></table>依据：guardrail 并行跑在 agent 旁。" },
+      { "q": "handoff 和 subagent 什么区别？", "a": "subagent 是「隔离中间过程、只回结论」；handoff 是「控制权 + 上下文整体交接给另一个 agent」。<table><tr><th>机制</th><th>交接什么</th></tr><tr><td>subagent</td><td>只回结论</td></tr><tr><td>handoff</td><td>控制权+上下文</td></tr></table>依据：2 个机制——委派 vs 接力，语义不同。" },
+      { "q": "agent-first 的代价是什么？", "a": "流程难显式控——handoff 由 agent 自己判断往哪交，编排散在每个 agent 里。<table><tr><th>哲学</th><th>代价</th></tr><tr><td>agent-first</td><td>流程难显式控</td></tr></table>依据：编排藏在每个 agent 这 1 处的交接逻辑里。" },
+      { "q": "一个 triage 可以分给几个 agent？", "a": "任意多个——示意里 1 个 triage 分给 2 个专业 agent，共 3 个 agent。<table><tr><th>agent</th><th>数量</th></tr><tr><td>triage</td><td>1</td></tr><tr><td>专业 agent</td><td>2</td></tr></table>依据：1+2=3，靠 handoff 接力。" }
+    ],
+    "48-4": [
+      { "q": "event loop 是什么？", "a": "一个不断「取事件 → 处理 → 产生下一步」的循环，ADK 用它统一驱动 agent。<table><tr><th>环节</th><th>动作</th></tr><tr><td>取事件</td><td>拿到下一步</td></tr><tr><td>处理</td><td>执行</td></tr><tr><td>产生下一步</td><td>再投回循环</td></tr></table>依据：event loop 是 ADK 的 1 个 runtime 核心。" },
+      { "q": "两种 agent 各是什么？", "a": "LLM agent（下一步由模型推理定）+ workflow agent（下一步由写死代码定），共 2 种。<table><tr><th>类型</th><th>下一步谁定</th></tr><tr><td>LLM agent</td><td>模型</td></tr><tr><td>workflow agent</td><td>代码</td></tr></table>依据：两种 agent 的下一步来源不同。" },
+      { "q": "统一后有什么好处？", "a": "1 套 runtime 通吃 LLM 与 workflow，省掉两套代码的拼接。<table><tr><th>统一前</th><th>统一后</th></tr><tr><td>两套代码</td><td>1 套 runtime</td></tr><tr><td>手工拼接</td><td>无缝切换</td></tr></table>依据：统一 = 少一套代码、少一处拼接。" },
+      { "q": "runtime-first 的代价是什么？", "a": "抽象偏底层——得先接受「一切都是事件循环」这套世界观，上手门槛高。<table><tr><th>哲学</th><th>代价</th></tr><tr><td>runtime-first</td><td>抽象偏底层</td></tr></table>依据：比「直接定义 agent」这 1 条路门槛高。" },
+      { "q": "ADK 2.0 收敛了什么？", "a": "在统一 runtime 之上收敛了图式编排引擎（graph-based workflow）。<table><tr><th>版本</th><th>看点</th></tr><tr><td>ADK 2.0</td><td>图式编排引擎</td></tr></table>依据：ADK 2.0 在 runtime-first 上引入图式编排。" }
+    ],
+    "48-5": [
+      { "q": "State、Node、Edge 各是什么？", "a": "State 存所有中间结果、Node 是一个步骤、Edge 决定下一步走哪个节点，共 3 件。<table><tr><th>件</th><th>作用</th></tr><tr><td>State</td><td>存结果</td></tr><tr><td>Node</td><td>一个步骤</td></tr><tr><td>Edge</td><td>决定下一步</td></tr></table>依据：三件套 = 一张显式流程图。" },
+      { "q": "Edge 支持哪几种走法？", "a": "循环、分支、并行，共 3 种。<table><tr><th>走法</th><th>例子</th></tr><tr><td>循环</td><td>不达标回上一步</td></tr><tr><td>分支</td><td>按条件走 A/B</td></tr><tr><td>并行</td><td>同时跑几节点</td></tr></table>依据：边支持 3 种，流程不再只一路往下。" },
+      { "q": "checkpoint 有什么用？", "a": "把 state 每个版本存下来，人能在任意步暂停、审阅、改 state 再继续。<table><tr><th>有 checkpoint</th><th>无 checkpoint</th></tr><tr><td>暂停改 state 再续</td><td>只能从头跑</td></tr></table>依据：checkpoint 存下 1 份 state，是 human-in-the-loop 的前提。" },
+      { "q": "state-first 的代价是什么？", "a": "样板代码多——每一步都要显式写 state 怎么变、边怎么连，比一句话定义 agent 啰嗦。<table><tr><th>哲学</th><th>代价</th></tr><tr><td>state-first</td><td>样板代码多</td></tr></table>依据：显式可控 = 显式啰嗦这 1 点，是它的对价。" },
+      { "q": "human-in-the-loop 靠什么实现？", "a": "靠 checkpoint 把每个版本的 state 存下来，人可暂停、审阅、改 state 再 resume。<table><tr><th>机制</th><th>作用</th></tr><tr><td>checkpoint</td><td>存 state 版本</td></tr><tr><td>resume</td><td>改后继续</td></tr></table>依据：LangGraph 官方把 checkpoint 这 1 件列为 HITL 前置。" }
+    ],
+    "48-6": [
+      { "q": "context 撑爆该选谁？", "a": "Claude Code——context-first 的 subagent/skill 专门省 context。<table><tr><th>瓶颈</th><th>选谁</th></tr><tr><td>context 撑爆</td><td>Claude Code</td></tr></table>依据：按瓶颈选——4 种瓶颈里，context 痛选 context-first。" },
+      { "q": "流程要显式可控、要人插手该选谁？", "a": "LangGraph——state-first 的图 + checkpoint 支持 human-in-the-loop。<table><tr><th>瓶颈</th><th>选谁</th></tr><tr><td>流程显式+人插手</td><td>LangGraph</td></tr></table>依据：state-first 擅长显式流程与人环这 2 点。" },
+      { "q": "多 agent 分工接力该选谁？", "a": "OpenAI Agents SDK——agent-first 的 handoff 让接力自然。<table><tr><th>瓶颈</th><th>选谁</th></tr><tr><td>多 agent 分工</td><td>OpenAI Agents SDK</td></tr></table>依据：agent-first 擅长多 agent 交接这 1 种协作。" },
+      { "q": "有没有一家「全能王」？", "a": "没有——四家各治一种痛点，没有全面碾压。<table><tr><th>想法</th><th>现实</th></tr><tr><td>全能王</td><td>不存在</td></tr></table>依据：只有对不对症这 1 条，没有全对。" },
+      { "q": "选型三问是什么？", "a": "瓶颈在哪 → 哪家第一公民对得上 → 要不要混合，共 3 问。<table><tr><th>问</th><th>判断</th></tr><tr><td>瓶颈</td><td>对号 4 种</td></tr><tr><td>对第一公民</td><td>按表选</td></tr><tr><td>混合吗</td><td>大项目可拼</td></tr></table>依据：先瓶颈、再对公民、后定混合。" }
+    ]
+  }
 };
 window.allHardcodedQnA = allHardcodedQnA;
 // (removed old switchLesson — replaced by fetch-based version below)
@@ -2754,6 +3014,11 @@ const LESSON_TITLES = {
   41: '在线与无参考优化',
   42: '推理强化',
   43: '前沿收口与选型判据',
+  44: 'Harness 运行时',
+  45: 'Rule 规则',
+  46: 'Skill 技能',
+  47: '标准生态',
+  48: '四种设计哲学与选型',
 };
 
 // 侧边栏标题：窄栏下长标题会被 CSS 截断（ellipsis），给每个标题补 title 属性，
