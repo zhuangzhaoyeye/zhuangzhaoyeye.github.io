@@ -477,7 +477,7 @@
   <div class="card" data-card="44-4">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">一个 agent 的 context 窗口是有限的，可真实任务要看几十个文件、跑几十条命令——这些中间过程往哪放？</div><div class="card-q-hint">提示：想一想——「为了回答一句话而翻遍代码库」的过程中，哪些信息必须留在主对话里，哪些只是路上的草稿？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>subagent</strong>（子智能体，一个拥有独立 context 窗口的助手：主 agent 把子任务委派给它，它在自己的窗口里工作，最终只把结论返回）是 harness 提供的一种「上下文隔离」机制。Claude Code 内置了 subagent（如 Explore 这类偏只读搜索的、Plan 这类产出计划的），目的正是让主 context 不被中间过程撑爆——几十个文件、几十条命令的过程数据留在 subagent 自己的窗口里，主 context 只多占回传结论的那一小段。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>subagent</strong>（子智能体，一个拥有独立 context 窗口的助手：主 agent 把子任务委派给它，它在自己的窗口里工作，最终只把结论返回）是 harness 提供的一种「上下文隔离」机制。Claude Code 内置了 subagent（如 Explore 这类偏只读搜索的、Plan 这类在 plan 模式下为制定计划做只读调研的），目的正是让主 context 不被中间过程撑爆——几十个文件、几十条命令的过程数据留在 subagent 自己的窗口里，主 context 只多占回传结论的那一小段。</div>
       <div class="content-section"><p>上一张卡片解决了「跑得能恢复」。这一张处理横向压力：context 装不下怎么办。</p><p><strong>因为</strong>主 context 是稀缺资源，中间过程不该进主窗口。<strong>就像</strong>让实习生去档案室翻 50 份文件、回来只交一页摘要，而不是把 50 份文件全堆你桌上。<strong>所以</strong>下面算 subagent 隔离能省多少 context。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第四笔账：subagent 隔离省多少 context</div>
@@ -505,7 +505,7 @@
   <div class="card" data-card="44-5">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">5</div><div class="card-q-content"><div class="card-q-text">循环每一步都是模型「决定」的，但有些动作（写文件、发请求）不能让它随便做——怎么在动作发生前「插一脚」拦下？</div><div class="card-q-hint">提示：回想流水线——「急停按钮」不是等事故发生了才按，而是在每个危险工位旁边常备。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>hooks</strong>（钩子，在 agent 生命周期关键点自动触发的一段确定性脚本）是 harness 的「确定性兜底」。Claude Code 的 hooks 在生命周期各点注册 shell 命令：<strong>PreToolUse</strong> 在「模型创建好工具参数之后、真正执行工具之前」运行，<strong>PostToolUse</strong> 在工具成功完成后运行，常见匹配器有 Task（子代理任务）、Bash（shell 命令）等。它们的共同点是：触发时机固定、逻辑写死，不依赖模型「自觉」。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>hooks</strong>（钩子，在 agent 生命周期关键点自动触发的一段确定性脚本）是 harness 的「确定性兜底」。Claude Code 的 hooks 在生命周期各点注册 shell 命令：<strong>PreToolUse</strong> 在「模型创建好工具参数之后、真正执行工具之前」运行，<strong>PostToolUse</strong> 在工具成功完成后运行，常见匹配器有 Agent（子代理任务，旧名 Task）、Bash（shell 命令）等。它们的共同点是：触发时机固定、逻辑写死，不依赖模型「自觉」。</div>
       <div class="content-section"><p>上一张卡片用 subagent 管住了规模。这一张管风险：模型每步都是概率决定，越界不能靠它自觉。</p><p><strong>因为</strong>模型输出不确定，越界不能靠「希望它守规矩」。<strong>就像</strong>自动门在「人靠近」这个事件上装传感器（hook）触发开关门——hook 就是挂在「某个事件发生」上的确定性动作。<strong>所以</strong>下面算 hook 拦下多少越界动作。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第五笔账：hook 拦下多少越界</div>
@@ -514,7 +514,7 @@
           <div class="step-desc" style="margin-top:4px;">PreToolUse 在「参数已生成、尚未执行」时先跑，是拦截越界的最佳时机；PostToolUse 用于事后审计。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：10 次工具调用，hook 拦下几次</div>
-          <table><tr><th>项</th><th>数值</th></tr><tr><td>工具调用总数</td><td>10 次</td></tr><tr><td>都过 PreToolUse</td><td>10 次</td></tr><tr><td>被拦下的危险动作</td><td><strong>2</strong> 次</td></tr></table>
+          <table><tr><th>项</th><th>数值</th></tr><tr><td>工具调用总数</td><td>10 次</td></tr><tr><td>都过 PreToolUse</td><td>10 次</td></tr><tr><td>被拦下的危险动作（示意）</td><td><strong>2</strong> 次</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">算术：10 次调用每个都过 PreToolUse；其中 2 次是「写生产文件」这类危险动作，在落地前被确定性脚本拦下。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：没有 hook 的代价</div>
@@ -569,7 +569,7 @@
 
 
 
-<script>window.__SITE__={"lesson":44,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[44]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":44,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[44]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

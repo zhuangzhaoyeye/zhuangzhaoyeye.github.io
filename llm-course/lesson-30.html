@@ -380,7 +380,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">既然要「<b>先排除污染与重复</b>」，<strong>那么</strong>筛完剩下的才是真正值得投入的方向——<strong>这就要求</strong>把它当成一笔会被放大的账来算：计划一旦固化，后续每一步实验、验证与写作（都要在 <b>held-out</b> 上拿分）都压在它身上，<strong>所以</strong>选题成本要按"它拖住了几步"来算。<b class="rn-key">选题要算成本账</b></span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然「<b>选题要算成本账</b>」，<strong>那么</strong>代价一旦发生就收不回——<strong>这就要求</strong>把拦截放在投入之前：用一道成本极小的闸，拦住可能烧掉一堆 <b>token</b> 的错方向，越晚止损越亏。<b class="rn-key">把闸设在开工前</b></span></div>
+        <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然「<b>选题要算成本账</b>」，<strong>那么</strong>代价一旦发生就收不回——<strong>这就要求</strong>把拦截放在投入之前：用一道成本极小的闸，拦住可能烧掉一堆<b>人时</b>和 <b>token</b> 的错方向，越晚止损越亏。<b class="rn-key">把闸设在开工前</b></span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text">既然「<b>把闸设在开工前</b>」，<strong>所以</strong>最后落到一道可复核的三问门禁——可测吗、可做吗、真新吗，三问全过才允许投入；这道闸拦的是"没有 <b>held-out</b> 判据的猜测"，不是想法本身。这就是本课把"新想法"挡在代价发生之前的<b>结论</b>。<b class="rn-key">结论</b></span></div>
       </div>
@@ -393,7 +393,7 @@
   <div class="card" data-card="30-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">它引的每篇文献，出处都能一条条点开吗？</div><div class="card-q-hint">提示：先别急着看结论，去找一条最硬的判据——这条引用指向的论文，真的存在吗、能不能追溯到原文？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>provenance（出处可追溯）</strong>指记录一条信息"从哪来、经过谁、到哪一步"的能力，回答 who-what-when-where；对研究来说，它就是"这条引用能不能被验证"的底座。MLE-bench（Chan 等，arXiv:2410.07095，OpenAI，2024）在跑分之外，还对获奖提交跑了抄袭检测（plagiarism detector），报告结论是<strong>未发现抄袭证据</strong>——说明"产物可溯源"已经是自主研究系统的一条验收项。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>provenance（出处可追溯）</strong>指记录一条信息"从哪来、经过谁、到哪一步"的能力，回答 who-what-when-where；对研究来说，它就是"这条引用能不能被验证"的底座。MLE-bench（Chan 等，arXiv:2410.07095，OpenAI，2024）在跑分之外，还对获奖提交跑了抄袭检测（plagiarism detector），报告结论是<strong>未发现抄袭证据</strong>——说明"产物是否照搬他人"已经是自主研究评测的一条验收项；它查的是原创性，与本卡的引用可溯源互补，但不是同一件事。</div>
       <div class="content-section"><p>先问一个最容易被跳过的问题：<strong>AI 写出的那句结论，它引的那篇文献，真的存在吗？</strong></p><p><strong>因为</strong>模型是在"续写下一个 token"，不是去文献库里点开一篇文章——它完全可能把两篇论文的标题、作者、年份拼成一条<strong>看起来很像却并不存在</strong>的引用。<strong>就像</strong>有人报菜名报得很顺，但厨房里根本没有这道菜。<strong>所以</strong>在讨论"新不新"之前，先得有一层能验证的底座，这就是 <strong>provenance</strong>。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第一笔账：文献底座的两个指标（示意）</div>
@@ -430,15 +430,15 @@
           <div class="step-desc" style="margin-top:4px;">算术（示意）：即便检索不差，也还有 <strong>40%</strong> 的相关文献没被碰到；在这些没碰到的地方，完全可能藏着已经做过的同类工作。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：把"没搜到"当"新"的误判下界</div>
-          <table><tr><th>前提</th><th>推论</th></tr><tr><td>假设未检出的 40% 都是已做过的重复（保守场景）</td><td>此时"判新"的误判率 <strong>≥ 40%</strong></td></tr><tr><td>命中越少</td><td>该保守下界越高</td></tr><tr><td>结论</td><td>"没搜到"给的是保守下界，不是证明</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术（示意）：只有当"未检出的都是重复"这一保守假设成立时，"我没找到反例"才推得出"至少 40% 的地方可能有同类工作"——它仍是待证状态，不是结论；若盲区里没有重复，这个下界会降到 0。</div>
+          <table><tr><th>前提</th><th>推论</th></tr><tr><td>若已有一篇同类工作存在（且被检出的概率与召回率一致）</td><td>这次检索漏掉它的概率 = 1 − 0.60 = <strong>40%</strong>，此时"判新"就是误判</td></tr><tr><td>命中越少</td><td>漏掉同类工作的概率越高</td></tr><tr><td>结论</td><td>"没搜到"只是待证状态，不是证明</td></tr></table>
+          <div class="step-desc" style="margin-top:4px;">算术（示意）：1 − 0.60 = 0.40。召回率 0.60 意味着：只要真有同类工作存在，单次检索就有约 40% 的概率碰不到它——"我没找到反例"只是待证状态，不是结论；只有同类工作确实不存在时，"判新"才成立。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：三步各管什么</div>
           <table><tr><th>步骤</th><th>靶子</th></tr><tr><td>检索</td><td>降低漏检率（扩大覆盖）</td></tr><tr><td>去污染</td><td>排除"模型见过"的假新颖</td></tr><tr><td>弱方向拒绝</td><td>砍掉证据不足的方向</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">算术无关的一条分工：<strong>检索管"有没有人做过"，去污染管"模型是不是背过"，弱方向拒绝管"证据够不够撑住往下做"</strong>——三步缺一，"新"就不可信。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>判"真新"靠的是排除法：先<b>检索</b>（降漏检）、再<b>去污染</b>（排除记忆）、最后<b>弱方向拒绝</b>（证据不足就砍）。"没搜到反例"只是一个下界——把它当结论，等于把 40% 的盲区当成不存在。</p></div>
+      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>判"真新"靠的是排除法：先<b>检索</b>（降漏检）、再<b>去污染</b>（排除记忆）、最后<b>弱方向拒绝</b>（证据不足就砍）。"没搜到反例"只是待证状态——把它当结论，等于把 40% 的盲区当成不存在。</p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','30-2')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','30-2')">🤔 你可能还想问</button></div>
       <div id="tab-ai-30-2" class="llm-section"><button class="llm-btn" onclick="startChat('30-2')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="30-2"><div class="chat-toolbar"><button onclick="copyChat('30-2')">📋 复制对话</button><button onclick="clearChat('30-2')">🗑 清空</button><button onclick="stopLLM('30-2')" id="stop-btn-30-2" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('30-2')" id="regenerate-btn-30-2" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="30-2"><div class="role-label">AI 助教</div><div class="msg-content">👋 对新颖性判定有疑问？比如「去污染具体怎么做」「弱方向拒绝会不会误杀」？<br><br>说清你的检索范围与领域，我帮你设计这三步。</div></div><div class="chat-input-row"><textarea data-input="30-2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('30-2')}" rows="1" placeholder="例如：怎么判断一个方向该不该砍？"></textarea><button onclick="sendLLM('30-2')">发送</button></div></div></div>
       <div id="tab-qna-30-2" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('30-2')">🔄 换一批</button></div><div class="qna-list" data-qna="30-2"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -449,7 +449,7 @@
   <div class="card" data-card="30-3">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">从一堆检索结果到能动手的假设，中间缺了哪几步？</div><div class="card-q-hint">提示：检索回来的是零散信号——想想要经过几次转换，才能变成一次实验就能判真伪的假设。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>把检索结果变成研究问题要走<strong>三级转换</strong>：<strong>信号（signal，读到的现象 / 矛盾 / 反常）</strong> → <strong>可迁移洞见（transferable insight，换一个场景仍然成立的说法）</strong> → <strong>可测假设（testable hypothesis，一次实验就能判真伪的陈述）</strong>。据公开报道，DeepSeek 研究者的自主研究系统由 Agent 执笔约 99% 的正文、全文约 <strong>45 页</strong>、引用约 <strong>105 篇</strong>文献（B 级、需人工核实：另有公开口径记为 46 页 / 103 篇），说明这条链路已有端到端产出。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>把检索结果变成研究问题要走<strong>三级转换</strong>：<strong>信号（signal，读到的现象 / 矛盾 / 反常）</strong> → <strong>可迁移洞见（transferable insight，换一个场景仍然成立的说法）</strong> → <strong>可测假设（testable hypothesis，一次实验就能判真伪的陈述）</strong>。据公开报道，DeepSeek 研究员陈德里的综述《From Copilots to Colleagues》（即第 29 课 L1–L5 的出处）约 99% 由 Agent 执笔，首发时约 <strong>45 页</strong>、引用约 <strong>105 篇</strong>文献（B 级、需人工核实：另有公开口径记为 46 页 / 103 篇，作者主页 V5 版标为 63 页 / 228 篇引用），说明"检索 → 成文"这段链路已有端到端产出；但它是综述，不含实验与假设检验。</div>
       <div class="content-section"><p>上一张卡片说了判"真新"要走的三步。那检索回来的一大堆东西，<strong>怎么才能变成能动手的假设？</strong></p><p><strong>因为</strong>检索回来的是零散信号——一句反常的实验结果、两篇互相打架的结论；信号本身做不了实验——得先把它们压进 <b>context</b>（喂给模型的一次性上下文窗口），再"翻译"两次：先提炼成换场景还成立的洞见，再收窄成一次实验能判真伪的假设。<strong>就像</strong>把满桌零件先归类成几个部件，再挑一个去装配测试。<strong>所以</strong>要三级转换，而不是从检索直接跳到动手。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第三笔账：三级转换的收敛（示意）</div>
@@ -458,12 +458,12 @@
           <div class="step-desc" style="margin-top:4px;">算术（示意）：从 120 条零散信号里先压出 18 条洞见，平均约 <strong>6.7 条信号</strong>支撑 1 条洞见——这一步在做"归类"。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：洞见 → 可测假设</div>
-          <table><tr><th>项</th><th>数值（示意）</th></tr><tr><td>可迁移洞见</td><td>18 条</td></tr><tr><td>可测假设</td><td>3 个</td></tr><tr><td>平均每条生出几个</td><td>18 ÷ 3 = <strong>6</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术（示意）：18 条洞见里只有 <strong>6 条</strong>才收窄成 1 个可测假设——这一步在做"可检验性筛选"，把解释不了、测不了的先淘汰。</div>
+          <table><tr><th>项</th><th>数值（示意）</th></tr><tr><td>可迁移洞见</td><td>18 条</td></tr><tr><td>可测假设</td><td>3 个</td></tr><tr><td>平均几条洞见收敛成 1 个假设</td><td>18 ÷ 3 = <strong>6</strong></td></tr></table>
+          <div class="step-desc" style="margin-top:4px;">算术（示意）：平均每 <strong>6 条</strong>洞见才收窄出 1 个可测假设（共 3 个）——这一步在做"可检验性筛选"，把解释不了、测不了的先淘汰。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：总压缩比</div>
           <table><tr><th>项</th><th>数值（示意）</th></tr><tr><td>首尾之比</td><td>120 ÷ 3 = <strong>40</strong></td></tr><tr><td>含义</td><td>平均 40 条检索结果收敛出 1 个假设</td></tr><tr><td>为什么值得</td><td>只有假设能判真伪，信号不能</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术（示意）：整条链路的压缩比约 <strong>40:1</strong>；这个"损失"不是浪费，而是把不能用实验判定的东西提前挡掉。<strong>45 页 / 105 篇的整篇论文，也是从海量信号这样收敛出来的。</strong></div>
+          <div class="step-desc" style="margin-top:4px;">算术（示意）：整条链路的压缩比约 <strong>40:1</strong>；这个"损失"不是浪费，而是把不能用实验判定的东西提前挡掉。<strong>可测假设少，是因为大部分信号在"能不能判真伪"这一关被筛掉了。</strong></div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>三级转换的价值是"可测"：<strong>信号不能做实验，洞见能解释，只有假设能判真伪</strong>。能不能从检索跳到动手，取决于你有没有把信号收敛到"一次实验能判真假"的那一层。</p></div>
@@ -583,7 +583,7 @@
 
 
 
-<script>window.__SITE__={"lesson":30,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[30]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":30,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[30]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

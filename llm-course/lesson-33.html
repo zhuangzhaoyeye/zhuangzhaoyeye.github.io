@@ -393,7 +393,7 @@
   <div class="card" data-card="33-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">代码跑通了，结论就成立吗？</div><div class="card-q-hint">提示：跑通只说明"没崩"。想一个能正常结束、不报错、结果却物理上不可能的脚本长什么样？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>科研代码有一类失败专门"不喊出来"：<strong>静默错误</strong>（<code>silent error</code>，指程序正常运行、输出看似合理，但物理含义已被悄悄改坏，见 Paimon，arXiv:2606.09422）。它比崩溃更危险，因为没有任何报错提醒你。定量证据来自 Judge Agent（arXiv:2603.25780，2026-03）：LLM 生成的仿真代码若不做数学校验（适定性 / 收敛 / 误差界），静默失败率高达 <strong>42%</strong>；同一批代码加上自动校验后降到 <strong>1.5%</strong>。该文还引 SciCode：前沿模型解不出半数研究级计算问题。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>科研代码有一类失败专门"不喊出来"：<strong>静默错误</strong>（<code>silent error</code>，指程序正常运行、输出看似合理，但物理含义已被悄悄改坏，见 Paimon，arXiv:2606.09422）。它比崩溃更危险，因为没有任何报错提醒你。定量读数来自 Judge Agent（arXiv:2603.25780，2026-03；注意：该文已于 2026-11-09 被作者撤稿，作者称主要结果依赖的研究记录无法核实，以下数字仅作示意）：LLM 生成的仿真代码若不做数学校验（适定性 / 收敛 / 误差界），静默失败率高达 <strong>42%</strong>；同一批代码加上自动校验后降到 <strong>1.5%</strong>。该文还引 SciCode：前沿模型解不出半数研究级计算问题。</div>
       <div class="content-section"><p>第五部分走到这里，选题、规划、长时程执行都讲过了，但有一条底线必须先立住：<strong>代码跑通了，结论就成立吗？</strong></p><p><strong>因为</strong>"跑通"只证明脚本没在运行时崩掉，不证明它算的是你要的东西。论文里的每个结论，最终都只是写进文档的一串 <b>tokens</b>——而 tokens 本身不会告诉你它错没错。<strong>就像</strong>电子秤没坏、数字也在跳，只是单位被人从克偷偷换成了磅，你看不出任何异样。<code>silent error</code>（静默错误）就是这类失败：正常结束、结果看着合理，物理意义却已经错了。<strong>所以</strong>先把"能跑≠对"这条底线讲透。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第一笔账：能跑 ≠ 对</div>
@@ -403,14 +403,14 @@
         </div>
         <div class="step"><div class="step-title">Step 2：静默失败率能被量到多低</div>
           <table><tr><th>条件</th><th>静默失败率</th></tr><tr><td>无验证的 AI 生成仿真代码（134 个测试用例、12 个领域）</td><td><strong>42%</strong></td></tr><tr><td>加入 Judge Agent（自动数学校验）</td><td><strong>1.5%</strong></td></tr><tr><td>下降倍数</td><td>42 ÷ 1.5 = <strong>28×</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：42% ÷ 1.5% = 28——同一批代码，加一层自动校验，静默失败率降到约 1/28。来源 arXiv:2603.25780。<strong>"能跑≠对"不是玄学，它有可测的读数。</strong></div>
+          <div class="step-desc" style="margin-top:4px;">算术：42% ÷ 1.5% = 28——同一批代码，加一层自动校验，静默失败率降到约 1/28。来源 arXiv:2603.25780（该文已撤稿，读数仅作示意）。<strong>"能跑≠对"不是玄学，它有可测的读数。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 3：三类 agent 各自有多少篇对不上</div>
-          <table><tr><th>对象</th><th>"结果与工件不符"的论文占比</th><th>117 篇中约几篇</th></tr><tr><td>Codex（GPT-5.4）</td><td>5%</td><td>117 × 0.05 ≈ 5.85 ≈ <strong>6 篇</strong></td></tr><tr><td>Claude Code（Opus 4.6）</td><td>31%</td><td>117 × 0.31 ≈ 36.3 ≈ <strong>36 篇</strong></td></tr><tr><td>Kimi Code（K2.5）</td><td>77%</td><td>117 × 0.77 ≈ 90.1 ≈ <strong>90 篇</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：三类 agent 的占比口径不同、不可相加——117 × 5% ≈ 6 篇、117 × 31% ≈ 36 篇、117 × 77% ≈ 90 篇。即便最"守规矩"的 agent，也有 5% 的论文里数字对不上自己的输出（ResearchArena，arXiv:2605.19156）。这正是必须用<strong>审计</strong>（逐条回查证据）去确认问题的原因。</div>
+          <table><tr><th>对象</th><th>"结果与工件不符"的论文占比</th><th>各 agent 39 篇中约几篇</th></tr><tr><td>Codex（GPT-5.4）</td><td>5%</td><td>39 × 0.05 ≈ 1.95 ≈ <strong>2 篇</strong>（2/39）</td></tr><tr><td>Claude Code（Opus 4.6）</td><td>31%</td><td>39 × 0.31 ≈ 12.1 ≈ <strong>12 篇</strong>（12/39）</td></tr><tr><td>Kimi Code（K2.5）</td><td>77%</td><td>39 × 0.77 ≈ 30.0 ≈ <strong>30 篇</strong>（30/39）</td></tr></table>
+          <div class="step-desc" style="margin-top:4px;">算术：117 篇 = 3 个 agent × 39 篇，占比的分母是各 agent 自己的 39 篇——39 × 5% ≈ 2 篇、39 × 31% ≈ 12 篇、39 × 77% ≈ 30 篇（三者合计 44 篇）。即便最"守规矩"的 agent，也有 5% 的论文里数字对不上自己的输出（ResearchArena，arXiv:2605.19156）。这正是必须用<strong>审计</strong>（逐条回查证据）去确认问题的原因。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>有验证 → 静默失败率从 42% 降到 1.5%；没有 → 近一半错误会溜过去。判据是：<strong>先承认"能跑≠对"，再问一句"这个数字能不能被独立复算或审计确认"。</strong>验证的第 0 步不是加测试，是承认测试可能测不到。</p></div>
+      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>有验证 → 静默失败率从 42% 降到 1.5%（读数出自已撤稿论文，示意）；没有 → 近一半错误会溜过去。判据是：<strong>先承认"能跑≠对"，再问一句"这个数字能不能被独立复算或审计确认"。</strong>验证的第 0 步不是加测试，是承认测试可能测不到。</p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','33-1')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','33-1')">🤔 你可能还想问</button></div>
       <div id="tab-ai-33-1" class="llm-section"><button class="llm-btn" onclick="startChat('33-1')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="33-1"><div class="chat-toolbar"><button onclick="copyChat('33-1')">📋 复制对话</button><button onclick="clearChat('33-1')">🗑 清空</button><button onclick="stopLLM('33-1')" id="stop-btn-33-1" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('33-1')" id="regenerate-btn-33-1" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="33-1"><div class="role-label">AI 助教</div><div class="msg-content">👋 对"能跑≠对"有疑问？比如「静默错误怎么发现」「有没有更小的例子」？<br><br>说清你的场景，我帮你判断该在哪一步加校验。</div></div><div class="chat-input-row"><textarea data-input="33-1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('33-1')}" rows="1" placeholder="例如：静默错误怎么被查出来？"></textarea><button onclick="sendLLM('33-1')">发送</button></div></div></div>
       <div id="tab-qna-33-1" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('33-1')">🔄 换一批</button></div><div class="qna-list" data-qna="33-1"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -459,7 +459,7 @@
         </div>
         <div class="step"><div class="step-title">Step 2：多评审的一致性有多高</div>
           <table><tr><th>情形</th><th>概率</th></tr><tr><td>两名各 70% 准的评审恰好一致</td><td>0.7² + 0.3² = <strong>0.58</strong></td></tr><tr><td>三名各 70% 准的评审多数表决正确</td><td>3 × 0.7² × 0.3 + 0.7³ = <strong>0.784</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术（假设各评审独立、准确率相同）：两名评审一致率 = 0.7² + 0.3² = 0.58；三人多数表决准确率 = 0.784 ≈ 78.4%。<strong>单评审 70% → 三人多数约 78%</strong>，这就是"集成评审"能压低方差的算术原因。</div>
+          <div class="step-desc" style="margin-top:4px;">算术（假设各评审独立、准确率相同）：两名评审一致率 = 0.7² + 0.3² = 0.58；三人多数表决准确率 = 0.784 ≈ 78.4%。<strong>单评审 70% → 三人多数约 78%</strong>，这是"独立多数表决"能提高准确率的算术原因（理想化的独立假设；AI Scientist v1 实测集成 5 份评审并未提高准确率，只降低了方差）。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：评审要"看证据"而不是"看文笔"</div>
           <table><tr><th>项</th><th>数值 / 做法</th></tr><tr><td>AI Scientist 自动评审构成</td><td>5 轮反思 + 5 份集成</td></tr><tr><td>其报告准确率</td><td>约 70%</td></tr><tr><td>独立实测反例</td><td>12 个实验中 <strong>5 个（42%）</strong>编码失败</td></tr></table>
@@ -519,17 +519,17 @@
   <div class="card" data-card="33-5">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">5</div><div class="card-q-content"><div class="card-q-text">复现失败要付出什么代价？</div><div class="card-q-hint">提示：把"重跑一遍"的开销算进去——一次要多少成本，失败要重来几次？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>复现不是免费的：每次重跑都要再花一份算力与 <b>tokens</b>。AI Scientist-v2 报告其单篇论文成本约 <strong>$15</strong>（另有报道给出约 <strong>$25</strong> 的均值口径，两者并存，需人工核实），v1 报告为 <strong>不足 $15/篇</strong>（v1 原文口径为 "less than $15 per paper"）、人类参与约 <strong>3.5 小时</strong>。一旦结论被质疑，这些成本要按"重复次数"成倍付出——这就是复现的账单。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>复现不是免费的：每次重跑都要再花一份算力与 <b>tokens</b>。AI Scientist-v2 官方仓库 README 给出单次运行成本约 <strong>$20–25</strong>（实验阶段 $15–20 + 写作约 $5），v1 报告为 <strong>不足 $15/篇</strong>（v1 原文口径为 "less than $15 per paper"）；独立复评 Beel 等实测 v1 为 $6–15/篇、人类参与约 <strong>3.5 小时</strong>。一旦结论被质疑，这些成本要按"重复次数"成倍付出——这就是复现的账单。</div>
       <div class="content-section"><p>上一张卡片看到真实投稿数据。但就算论文能过评审，结论也可能复现不了——<strong>复现失败要付出什么代价？</strong></p><p><strong>因为</strong>复现不是"再看一眼"，而是"从零重跑一遍"：再花一份算力、再烧一份 <b>tokens</b>、再等一轮时间。若第一次没能把三要素钉死（承上一张卡片），就得多次重跑，成本按次数线性放大。<strong>就像</strong>退货重发——东西没发对，运费得自己再掏一次，掏几次取决于错了几次。<strong>所以</strong>要先把复现成本算成"单次 × 次数"。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第五笔账：复现的账单</div>
         <div class="step"><div class="step-title">Step 1：单次成本是多少</div>
-          <table><tr><th>项</th><th>数值</th></tr><tr><td>AI Scientist-v2 单篇</td><td>约 $15（另有 $25 报道口径）</td></tr><tr><td>AI Scientist-v1 单篇</td><td>不足 $15（v1 原文口径）</td></tr><tr><td>人类参与</td><td>约 3.5 小时</td></tr></table>
+          <table><tr><th>项</th><th>数值</th></tr><tr><td>AI Scientist-v2 单篇</td><td>约 $20–25（README：实验 $15–20 + 写作约 $5）</td></tr><tr><td>AI Scientist-v1 单篇</td><td>不足 $15（v1 原文口径）</td></tr><tr><td>人类参与（Beel 等实测 v1）</td><td>约 3.5 小时</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">算术无关的一条提醒：单次成本不高（十几美元级），但它会<strong>按复现次数成倍放大</strong>——低价乘上多次才是账单。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：复现成本 = 单次 × 次数</div>
           <table><tr><th>重复次数 N（单次示意 C = $15）</th><th>总成本 = C × N</th></tr><tr><td>1</td><td>15 × 1 = <strong>$15</strong></td></tr><tr><td>3</td><td>15 × 3 = <strong>$45</strong></td></tr><tr><td>5</td><td>15 × 5 = <strong>$75</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：15 × 5 = 75。C 取 $15 为<strong>示意</strong>（来源为 v2 报告的约 $15/篇口径），真实值随模型与任务浮动。<strong>次数翻倍，账单翻倍。</strong></div>
+          <div class="step-desc" style="margin-top:4px;">算术：15 × 5 = 75。C 取 $15 为<strong>示意</strong>（来源为 v1 论文的约 $15/篇口径；v2 README 口径约 $20–25），真实值随模型与任务浮动。<strong>次数翻倍，账单翻倍。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 3：失败率让次数失控</div>
           <table><tr><th>单次复现成功率</th><th>连续 3 次都成功 ≈ p³</th></tr><tr><td>0.80</td><td>0.80³ = <strong>0.512</strong></td></tr><tr><td>0.90</td><td>0.90³ = <strong>0.729</strong></td></tr></table>
@@ -584,7 +584,7 @@
 
 
 
-<script>window.__SITE__={"lesson":33,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[33]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":33,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[33]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

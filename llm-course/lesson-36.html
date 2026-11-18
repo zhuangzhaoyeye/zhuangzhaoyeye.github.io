@@ -378,7 +378,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">把目标拆开，<strong>所以</strong>后训练分成三类任务：偏好对齐（好听，DPO/RLHF）、推理强化（算对，RLVR）、其余（安全等，RLAIF）——<strong>因此</strong>每类任务要配它自己的训练信号。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">三类范式沿着一条主线越来越简单：<strong>因为</strong>每一步都在砍掉上一个方案的瓶颈，<strong>于是</strong> RLHF（4 模型）→ DPO（2 模型）→ GRPO（1 模型）。</span></div>
+        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">三类范式沿着一条主线越来越简单：<strong>因为</strong>每一步都在砍掉上一个方案的瓶颈，<strong>于是</strong> RLHF（4 模型）→ DPO（2 模型，离线）；另一支 GRPO 留在在线 RL、只删 critic（3 模型，规则奖励时 2）。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">"好听"和"算对"不能互换信号，<strong>因此</strong>对齐（DPO）与推理强化（RLVR）是两条线——<strong>因为</strong>人类偏好给不出"算得对不对"的稳定判据，反之 0/1 对错也教不了"讨喜"。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -393,8 +393,8 @@
   <div class="card" data-card="36-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">预训练给了知识、SFT 教会了接话，模型还缺什么？</div><div class="card-q-hint">提示：先想"会回答"和"答得好、答得对"是不是一回事；再想 SFT 学的到底是"格式"还是"判断"。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>后训练（post-training）</strong>在 2024~2025 成为主流术语，指基座模型在预训练之后的所有训练：SFT → 对齐（RLHF/DPO）→ 推理强化（RLVR 即「可验证奖励强化学习」/R1）。其中 InstructGPT（Ouyang et al., arXiv:2203.02155）是"SFT 之后还要对齐"这一转折的关键证据：1.3B 的 InstructGPT 在遵循指令上胜过 175B 基座，但"更好听、更安全"仍要靠偏好训练补上。</div>
-      <div class="content-section"><p>上一课（第 10 课）我们做了 SFT。但 SFT 之后模型只是"会按格式接话"——<strong>它仍然不会判断哪个回答更好，也不会把多步问题想清楚。</strong></p><p>可以把这<strong>类比</strong>成一位新人入职：SFT 是"照抄示范"，后训练才是"告诉他什么样算好、什么样算对"——前者教动作，后者教判断。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>后训练（post-training）</strong>在 2024~2025 成为主流术语，指基座模型在预训练之后的所有训练：SFT → 对齐（RLHF/DPO）→ 推理强化（RLVR 即「可验证奖励强化学习」/R1）。其中 InstructGPT（Ouyang et al., arXiv:2203.02155）是"SFT 之后还要对齐"这一转折的关键证据：1.3B 的 InstructGPT（SFT 之后再做 RLHF）在人类偏好评估上胜过 175B GPT-3，且 RLHF 版本也胜过同规模的纯 SFT 版本——"更好听"正是偏好训练补上的。</div>
+      <div class="content-section"><p>第 10 课我们做了 SFT。但 SFT 之后模型只是"会按格式接话"——<strong>它仍然不会判断哪个回答更好，也不会把多步问题想清楚。</strong></p><p>可以把这<strong>类比</strong>成一位新人入职：SFT 是"照抄示范"，后训练才是"告诉他什么样算好、什么样算对"——前者教动作，后者教判断。</p></div>
       <div class="calc-block">
         <div class="label">🧮 三段训练的数据量递减：越往后越"贵"、越"精"</div>
         <div class="step"><div class="step-title">Step 1：三段各用了多少数据</div>
@@ -444,7 +444,7 @@
       <div class="calc-block">
         <div class="label">🧮 三类任务 × 信号 × 路线</div>
         <div class="step"><div class="step-title">Step 1：三类任务对照</div>
-          <table><tr><th>任务</th><th>目标</th><th>信号</th><th>代表方法</th></tr><tr><td>偏好对齐</td><td>回答更"好听"</td><td>成对比较</td><td>RLHF / DPO / GRPO</td></tr><tr><td>推理强化</td><td>答案更"算得对"</td><td>0/1 可验证对错</td><td>RLVR / R1-Zero（纯 RL 推理）</td></tr><tr><td>其他对齐</td><td>安全、多模态等</td><td>混合</td><td>RLAIF（AI 反馈替代人工）/ 安全 RL</td></tr></table>
+          <table><tr><th>任务</th><th>目标</th><th>信号</th><th>代表方法</th></tr><tr><td>偏好对齐</td><td>回答更"好听"</td><td>成对比较</td><td>RLHF / DPO（GRPO 是可用于两条线的优化算法）</td></tr><tr><td>推理强化</td><td>答案更"算得对"</td><td>0/1 可验证对错</td><td>RLVR / R1-Zero（纯 RL 推理）</td></tr><tr><td>其他对齐</td><td>安全、多模态等</td><td>混合</td><td>RLAIF（AI 反馈替代人工）/ 安全 RL</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：信号能不能互换</div>
           <table><tr><th>拿错信号</th><th>后果</th></tr><tr><td>用偏好信号训推理</td><td>学不会"算对"，只会学"像样"</td></tr><tr><td>用 0/1 对错训风格</td><td>风格僵硬、丢多样性</td></tr></table>
@@ -462,15 +462,15 @@
   <div class="card" data-card="36-4">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">从 RLHF 到 DPO 到 GRPO，为什么训练越来越简单？</div><div class="card-q-hint">提示：数一数每个方法"训练时同时驻留"几个模型，再看它砍掉了哪个。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>偏好对齐的主线是<strong>一条"减负"曲线</strong>：RLHF/PPO（InstructGPT, 2022）要同时驻留策略、参考、奖励、critic（价值网络，估 baseline 以压低梯度方差）四个模型；DPO（Rafailov et al., arXiv:2305.18290, 2023）用闭式解把 RL 换成一次分类，砍掉奖励模型和 critic；GRPO（Shao et al., DeepSeek, arXiv:2402.03300, 2024）用组内统计当基线（替代 critic），再砍掉参考模型、只用策略一个模型。</div>
-      <div class="content-section"><p>上一张卡片把任务分好了。现在看偏好对齐这条线怎么进化——<strong>训练之所以越来越简单，因为每一步都砍掉上一个方案的一个瓶颈。</strong></p><p>可以把这<strong>类比</strong>成搬家：RLHF 是"四台设备全开"，DPO 是"关掉两台"，GRPO 是"只剩一台还跑得一样好"——越精简越省显存、越稳定。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>偏好对齐的主线是<strong>一条"减负"曲线</strong>：RLHF/PPO（InstructGPT, 2022）要同时驻留策略、参考、奖励、critic（价值网络，估 baseline 以压低梯度方差）四个模型；DPO（Rafailov et al., arXiv:2305.18290, 2023）用闭式解把 RL 换成一次分类，砍掉奖励模型和 critic；GRPO（Shao et al., DeepSeek, arXiv:2402.03300, 2024）用组内统计当基线（替代 critic），参考模型仍保留（KL 项直接加进损失），奖励来自奖励模型或规则验证器——相对 PPO 只砍掉 critic。</div>
+      <div class="content-section"><p>上一张卡片把任务分好了。现在看偏好对齐这条线怎么进化——<strong>训练之所以越来越简单，因为每一步都砍掉上一个方案的一个瓶颈。</strong></p><p>可以把这<strong>类比</strong>成搬家：RLHF 是"四台设备全开"，DPO 是"关掉两台"，GRPO 是"回到全套搬家流程、只把 critic 那台设备换成组内平均"——DPO 最省显存，GRPO 换来在线探索。</p></div>
       <div class="calc-block">
-        <div class="label">🧮 模型驻留账：4 → 2 → 1</div>
+        <div class="label">🧮 模型驻留账：PPO 4 → DPO 2；GRPO 3（规则奖励时 2）</div>
         <div class="step"><div class="step-title">Step 1：各方法要同时驻留几个模型</div>
-          <table><tr><th>方法</th><th>驻留模型数</th><th>驻留哪些</th></tr><tr><td>RLHF / PPO</td><td>4</td><td>策略 + 参考 + 奖励 + critic</td></tr><tr><td>DPO</td><td>2</td><td>策略 + 参考</td></tr><tr><td>GRPO</td><td>1</td><td>仅策略</td></tr></table>
+          <table><tr><th>方法</th><th>驻留模型数</th><th>驻留哪些</th></tr><tr><td>RLHF / PPO</td><td>4</td><td>策略 + 参考 + 奖励 + critic</td></tr><tr><td>DPO</td><td>2</td><td>策略 + 参考</td></tr><tr><td>GRPO</td><td>3（规则奖励时 2）</td><td>策略 + 参考 + 奖励（用规则验证器时不需要奖励模型）</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：每一步砍掉了什么</div>
-          <table><tr><th>演进</th><th>砍掉</th><th>换来</th></tr><tr><td>PPO → DPO</td><td>奖励模型 + critic</td><td>不用训奖励模型、更稳定</td></tr><tr><td>DPO → GRPO</td><td>参考模型</td><td>省一份显存、支持在线探索</td></tr></table>
+          <table><tr><th>演进</th><th>砍掉</th><th>换来</th></tr><tr><td>PPO → DPO</td><td>奖励模型 + critic</td><td>不用训奖励模型、更稳定</td></tr><tr><td>PPO → GRPO</td><td>critic</td><td>省一份价值网络、保留在线探索（参考模型仍保留）</td></tr></table>
           <div class="step-desc">注意 DPO 和 GRPO 不是"取代关系"：DPO 是离线（失去探索），GRPO 回到在线（能探索但回到 RL 的复杂性）——<strong>这条线不是单向变好，而是在"省资源"和"要探索"之间取舍。</strong></div>
         </div>
       </div>
@@ -490,7 +490,7 @@
       <div class="calc-block">
         <div class="label">🧮 两条线的信号不可互换</div>
         <div class="step"><div class="step-title">Step 1：两条线对照</div>
-          <table><tr><th>维度</th><th>偏好对齐</th><th>推理强化</th></tr><tr><td>目标</td><td>好听、符合偏好</td><td>算对、逻辑正确</td></tr><tr><td>信号</td><td>成对比较</td><td>0/1 可验证对错</td></tr><tr><td>代表</td><td>DPO / GRPO</td><td>RLVR / R1-Zero</td></tr></table>
+          <table><tr><th>维度</th><th>偏好对齐</th><th>推理强化</th></tr><tr><td>目标</td><td>好听、符合偏好</td><td>算对、逻辑正确</td></tr><tr><td>信号</td><td>成对比较</td><td>0/1 可验证对错</td></tr><tr><td>代表</td><td>RLHF / DPO</td><td>RLVR / R1-Zero（用 GRPO 优化）</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：错配会怎样</div>
           <table><tr><th>错配方向</th><th>后果</th></tr><tr><td>用偏好信号训推理</td><td>偏好模型对"算对"打分不可靠，学不到正确性</td></tr><tr><td>用 0/1 对错训风格</td><td>奖励太稀疏，学不到细腻的风格差异</td></tr></table>
@@ -539,7 +539,7 @@
 
 
 
-<script>window.__SITE__={"lesson":36,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[36]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":36,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[36]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

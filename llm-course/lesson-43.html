@@ -374,9 +374,9 @@
       <div class="roadmap-flow">
         <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">选型这件事<strong>必须先有一个统一视角</strong>——因为前 7 课的 8 种方法（奖励模型/RLHF/PPO 即近端策略优化/DPO/变体族/在线/无参考/推理强化），本质上都在把「人觉得好、算得对」翻译成可训练信号，并在「资源」与「探索」之间取舍。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">前沿第一推：把偏好优化从单轮推到多轮（DMPO）——因为单轮 DPO 用在多轮智能体上会逐轮误差复合，<strong>因此</strong> 5 轮完成率从 0.77 掉到 0.59。</span></div>
+        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">前沿第一推：把偏好优化从单轮推到多轮（DMPO）——因为单轮 DPO 用在多轮智能体上会逐轮误差复合，<strong>因此</strong> 5 轮完成率从 0.77 掉到 0.59（示意：单轮 0.95 vs 0.90）。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">前沿第二推：把「谁当裁判」从人换成模型自己（SPPO / self-rewarding）——因为人工偏好标注贵、慢、不可扩展，<strong>因此</strong>自对弈才能无限生成偏好数据。</span></div>
+        <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">前沿第二推：把「谁当裁判」从人换成模型（SPPO 用小偏好模型 PairRM、self-rewarding 用模型自己）——因为人工偏好标注贵、慢、不可扩展，<strong>因此</strong>自对弈才能无限生成偏好数据。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">前沿第三推：把监督从「人工反馈」降到「AI 反馈 + 一套原则」（RLAIF / Constitutional AI）——因为当裁判的人可以被「另一个 AI + 宪法条文」替代，<strong>因此</strong>监督成本降到只剩一套原则。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -444,10 +444,10 @@
       <div class="calc-block">
         <div class="label">🧮 三种"谁当裁判"的对比</div>
         <div class="step"><div class="step-title">Step 1：裁判与数据需求对照</div>
-          <table><tr><th>方法</th><th>谁当裁判</th><th>需要什么数据</th></tr><tr><td>RLHF</td><td>人</td><td>人工成对偏好（贵）</td></tr><tr><td>SPPO</td><td>自对弈（模型自己）</td><td>60k 提示，无人工偏好</td></tr><tr><td>self-rewarding</td><td>LLM-as-a-Judge（模型自己）</td><td>自生成 + 自打分</td></tr></table>
+          <table><tr><th>方法</th><th>谁当裁判</th><th>需要什么数据</th></tr><tr><td>RLHF</td><td>人</td><td>人工成对偏好（贵）</td></tr><tr><td>SPPO</td><td>预训练偏好模型 PairRM（0.4B），策略自对弈</td><td>60k 提示，无人工偏好</td></tr><tr><td>self-rewarding</td><td>LLM-as-a-Judge（模型自己）</td><td>自生成 + 自打分</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：数据规模账（示意）</div>
-          <table><tr><th>项</th><th>数值</th><th>算式</th></tr><tr><td>SPPO 提示数</td><td>60,000</td><td>论文口径</td></tr><tr><td>每提示采 2 候选（一赢一输）</td><td>120,000 条</td><td>60,000 × 2 = 120,000</td></tr></table>
+          <table><tr><th>项</th><th>数值</th><th>算式</th></tr><tr><td>SPPO 提示数</td><td>60,000</td><td>论文口径</td></tr><tr><td>每提示采 5 个、选 2 个（一赢一输）</td><td>120,000 条</td><td>60,000 × 2 = 120,000</td></tr></table>
           <div class="step-desc">关键不是"更多数据"，而是"<strong>偏好对不用人来标</strong>"——自对弈让偏好数据可以无限生成，监督成本从"人力"降成"算力"。</div>
         </div>
       </div>
@@ -462,7 +462,7 @@
   <div class="card" data-card="43-4">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">如果连"模型自己打分"都不放心，还能靠什么给反馈？</div><div class="card-q-hint">提示：想两个更早的方案——用另一个 AI 当裁判（RLAIF）、给模型一套不能违反的原则（宪法）；它们的监督成本各降到哪？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLAIF（Reinforcement Learning from AI Feedback，基于 AI 反馈的强化学习）</strong>由 Lee et al. 提出（arXiv:2309.00267，Google，2023）：用现成 LLM 生成偏好来训奖励模型，效果与 RLHF 相当；无害对话上 RLAIF 无害率 88%，超过 RLHF 的 76% 和 SFT（监督微调）的 64%。<strong>Constitutional AI（宪法式 AI）</strong>由 Bai et al. 提出（Anthropic, arXiv:2212.08073，2022）更进一步：人类监督只剩一套原则（宪法），模型先自我批判修订（监督阶段），再用 AI 反馈做 RL（强化阶段）。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLAIF（Reinforcement Learning from AI Feedback，基于 AI 反馈的强化学习）</strong>由 Bai et al.（2022，Constitutional AI）提出，Lee et al.（arXiv:2309.00267，Google，2023）系统对比了它与 RLHF：用现成 LLM 生成偏好来训奖励模型，效果与 RLHF 相当；无害对话上 RLAIF 无害率 88%，超过 RLHF 的 76% 和 SFT（监督微调）的 64%。<strong>Constitutional AI（宪法式 AI）</strong>由 Bai et al. 提出（Anthropic, arXiv:2212.08073，2022）更进一步：人类监督只剩一套原则（宪法），模型先自我批判修订（监督阶段），再用 AI 反馈做 RL（强化阶段）。</div>
       <div class="content-section"><p>上一张卡片让模型自己当裁判，但它自己打分也可能有偏。于是有两个更稳的答案：<strong>让"另一个 AI"当裁判，或者干脆只给"一套原则"。</strong></p><p>可以把这<strong>类比</strong>成法律：不靠每个人现场判断对错，靠一套宪法条文 + 裁判按条文判。<strong>RLAIF</strong> 的白话定义：用另一个 LLM 代替人来写偏好，喂给奖励模型；<strong>Constitutional AI</strong> 的白话定义：给模型一份"行为准则"，让它照着原则自己批判、自己改，再据此训练。</p></div>
       <div class="calc-block">
         <div class="label">🧮 无害率：监督方式换来的收益</div>
@@ -516,7 +516,7 @@
           <table><tr><th>判据</th><th>回答"是" →</th><th>回答"否" →</th></tr><tr><td>奖励可验证？</td><td>推理强化（RLVR，即可验证奖励强化学习 / GRPO）</td><td>偏好对齐（DPO 等）</td></tr><tr><td>要在线探索？</td><td>GRPO 等在线 RL</td><td>DPO 等离线</td></tr><tr><td>显存够？</td><td>可驻留更多模型</td><td>尽量少驻留模型</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：最终选型表</div>
-          <table><tr><th>场景</th><th>推荐方法</th><th>驻留模型</th></tr><tr><td>只有偏好、要省资源、可离线</td><td>DPO</td><td>2</td></tr><tr><td>只有偏好、要探索、在线</td><td>GRPO</td><td>1</td></tr><tr><td>有 0/1 对错、要算对</td><td>RLVR / GRPO</td><td>1</td></tr><tr><td>只推理时用、不能改权重</td><td>best-of-N</td><td>0（不训练）</td></tr></table>
+          <table><tr><th>场景</th><th>推荐方法</th><th>驻留模型</th></tr><tr><td>只有偏好、要省资源、可离线</td><td>DPO</td><td>2</td></tr><tr><td>只有偏好、要探索、在线</td><td>GRPO + 奖励模型</td><td>2~3（策略 + 奖励模型，保留 KL 再加参考）</td></tr><tr><td>有 0/1 对错、要算对</td><td>RLVR / GRPO</td><td>1</td></tr><tr><td>只推理时用、不能改权重</td><td>best-of-N</td><td>不训练；推理时策略 + 奖励模型 2</td></tr></table>
           <div class="step-desc">三判据把 8 课压成一张表：<strong>先问"奖励可验证"，再问"要不要探索"，最后问"显存够不够"</strong>——顺序不能乱，因为前两问决定方法大类，第三问只在同大类里做取舍。</div>
         </div>
       </div>
@@ -539,7 +539,7 @@
 
 
 
-<script>window.__SITE__={"lesson":43,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[43]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":43,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[43]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

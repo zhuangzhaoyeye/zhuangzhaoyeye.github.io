@@ -393,14 +393,14 @@
   <div class="card" data-card="38-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">第 37 课拿到了会给回答打分的奖励模型，直接把它当目标函数一路最大化，为什么不行？</div><div class="card-q-hint">提示：先想奖励模型是怎么训出来的（只在有限偏好数据上见过分数）；再想策略被推到没见过分数的区域时，那个分数还准不准。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>奖励作弊（reward hacking）</strong>不是 RLHF 特有的，它的根源是 <strong>Goodhart 定律</strong>（1975）：当一个度量变成目标，它就不再是好的度量。InstructGPT（Ouyang et al., arXiv:2203.02155）明确说奖励模型只是「人类偏好的代理」。Gao, Schulman &amp; Hilton（arXiv:2210.10760, ICML 2023）用「金标准奖励模型」替代人类做了可测量实验：优化强度加大时，代理奖励持续上升，真实奖励先升后降。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>奖励作弊（reward hacking）</strong>不是 RLHF 特有的，它的根源是 <strong>Goodhart 定律</strong>（Goodhart 1975 年提出，流行表述出自 Strathern 1997）：当一个度量变成目标，它就不再是好的度量。InstructGPT（Ouyang et al., arXiv:2203.02155）为「缓解对奖励模型的过度优化」在每个 token 上加了来自 SFT（监督微调）模型的 KL 惩罚；Gao 等人则直接写明奖励模型是「不完美的代理」（imperfect proxy）。Gao, Schulman &amp; Hilton（arXiv:2210.10760, ICML 2023）用「金标准奖励模型」替代人类做了可测量实验：优化强度加大时，代理奖励持续上升，真实奖励先升后降。</div>
       <div class="content-section"><p>第 37 课把「更好」变成了一个奖励模型的打分。现在手上有个能求导的标量，最直接的想法就是把它当目标函数一路最大化。<strong>但这个想法会翻车。</strong></p><p><strong>因为</strong>奖励模型只在有限的偏好数据上见过分数，策略一旦被推到没见过的区域，它给的分数只是<strong>外推</strong>、可能一路虚高。可以把这<strong>类比</strong>成按一张不完美的评分表排练：你把评分表的每一条都做到极致，最后拿到高分，但评委（真实人类）看的是另一套标准。</p></div>
       <div class="calc-block">
         <div class="label">🧮 钻空子账：代理奖励涨了，真实质量却跌了</div>
         <div class="step"><div class="step-title">Step 1：奖励模型是怎么被"骗"的</div>
           <table><tr><th>现象</th><th>数值</th><th>说明</th></tr><tr><td>标注者选更长回答的比例</td><td>约 90%（9/10 次）</td><td>偏好数据里常见长度偏置（示意）</td></tr><tr><td>奖励模型学到的规律</td><td>「长度 ≈ 质量」</td><td>外推到没见过的区域会失真</td></tr></table>
         </div>
-        <div class="step"><div class="step-title">Step 2：直接最大化会发生什么</div>
+        <div class="step"><div class="step-title">Step 2：直接最大化会发生什么（数字为示意）</div>
           <table><tr><th>回答</th><th>长度</th><th>奖励模型打分</th><th>真实质量（金标准）</th></tr><tr><td>正常回答</td><td>20 字</td><td>1.2</td><td>0.8</td></tr><tr><td>钻空子回答（重复堆砌）</td><td>500 字</td><td>7.5</td><td>0.1</td></tr><tr><td>差值</td><td>25 倍</td><td>+6.3</td><td>−0.7</td></tr></table>
           <div class="step-desc">奖励从 1.2 涨到 7.5（<strong>+6.3</strong>），但真实质量从 0.8 跌到 0.1（<strong>−0.7</strong>）——这就是「分数涨了、人却更不满意」的量化形态，学名叫 <strong>reward hacking（奖励作弊）</strong>。</div>
         </div>
@@ -414,7 +414,7 @@
 
   <!-- ============ CARD 2 ============ -->
   <div class="card" data-card="38-2">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">2</div><div class="card-q-content"><div class="card-q-text">要安全地"按人类偏好小步调模型"，PPO 这一步要同时装几个模型、每个干嘛？</div><div class="card-q-hint">提示：数一数"被训练的"和"只算前向的"两类；再想 critic 为什么必须和策略一样大，而不是一个小网络。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">2</div><div class="card-q-content"><div class="card-q-text">要安全地"按人类偏好小步调模型"，PPO 这一步要同时装几个模型、每个干嘛？</div><div class="card-q-hint">提示：数一数"被训练的"和"只算前向的"两类；再想 critic 一定要和策略一样大吗（InstructGPT 里策略最大 175B，critic 只有 6B）。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>PPO（Proximal Policy Optimization）</strong>由 Schulman et al. 提出（arXiv:1707.06347, 2017），用「裁剪的替代目标」把策略更新限制在小步内，是 InstructGPT（arXiv:2203.02155）第三段用的默认算法。它属于 <strong>actor-critic</strong> 家族：actor 是策略，critic 是价值模型——critic 要逐位置估计「这么答下去能得多少分」当基线，价值函数复杂度与策略相当、不少开源实现让两者同规模。但 InstructGPT 里奖励模型是 6B、策略最大到 175B，而 critic（价值函数）由奖励模型初始化、同为 6B——并未与策略同规模。</div>
       <div class="content-section"><p>上一张卡片看到：直接最大化奖励会钻空子，所以 RLHF 不是「裸跑奖励」，而是「在两道约束下最大化奖励」。<strong>这套完整方案就是 PPO——先看它要同时装几个模型。</strong></p><p><strong>因为</strong>要算 KL 惩罚，需要一个冻结的参考模型当锚点；要打分，需要奖励模型；要估「未来回报」当基线，需要 critic。可以把这<strong>类比</strong>成同时开四台机器：一台在学（策略）、一台当参照（参考）、一台打分（奖励）、一台预测未来（critic）——后三台都得一直通电。</p></div>
@@ -470,14 +470,14 @@
         <div class="label">🧮 clip 账：ε=0.2 怎么把更新"夹"住</div>
         <div class="step"><div class="step-title">Step 1：clip 目标长什么样</div>
           <table><tr><th>符号</th><th>含义</th></tr><tr><td>r_t = π<sub>θ</sub>/π<sub>old</sub></td><td>新旧策略概率比</td></tr><tr><td>ε = 0.2</td><td>clip 半径</td></tr><tr><td>clip(r, 0.8, 1.2)</td><td>把比率夹进 [0.8, 1.2]</td></tr><tr><td>L = min(r·A, clip(r)·A)</td><td>PPO 的替代目标</td></tr></table>
-          <div class="step-desc">A 是优势（这一步好还是坏）。clip 的作用是：<strong>好动作别奖励过度、坏动作别惩罚过度</strong>——更新永远不超过旧策略的 20%。</div>
+          <div class="step-desc">A 是优势（这一步好还是坏）。clip 的作用是：<strong>好动作别奖励过度、坏动作别惩罚过度</strong>——比率越过 [0.8, 1.2] 后不再提供额外的改进激励（梯度为 0），但并不硬性保证比率留在区间内。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：数字走查——四种情形</div>
           <table><tr><th>情形</th><th>r</th><th>A</th><th>r·A</th><th>clip(r)·A</th><th>取 min 后</th></tr><tr><td>好动作、跳太大</td><td>1.5</td><td>+1</td><td>+1.5</td><td>+1.2</td><td>+1.2</td></tr><tr><td>正常</td><td>1.1</td><td>+1</td><td>+1.1</td><td>+1.1</td><td>+1.1</td></tr><tr><td>坏动作、跳太大</td><td>1.5</td><td>−1</td><td>−1.5</td><td>−1.2</td><td>−1.5</td></tr><tr><td>坏动作、已收敛</td><td>0.5</td><td>−1</td><td>−0.5</td><td>−0.8</td><td>−0.8</td></tr></table>
-          <div class="step-desc">好动作（A&gt;0）时，比率冲过 1.2 就夹到 1.2（不再多奖励）；坏动作（A&lt;0）时，比率低于 0.8 就夹到 0.8（不再多惩罚）。<strong>clip 让每次更新最多偏离旧策略 20%。</strong></div>
+          <div class="step-desc">好动作（A&gt;0）时，比率冲过 1.2 就夹到 1.2（不再多奖励）；坏动作（A&lt;0）时，比率低于 0.8 就夹到 0.8（不再多惩罚）。<strong>clip 只去掉把比率推出 [0.8, 1.2] 的激励；像「坏动作、跳太大」那行，比率已到 1.5 仍按未裁剪项计入，所以它是软约束，不是 20% 的硬上限。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>clip 让策略每次更新最多偏离旧策略 20%（ε=0.2）。KL + clip 两道约束齐了，RLHF 第三段的机制就完整了。<strong>下一个问题：这套东西在实际工程里为什么又慢又不稳？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>clip（ε=0.2）让概率比越过 [0.8, 1.2] 后不再获得额外激励，从而把每次更新压在旧策略附近（软约束，非硬上限）。KL + clip 两道约束齐了，RLHF 第三段的机制就完整了。<strong>下一个问题：这套东西在实际工程里为什么又慢又不稳？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','38-4')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','38-4')">🤔 你可能还想问</button></div>
       <div id="tab-ai-38-4" class="llm-section"><button class="llm-btn" onclick="startChat('38-4')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="38-4"><div class="chat-toolbar"><button onclick="copyChat('38-4')">📋 复制对话</button><button onclick="clearChat('38-4')">🗑 清空</button><button onclick="stopLLM('38-4')" id="stop-btn-38-4" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('38-4')" id="regen-btn-38-4" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="38-4"><div class="role-label">AI 助教</div><div class="msg-content">👋 对 clip 有疑问？比如"ε 调大调小会怎样？""clip 和 KL 有什么不同？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="38-4" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('38-4')}" rows="1" placeholder="例如：ε 从 0.2 调到 0.5，会发生什么？"></textarea><button onclick="sendLLM('38-4')">发送</button></div></div></div>
       <div id="tab-qna-38-4" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('38-4')">🔄 换一批</button></div><div class="qna-list" data-qna="38-4"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -497,8 +497,8 @@
           <div class="step-desc">每一步都依赖前一步，四步串成一条链——<strong>采样慢，整条链就慢</strong>。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：规模与旋钮</div>
-          <table><tr><th>项</th><th>数值</th><th>说明</th></tr><tr><td>PPO 总轮数</td><td>约 256k episodes</td><td>InstructGPT 附录 C</td></tr><tr><td>批大小</td><td>512</td><td>InstructGPT 附录 C</td></tr><tr><td>旋钮</td><td>β、ε、lr、KL target 等 ≥4 个</td><td>互相耦合</td></tr></table>
-          <div class="step-desc">256k episodes × 每轮四步 = 海量在线采样；再加上 β/ε/lr/KL target 至少 4 个旋钮互相耦合，一处调错就震荡——<strong>这就是「慢且不稳」的来源。</strong></div>
+          <table><tr><th>项</th><th>数值</th><th>说明</th></tr><tr><td>PPO 总 episodes</td><td>约 256k（每轮 512 条 → 约 500 轮更新）</td><td>InstructGPT 附录 C</td></tr><tr><td>批大小</td><td>512</td><td>InstructGPT 附录 C</td></tr><tr><td>旋钮</td><td>β、ε、lr、KL target 等 ≥4 个</td><td>互相耦合</td></tr></table>
+          <div class="step-desc">256k episodes 全部由当前策略在线生成（每轮 512 条、约 500 轮，每轮串行走四步）= 海量在线采样；再加上 β/ε/lr/KL target 至少 4 个旋钮互相耦合，一处调错就震荡——<strong>这就是「慢且不稳」的来源。</strong></div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>PPO 又慢又不稳的根源：在线采样 + 四模型驻留 + 多旋钮耦合。<strong>下一个问题：这套强化学习，能不能整个换掉？</strong></p></div>
@@ -544,7 +544,7 @@
 
 
 
-<script>window.__SITE__={"lesson":38,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[38]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":38,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[38]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

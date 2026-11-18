@@ -393,17 +393,17 @@
   <div class="card" data-card="47-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">一个团队里有好几个 agent，各管一摊、各有各的工具，可它们互相看不到对方会什么。要让它们互相用上对方的能力，最省事的做法是什么？</div><div class="card-q-hint">提示：想一想有没有比「两两之间都单独接一根线」更省的做法。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>当 agent 数量超过 1 个，「互通」（interoperability，两个系统能互相理解并调用对方的能力）就从可选项变成必答题。<strong>点对点连接</strong>（每两个 agent 之间单独写一个连接器）是直觉解法，但连接器数量随 agent 数**平方增长**——这正是「标准」存在的第一性理由：把「N 对 N」的网格坍缩成「每个 agent 只对接标准一次」。A2A（Agent2Agent）等开放协议就是干这个的。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>当 agent 数量超过 1 个，「互通」（interoperability，两个系统能互相理解并调用对方的能力）就从可选项变成必答题。<strong>点对点连接</strong>（每个 agent 都要为其余每个 agent 单独写一个适配器，A→B、B→A 各一个）是直觉解法，但连接器数量随 agent 数**平方增长**——这正是「标准」存在的第一性理由：把「N 对 N」的网格坍缩成「每个 agent 只对接标准一次」。A2A（Agent2Agent）等开放协议就是干这个的。</div>
       <div class="content-section"><p>前面几课把单个 agent 的「外壳」拆成 harness / rule / skill。这一课把视角拉到「很多个 agent」。</p><p><strong>因为</strong>每个 agent 的能力和工具都封在自己那一亩三分地里，别的 agent 不知道、也用不上。<strong>就像</strong>十个人各有各的充电器，手机型号不同、插口不一样，你要借电还得再买一个转接头；要是大家都用同一个插口，就一根线搞定。<strong>所以</strong>下面算「点对点 vs 统一标准」的账。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第一笔账：点对点连接 vs 统一标准</div>
         <div class="step"><div class="step-title">Step 1：3 个 agent 各管一摊</div>
           <table><tr><th>agent</th><th>能力</th><th>别人能看到吗</th></tr><tr><td>A</td><td>查订单</td><td>不能</td></tr><tr><td>B</td><td>查库存</td><td>不能</td></tr><tr><td>C</td><td>开发票</td><td>不能</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">3 个 agent、3 个能力，互相都看不见——要互通，就得给每一对之间接一根线。</div>
+          <div class="step-desc" style="margin-top:4px;">3 个 agent、3 个能力，互相都看不见——要互通，就得让每个 agent 为其余每个 agent 各写一个适配器（A→B、B→A 各算一个）。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：点对点连接要几根线</div>
           <table><tr><th>方式</th><th>算式</th><th>连接数</th></tr><tr><td>点对点</td><td>N×(N−1)</td><td>3×2=<strong>6 根</strong></td></tr><tr><td>统一标准</td><td>N×1</td><td><strong>3 根</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：3 个 agent 两两互接要 N×(N−1)=3×2=6 根线；大家都接到同一个标准上，只要 3 根。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：3 个 agent 每个都为另外 2 个各写一个单向适配器，要 N×(N−1)=3×2=6 个；大家都接到同一个标准上，只要 3 根。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：agent 涨到 10 个会怎样</div>
           <table><tr><th>agent 数</th><th>点对点</th><th>统一标准</th></tr><tr><td>3</td><td>6 根</td><td>3 根</td></tr><tr><td>10</td><td>10×9=<strong>90 根</strong></td><td><strong>10 根</strong></td></tr></table>
@@ -454,7 +454,7 @@
       <div class="calc-block">
         <div class="label">🧮 第三笔账：AgentCard 数字名片怎么发现</div>
         <div class="step"><div class="step-title">Step 1：AgentCard 长什么样（一张表）</div>
-          <table><tr><th>字段</th><th>写什么</th></tr><tr><td>name</td><td>我是谁</td></tr><tr><td>description</td><td>我会什么</td></tr><tr><td>skills / capabilities</td><td>我能做什么任务</td></tr><tr><td>url / endpoint</td><td>怎么联系我</td></tr></table>
+          <table><tr><th>字段</th><th>写什么</th></tr><tr><td>name</td><td>我是谁</td></tr><tr><td>description</td><td>我会什么</td></tr><tr><td>skills / capabilities</td><td>我能做什么任务</td></tr><tr><td>supportedInterfaces（含 url 与绑定）</td><td>怎么联系我</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">AgentCard 就是 agent 的「数字名片」：4 类字段说清「身份 / 能力 / 联系方式」。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：三种发现方式</div>
@@ -569,7 +569,7 @@
 
 
 
-<script>window.__SITE__={"lesson":47,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[47]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":47,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[47]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

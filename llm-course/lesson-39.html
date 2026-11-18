@@ -393,7 +393,7 @@
   <div class="card" data-card="39-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">RLHF 要训奖励模型、再跑 PPO，能不能绕过强化学习、直接写出最优策略的公式？</div><div class="card-q-hint">提示：先想 RLHF 在最大化什么（奖励减 KL 惩罚）；再想「带约束的优化」能不能有闭式解。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>DPO（Direct Preference Optimization，直接偏好优化）</strong>由 Rafailov、Sharma、Mitchell、Manning、Ermon、Finn 提出（斯坦福，arXiv:2305.18290，NeurIPS 2023）。当时痛点：RLHF 要分三段（SFT 即监督微调 → 训奖励模型 → PPO），PPO 慢、不稳定、要同时驻留 4 个模型。DPO 的起点是一个数学事实——RLHF 那个「奖励 − β·KL 惩罚」的目标有闭式解，可以反解出奖励。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>DPO（Direct Preference Optimization，直接偏好优化）</strong>由 Rafailov、Sharma、Mitchell、Ermon、Manning、Finn 提出（斯坦福，arXiv:2305.18290，NeurIPS 2023）。当时痛点：RLHF 要分三段（SFT 即监督微调 → 训奖励模型 → PPO），PPO 慢、不稳定、要同时驻留 4 个模型。DPO 的起点是一个数学事实——RLHF 那个「奖励 − β·KL 惩罚」的目标有闭式解，可以反解出奖励。</div>
       <div class="content-section"><p>上一课（第 38 课）我们为 PPO 付了四模型驻留 + 不稳定 + 调参难的代价。DPO 换个问法：<strong>如果 RLHF 的目标函数本来就有闭式解，为什么要用强化学习一步步去逼近它？</strong></p><p>可以把这<strong>类比</strong>成爬山：PPO 是「靠反复试错一步步爬到山顶」，DPO 是「把函数直接求导、令导数为零解出山顶」——前者慢但通用，后者快但要求函数有显式解。RLHF 的目标恰好有。</p></div>
       <div class="calc-block">
         <div class="label">🧮 闭式解 + 反解出隐式奖励</div>
@@ -436,7 +436,7 @@
           <div class="step-desc">差值 d = 0.511 − (−0.693) = 1.204；Δ = β·d = 0.1×1.204 = 0.120；σ(0.120) = 0.530；L = −log 0.530 = 0.635。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>Z(x) 在作差中消去 → 不训奖励模型、不采样、一条分类损失搞定；Z(x) 不消 → 必须对每个 x 求那个 Σ 求和（在词表上不可行），DPO 就做不成。<strong>下一个问题：损失里这个 β 为什么差一点就差很多？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>Z(x) 在作差中消去 → 不训奖励模型、不采样、一条分类损失搞定；Z(x) 不消 → 必须对每个 x 求那个 Σ 求和（要遍历所有可能的回答序列，不可行），DPO 就做不成。<strong>下一个问题：损失里这个 β 为什么差一点就差很多？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','39-2')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','39-2')">🤔 你可能还想问</button></div>
       <div id="tab-ai-39-2" class="llm-section"><button class="llm-btn" onclick="startChat('39-2')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="39-2"><div class="chat-toolbar"><button onclick="copyChat('39-2')">📋 复制对话</button><button onclick="clearChat('39-2')">🗑 清空</button><button onclick="stopLLM('39-2')" id="stop-btn-39-2" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('39-2')" id="regen-btn-39-2" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="39-2"><div class="role-label">AI 助教</div><div class="msg-content">👋 对 DPO 损失有疑问？比如"Z(x) 为什么能消掉""这和二分类到底差在哪？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="39-2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('39-2')}" rows="1" placeholder="例如：能不能不消 Z(x) 直接算？"></textarea><button onclick="sendLLM('39-2')">发送</button></div></div></div>
       <div id="tab-qna-39-2" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('39-2')">🔄 换一批</button></div><div class="qna-list" data-qna="39-2"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -447,7 +447,7 @@
   <div class="card" data-card="39-3">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">损失里的 β 参数，为什么取 0.01 和取 1 会差出完全不同的结果？</div><div class="card-q-hint">提示：先想 β 在 RLHF 目标里是 KL 惩罚系数，惩罚越重模型越不敢偏离参考；再看它进损失后对梯度做了什么。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>β 本是 RLHF 目标「奖励 − β·KL」里的 <strong>KL 惩罚系数</strong>。DPO 论文（arXiv:2305.18290）在不同 β 下做实验，发现结果对 β 敏感。机制：β 太小 → 惩罚弱 → 模型敢大幅偏离 π_ref → 过拟合偏好标注里的噪声；β 太大 → 惩罚强 → 模型被钉在 π_ref 附近 → 对齐不足。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>β 本是 RLHF 目标「奖励 − β·KL」里的 <strong>KL 惩罚系数</strong>。DPO 论文（arXiv:2305.18290）默认 β=0.1（摘要任务用 0.5），并说明未认真调 β；β 敏感是后续实践与变体论文反复指出的问题。机制：β 太小 → 惩罚弱 → 模型敢大幅偏离 π_ref → 过拟合偏好标注里的噪声；β 太大 → 惩罚强 → 模型被钉在 π_ref 附近 → 对齐不足。</div>
       <div class="content-section"><p>上一张卡片看到 β 是损失里的温度。它一头管「拟合偏好」，一头管「别偏离参考模型」——<strong>两头都要它管，所以特别敏感。</strong></p><p>可以把这<strong>类比</strong>成教练手里的缰绳：松了马乱跑（过拟合噪声），紧了马原地不动（对齐不足）——正好卡在中间一小段才好用。</p></div>
       <div class="calc-block">
         <div class="label">🧮 同一个 log-ratio 差值，β 不同 → 损失天差地别</div>
@@ -516,15 +516,15 @@
   <div class="card" data-card="39-6">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">6</div><div class="card-q-content"><div class="card-q-text">DPO 的 β 敏感、退化、参考模型这些缺陷，后来被哪些变体分别补上了？</div><div class="card-q-hint">提示：先想每个缺陷要「改损失的哪一项」才能补；再对照下一课的变体清单一一对应。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>DPO 之后出现一批变体（第 40 课展开）：<strong>IPO</strong>（Azar et al., arXiv:2310.12036）用平方损失正则化，缓解 β 敏感；<strong>KTO</strong>（Ethayarajh et al., arXiv:2402.01306）只需单个回答的好坏、不需配对，处理「无偏好对」数据；<strong>CPO</strong>（Xu et al., arXiv:2401.08417）加 SFT 正则防遗忘；<strong>ORPO</strong>（Hong et al., arXiv:2403.07691）把 SFT 和偏好合成一个目标、删掉参考模型；<strong>SimPO</strong>（Meng et al., arXiv:2405.14734）用序列平均对数概率 + 长度正则、也删掉参考模型。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>DPO 之后出现一批变体（第 40 课展开）：<strong>IPO</strong>（Azar et al., arXiv:2310.12036）用平方损失正则化，缓解 β 敏感；<strong>KTO</strong>（Ethayarajh et al., arXiv:2402.01306）只需单个回答的好坏、不需配对，处理「无偏好对」数据；<strong>CPO</strong>（Xu et al., arXiv:2401.08417）在无参考模型的对比损失上加正例 SFT（NLL）正则，防止偏离优选数据分布；<strong>ORPO</strong>（Hong et al., arXiv:2403.07691）把 SFT 和偏好合成一个目标、删掉参考模型；<strong>SimPO</strong>（Meng et al., arXiv:2405.14734）用序列平均对数概率（长度归一）+ 目标奖励差 γ、也删掉参考模型。</div>
       <div class="content-section"><p>上一张卡片列了三条缺陷。好消息是：<strong>每条缺陷都有人专门补。</strong></p><p>可以把这<strong>类比</strong>成修车：DPO 是一辆「够用但有三处小毛病」的车，后面每一代修一处——换减震（IPO 治 β 敏感）、改油箱（KTO 治数据形态）、拆备胎（ORPO/SimPO 删参考模型）。</p></div>
       <div class="calc-block">
         <div class="label">🧮 变体 × 补的缺陷对照表</div>
         <div class="step"><div class="step-title">Step 1：每个变体砍/补了 DPO 的哪一项</div>
-          <table><tr><th>变体</th><th>arXiv</th><th>补的缺陷</th><th>做法</th></tr><tr><td>IPO</td><td>2310.12036</td><td>β 敏感</td><td>平方正则损失</td></tr><tr><td>KTO</td><td>2402.01306</td><td>必须成对偏好</td><td>只看单个好坏（KL 回归）</td></tr><tr><td>CPO</td><td>2401.08417</td><td>可能遗忘</td><td>加 SFT 负例正则</td></tr><tr><td>ORPO</td><td>2403.07691</td><td>仍需参考模型</td><td>SFT+偏好合并，删 π_ref</td></tr><tr><td>SimPO</td><td>2405.14734</td><td>参考模型 + 长度偏置</td><td>序列平均 + 长度正则，删 π_ref</td></tr></table>
+          <table><tr><th>变体</th><th>arXiv</th><th>补的缺陷</th><th>做法</th></tr><tr><td>IPO</td><td>2310.12036</td><td>β 敏感</td><td>平方正则损失</td></tr><tr><td>KTO</td><td>2402.01306</td><td>必须成对偏好</td><td>只看单个好坏（前景理论效用，KL 作参考点）</td></tr><tr><td>CPO</td><td>2401.08417</td><td>可能遗忘</td><td>加正例 SFT 正则，删 π_ref</td></tr><tr><td>ORPO</td><td>2403.07691</td><td>仍需参考模型</td><td>SFT+偏好合并，删 π_ref</td></tr><tr><td>SimPO</td><td>2405.14734</td><td>参考模型 + 长度偏置</td><td>序列平均 + 目标奖励差 γ，删 π_ref</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：驻留模型数变化</div>
-          <table><tr><th>方法</th><th>驻留模型数</th><th>驻留哪些</th></tr><tr><td>DPO</td><td>2</td><td>策略 + 参考</td></tr><tr><td>ORPO / SimPO</td><td>1</td><td>仅策略</td></tr></table>
+          <table><tr><th>方法</th><th>驻留模型数</th><th>驻留哪些</th></tr><tr><td>DPO</td><td>2</td><td>策略 + 参考</td></tr><tr><td>CPO / ORPO / SimPO</td><td>1</td><td>仅策略</td></tr></table>
           <div class="step-desc">一条主线：每个变体都回答「DPO 还差什么」——<strong>下一课逐个展开它们的损失和数字。</strong></div>
         </div>
       </div>
@@ -547,7 +547,7 @@
 
 
 
-<script>window.__SITE__={"lesson":39,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[39]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":39,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[39]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

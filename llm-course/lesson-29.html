@@ -376,7 +376,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">既然「<b>先要一个硬读数</b>」，可奖牌率只反映终点，<strong>所以</strong>得把"科研"拆成五步流水线：文献锚定 / 假设与规划 / 实验与工具 / 反馈与验证 / 报告与传播——每一步都要真的烧掉 <b>flops</b>（浮点运算量，用来衡量算力消耗）与机时，断一环整条就废，<b>MLE-bench</b> 的奖牌率也就上不去。<b class="rn-key">先拆成可测的流水线</b>。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">既然「<b>先拆成可测的流水线</b>」，<strong>这就要求</strong>一把尺子量它能不看人跑多久、跨多少个上下文窗口——于是有了 <b>L1–L5</b> 自主度分级；前沿站在 L4，L5 仍是构想。<b class="rn-key">得有一把自主度的尺子</b>。</span></div>
+        <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">既然「<b>先拆成可测的流水线</b>」，<strong>这就要求</strong>一把尺子量它能自己决定什么、能不看人跑多久——于是有了 <b>L1–L5</b> 自主度分级；前沿站在 L4，L5 仍是构想。<b class="rn-key">得有一把自主度的尺子</b>。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">既然「<b>得有一把自主度的尺子</b>」，<strong>那么</strong>同一级在不同领域含义不同——<strong>所以</strong>还得看这个领域能不能真的执行、能不能便宜地验证——这就决定 <b>L1–L5</b> 里同一级在两边能走多远，即域条件性（domain-conditioned autonomy ceiling）。<b class="rn-key">还要看领域可不可信</b>。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -431,7 +431,7 @@
         </div>
         <div class="step"><div class="step-title">Step 2：一步占多少成本（示意）</div>
           <table><tr><th>环节</th><th>成本占比（示意，需人工核实）</th></tr><tr><td>文献锚定</td><td>15%</td></tr><tr><td>假设与规划</td><td>15%</td></tr><tr><td>实验与工具</td><td>45%</td></tr><tr><td>反馈与验证</td><td>20%</td></tr><tr><td>报告与传播</td><td>5%</td></tr><tr><td>合计</td><td><strong>100%</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：15 + 15 + 45 + 20 + 5 = <strong>100</strong>（示意值，非论文读数）。实验最贵，但"验证"决定了前面 80% 的钱有没有白花。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：15 + 15 + 45 + 20 + 5 = <strong>100</strong>（示意值，非论文读数）。实验最贵，但"验证"决定了前面 75%（15 + 15 + 45）的钱有没有白花。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：跳过验证到底省不省钱</div>
           <table><tr><th>项</th><th>数值（示意）</th><th>说明</th></tr><tr><td>跳过"反馈与验证"省下</td><td>20%</td><td>少花这部分成本</td></tr><tr><td>由此需要返工的产物</td><td>30%</td><td>结果不可信要重做</td></tr><tr><td>净亏</td><td>30% − 20% = <strong>10 个百分点</strong></td><td>省小赔大</td></tr></table>
@@ -459,7 +459,7 @@
         </div>
         <div class="step"><div class="step-title">Step 2：两个维度的量化（综述口径）</div>
           <table><tr><th>系统</th><th>级别</th><th>连续动作数</th><th>完成率</th></tr><tr><td>Claude Code（默认）</td><td>L3</td><td>15–60</td><td>60–75%</td></tr><tr><td>SWE-Agent</td><td>L4</td><td>30–150</td><td>12–53%</td></tr><tr><td>AI Scientist</td><td>L4</td><td>100–500</td><td>40–60%</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：从 L3 的 15–60 到 L4 的 100–500，动作跨度约 100 ÷ 15 ≈ <strong>6.7×</strong> 到 500 ÷ 60 ≈ <strong>8.3×</strong>（取综述区间端点，示意）。级别越高，能连续自主的动作越多。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：从 L3 的 Claude Code（15–60）到 L4 的 AI Scientist（100–500），动作跨度约 100 ÷ 15 ≈ <strong>6.7×</strong> 到 500 ÷ 60 ≈ <strong>8.3×</strong>（取综述区间端点，示意）。级别越高，能连续自主的动作越多。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：今天站在第几级</div>
           <table><tr><th>结论</th><th>依据</th></tr><tr><td>前沿系统普遍 L4</td><td>综述对 17 个系统的六维分析</td></tr><tr><td>L5 仍是构想</td><td>能自定议程的系统尚未出现</td></tr><tr><td>已到第 <strong>4</strong> 级</td><td>5 级里站在第 4 级</td></tr></table>
@@ -477,7 +477,7 @@
   <div class="card" data-card="29-4">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">同一个自主级别，做 ML 研究和做生物研究，能不能走到同样的深度？差在哪些条件上？</div><div class="card-q-hint">提示：看两件事：实验能不能自动执行、结果能不能很快验证。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>AutoResearch 综述（Tie 等，arXiv:2605.23204）提出"<strong>域条件性</strong>"（domain-conditioned autonomy ceiling）：计算与形式科学最容易闭环，实验类学科受物理与安全约束，自动化天花板更低。它的判断依据是四个条件：<strong>可执行、反馈快、可复现、伦理约束小</strong>。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>AutoResearch 综述（Tie 等，arXiv:2605.23204）提出"<strong>域条件性</strong>"（domain-conditioned autonomy ceiling）：计算与形式科学最容易闭环，实验类学科受物理与安全约束，自动化天花板更低。原文的判据是：研究产物结构化、可执行、能快速验证时更可信，依赖具身实验、延迟验证、异质证据、伦理约束或机构问责时受限；本课把它归纳为四个条件：<strong>可执行、反馈快、可复现、伦理约束小</strong>。</div>
       <div class="content-section"><p>上一张卡片把自主度分成 L1–L5。但同一个级别在不同领域含义不同——同样是 L4，做 ML 和做生物能走到的深度差很远。</p><p><strong>所以</strong>要引入"域条件性"（domain-conditioned autonomy ceiling，指一个领域本身允许自动化走到多高）。<strong>就像</strong>在厨房做菜 vs 在野外做菜：厨房里调料随时可尝、可回锅；野外要先找食材、等天气，做完才发现不对也没法重来。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第四笔账：领域条件决定天花板</div>
@@ -490,7 +490,7 @@
           <div class="step-desc" style="margin-top:4px;">算术：(1.0 + 0.9 + 0.9) ÷ 3 ≈ <strong>0.93</strong>，(0.4 + 0.3 + 0.4) ÷ 3 ≈ <strong>0.37</strong>；0.93 ÷ 0.37 ≈ <strong>2.5×</strong>（示意打分，非论文读数，需人工核实）。均值只对可执行 / 反馈快 / 可复现三项取——第四条"伦理约束小"是否决项（见 Step1），不计入均值。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：闭环断在哪一环</div>
-          <table><tr><th>环节</th><th>ML 研究</th><th>生物研究</th></tr><tr><td>跑实验</td><td>计算机内自动</td><td>需湿实验 / 人体</td></tr><tr><td>拿反馈</td><td>分钟—小时</td><td>周—月</td></tr><tr><td>同样跑 <strong>30</strong> 天</td><td>可迭代很多轮</td><td>可能不到 1 轮</td></tr></table>
+          <table><tr><th>环节</th><th>ML 研究</th><th>生物研究</th></tr><tr><td>跑实验</td><td>计算机内自动</td><td>需湿实验 / 人体</td></tr><tr><td>拿反馈</td><td>分钟—小时</td><td>周—月</td></tr><tr><td>同样跑 <strong>30</strong> 天</td><td>可迭代很多轮</td><td>约 1 轮</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">算术：把两者换算到同一单位——生物一轮约 <strong>30</strong> 天 = 30 × 24 × 60 = <strong>43,200</strong> 分钟；若 ML 单轮按小时级（约 60 分钟）计，同样 30 天里 ML 能跑的轮数约为生物的 43,200 ÷ 60 = <strong>720×</strong>（示意）。反馈越慢，同一窗口里能迭代的轮数越少，闭环就断在"验证"这一环。</div>
         </div>
       </div>
@@ -583,7 +583,7 @@
 
 
 
-<script>window.__SITE__={"lesson":29,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[29]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":29,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[29]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

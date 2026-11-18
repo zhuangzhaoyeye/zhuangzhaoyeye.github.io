@@ -382,7 +382,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然「<b>按期望增益砍枝</b>」，<strong>那么</strong>同时管好几条枝就会撑爆一个脑子——<strong>这就要求</strong>把控制与状态分开：一个长驻协调器管策略，N 个短命执行器在隔离的 worktree 里跑实验，让厚状态落在 <b>context</b> 之外。<b class="rn-key">控制薄、状态厚</b>。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text">既然「<b>控制薄、状态厚</b>」，<strong>那么</strong>下一个问题就是这套编排到底值不值——<strong>这就要求</strong>用实验而非直觉判断：同样的 <b>tokens</b> 预算、同样的模型下，单 Agent + 好编码环境能追平多智能体；换个条件，多智能体又领先。<b class="rn-key">编排值不值要看实验</b>。</span></div>
+        <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text">既然「<b>控制薄、状态厚</b>」，<strong>那么</strong>下一个问题就是这套编排到底值不值——<strong>这就要求</strong>用实验而非直觉判断：同样的时间预算（24 小时）、同样的模型下，单 Agent + 好编码环境能追平多智能体；换个条件，多智能体又领先。<b class="rn-key">编排值不值要看实验</b>。</span></div>
       </div>
     </div>
 
@@ -449,7 +449,7 @@
         </div>
         <div class="step"><div class="step-title">Step 3：实测与上限差在哪</div>
           <table><tr><th>项</th><th>数值</th></tr><tr><td>独立假设上限</td><td>约 77.3%</td></tr><tr><td>实测 pass@8</td><td>34.1%</td></tr><tr><td>差距</td><td>77.3 − 34.1 ≈ <strong>43.2</strong> ≈ 43 个百分点</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：实测 34.1% 远低于该直觉上限 77.3%——<strong>说明几次尝试高度相关，反复犯同一类错</strong>。所以"多试几次"有用，但绝不能按独立上限估它的收益；要真正提升，得让每次尝试<strong>学到点新东西</strong>。这正好把问题推给下一张卡片。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：实测 34.1% 远低于该直觉上限 77.3%——<strong>说明 8 次尝试并不独立：同一竞赛上的尝试共享难度，难题几乎次次失败（各竞赛单次成功率差异很大）</strong>。所以"多试几次"有用，但绝不能按独立上限估它的收益；要真正提升，得让每次尝试<strong>学到点新东西</strong>。这正好把问题推给下一张卡片。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>有"多次采样"这一步，分数会从 16.9% 抬到 34.1%；但没有"让每次试探相互独立、各学一点"这一步，收益就被相关性锁死——远远够不到独立上限 77.3%。<strong>次数能买到的，只是误差，不是新知。</strong></p></div>
@@ -477,7 +477,7 @@
         </div>
         <div class="step"><div class="step-title">Step 3：六项真实任务的总账</div>
           <table><tr><th>项</th><th>结果</th></tr><tr><td>任务数</td><td>6 项（模型训练 / harness 工程 / 数据合成）</td></tr><tr><td>对比对象</td><td>Codex 与 Claude Code（同接口、同预算）</td></tr><tr><td>平均相对 held-out 增益</td><td>Arbor <strong>&gt;2.5×</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：2.5× 是论文给出的下界（原文为"more than 2.5×"）。<strong>同样的模型、同样的资源，多出来的只是"把证据累积成树"这一件结构</strong>——这就是树搜索的价值。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：2.5× 是论文给出的下界（原文为"more than 2.5×"）。<strong>同样的任务接口、同样的资源预算，差别在于 Arbor 用协调器 + 隔离执行器把证据累积成树</strong>——这就是树搜索的价值。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>有假设树，一条枝的教训能传给另一条枝、搜索边界持续精化；没有它，链式重试反复犯同一个错，预算全烧在重复试错上。树搜索真正强的不是"多试"，而是<strong>让每次尝试都成为下一次的起点</strong>。</p></div>
@@ -560,11 +560,11 @@
           <div class="step-desc" style="margin-top:4px;">算术：(28.78−19.31)÷19.31≈0.49，即 +49%；55.06÷33.89≈1.62，即 +62%。<strong>这是多智能体领先的一面。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 3：判决 —— 没有普遍答案，答案是条件函数</div>
-          <table><tr><th>条件</th><th>谁追平 / 领先</th><th>依据</th></tr><tr><td>强 backbone + 好编码环境 + 相同 tokens 预算</td><td>单 Agent 能<strong>追平</strong>多智能体</td><td>arXiv:2609.40303</td></tr><tr><td>backbone 较弱需工作流先验，或任务需高并发与上下文隔离</td><td>多智能体<strong>领先</strong></td><td>arXiv:2609.26781</td></tr></table>
+          <table><tr><th>条件</th><th>谁追平 / 领先</th><th>依据</th></tr><tr><td>强 backbone + 好编码环境 + 相同时间预算</td><td>单 Agent 能<strong>追平</strong>多智能体</td><td>arXiv:2609.40303</td></tr><tr><td>backbone 较弱需工作流先验，或任务需高并发与上下文隔离</td><td>多智能体 / 复杂 harness <strong>领先</strong></td><td>弱 backbone：arXiv:2609.40303；高并发：arXiv:2609.26781</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">算术无关的一条判决：同预算下把"模型能力"提上去，编排的边际收益会变小；反过来，当任务必须并行、必须把不同上下文隔开时，多智能体（多角色协调，coordination）才会拉开差距。<strong>所以该问的不是"多智能体有没有用"，而是"在我的条件下有没有用"。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 冲突对照：两种条件，两个结论</div><p><strong>有 X</strong>（强 backbone + 一个能读写文件、执行代码的编码环境 + 相同 tokens 预算）→ 单 Agent 能追平甚至超过多智能体编排；<strong>没有 X</strong>（backbone 较弱、需要工作流先验，或任务要求高并发与上下文隔离）→ 多智能体明显领先。两边的实验都可复现，差别只在条件——<strong>用实验定，不用直觉定。</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 冲突对照：两种条件，两个结论</div><p><strong>有 X</strong>（强 backbone + 一个能读写文件、执行代码的编码环境 + 相同时间预算）→ 单 Agent 能追平甚至超过多智能体编排；<strong>没有 X</strong>（backbone 较弱、需要工作流先验，或任务要求高并发与上下文隔离）→ 多智能体明显领先。两边的实验都可复现，差别只在条件——<strong>用实验定，不用直觉定。</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','31-6')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','31-6')">🤔 你可能还想问</button></div>
       <div id="tab-ai-31-6" class="llm-section"><button class="llm-btn" onclick="startChat('31-6')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="31-6"><div class="chat-toolbar"><button onclick="copyChat('31-6')">📋 复制对话</button><button onclick="clearChat('31-6')">🗑 清空</button><button onclick="stopLLM('31-6')" id="stop-btn-31-6" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('31-6')" id="regenerate-btn-31-6" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="31-6"><div class="role-label">AI 助教</div><div class="msg-content">👋 对"多智能体值不值"有疑问？比如「我的场景该上几个」「怎么控制变量做对比」？<br><br>说清你的任务与预算，我帮你设计对照实验。</div></div><div class="chat-input-row"><textarea data-input="31-6" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('31-6')}" rows="1" placeholder="例如：我的场景要不要上多智能体？"></textarea><button onclick="sendLLM('31-6')">发送</button></div></div></div>
       <div id="tab-qna-31-6" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('31-6')">🔄 换一批</button></div><div class="qna-list" data-qna="31-6"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -583,7 +583,7 @@
 
 
 
-<script>window.__SITE__={"lesson":31,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[31]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":31,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[31]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>

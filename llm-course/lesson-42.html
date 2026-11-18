@@ -366,7 +366,7 @@
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
-      <div class="goal-text">① 说清为什么偏好信号训不了"算对"，必须换成 0/1 可验证对错<br>② 讲出 RLVR（可验证奖励强化学习）怎么用程序验证器替代奖励模型，R1-Zero 怎么用纯 RL 长出长思考<br>③ 说出 Dr.GRPO（分组相对策略优化）修正的长度/难度偏差，以及 VAPO 为什么重新请回价值网络<br>④ 用 R1 四阶段说明"推理 RL + 偏好对齐"怎么组合</div>
+      <div class="goal-text">① 说清为什么偏好信号训不了"算对"，必须换成 0/1 可验证对错<br>② 讲出 RLVR（可验证奖励强化学习）怎么用程序验证器替代奖励模型，R1-Zero 怎么用纯 RL 长出长思考<br>③ 说出 Dr.GRPO（GRPO Done Right，修正版分组相对策略优化）修正的长度/难度偏差，以及 VAPO 为什么重新请回价值网络<br>④ 用 R1 四阶段说明"推理 RL + 偏好对齐"怎么组合</div>
     </div>
 
     <div class="roadmap">
@@ -374,7 +374,7 @@
       <div class="roadmap-flow">
         <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">偏好模型（reward model）学的是"讨喜"不是"正确"，<strong>因为</strong>它从没见过标准答案——<strong>因此</strong>"算得对不对"需要一个能客观判 0/1 的信号。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">答案有客观对错（数学、代码），<strong>所以</strong> 0/1 可以直接由程序验证器给出、不必训奖励模型——<strong>于是</strong>有了 RLVR（可验证奖励 + REINFORCE）。</span></div>
+        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">答案有客观对错（数学、代码），<strong>所以</strong> 0/1 可以直接由程序验证器给出、不必训奖励模型——<strong>于是</strong>有了 RLVR（可验证奖励 + RL 优化，Tülu 3 原文用 PPO（近端策略优化））。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">0/1 奖励只在最终答案、中间全无，<strong>要求</strong>模型自己探索出"多想一想"，<strong>于是</strong> R1-Zero 纯 RL（GRPO）就长出了长思考、反思与"啊哈时刻"。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -393,8 +393,8 @@
   <div class="card" data-card="42-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">偏好模型能给一个回答打 0.9 高分，可这个回答的答案是错的——"算得对不对"这件事，到底该怎么训练？</div><div class="card-q-hint">提示：先想偏好模型（用人类排序练出来的）学到的是"人爱看哪个"还是"哪个对"；再想数学题、代码题有没有一个能"客观判对错"的裁判。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>偏好模型（reward model）</strong>是拿人类对回答的排序练出来的，它学到的是"讨喜"而非"正确"。DeepSeek-R1（DeepSeek-AI, arXiv:2501.12948, 2025）把这件事说透：推理训练干脆不用偏好模型，改用<strong>规则奖励</strong>直接判 0/1——因为偏好模型给不出"算得对不对"的稳定打分。这是"偏好对齐"和"推理强化"分家的根因。</div>
-      <div class="content-section"><p>上一课（第 41 课）我们用 GRPO 删掉了 critic，把偏好对齐做到只剩一个模型。但这条线再省，也绕不开一个更基本的问题：<strong>偏好模型判不了"算得对不对"。</strong></p><p>可以把这<strong>类比</strong>成两个评委：作文评委看文笔（偏好），数学老师看答案（对错）。一篇"文笔漂亮但答案错"的作文，文笔评委打高分、数学老师打零分——<strong>同一个分数混着打，只会两头都糊</strong>。所以"好听"和"算对"必须用两套不同的信号。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>偏好模型（reward model）</strong>是拿人类对回答的排序练出来的，它学到的是"讨喜"而非"正确"。DeepSeek-R1（DeepSeek-AI, arXiv:2501.12948, 2025）把这件事说透：推理训练干脆不用偏好模型，改用<strong>规则奖励</strong>直接判 0/1——论文给的理由是神经奖励模型在大规模 RL 中容易被奖励黑客（reward hacking），重训奖励模型又费资源、让流程变复杂。这是"偏好对齐"和"推理强化"分家的根因。</div>
+      <div class="content-section"><p>上一课（第 41 课）我们用 RLOO / GRPO 删掉了 critic，把在线 RL 的驻留模型压到最少（规则奖励且 β=0 时只剩策略一个）。但这条线再省，也绕不开一个更基本的问题：<strong>偏好模型判不了"算得对不对"。</strong></p><p>可以把这<strong>类比</strong>成两个评委：作文评委看文笔（偏好），数学老师看答案（对错）。一篇"文笔漂亮但答案错"的作文，文笔评委打高分、数学老师打零分——<strong>同一个分数混着打，只会两头都糊</strong>。所以"好听"和"算对"必须用两套不同的信号。</p></div>
       <div class="calc-block">
         <div class="label">🧮 偏好分 vs 对错分：同一个回答，两种分可能完全相反</div>
         <div class="step"><div class="step-title">Step 1：两个回答，各打两种分</div>
@@ -416,7 +416,7 @@
   <div class="card" data-card="42-2">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">2</div><div class="card-q-content"><div class="card-q-text">偏好模型判不了对错，那 0/1 这个"对/错"信号，能不能不靠人、也不靠训练模型，直接由程序给出来？</div><div class="card-q-hint">提示：想数学题有没有标准答案、代码题有没有单元测试、证明题有没有形式化证明器；这些东西能不能自动判定"对"还是"错"。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLVR（Reinforcement Learning with Verifiable Rewards，可验证奖励的强化学习）</strong>由 Tülu 3（Lambert et al., arXiv:2411.15124, 2024）命名：把 RLHF 里的"学习到的奖励模型"换成一个<strong>确定性的验证器</strong>——一个 Python 函数，吃进 prompt 和回答，吐出二元奖励：对给 1、错给 0。数学用符号等式比对答案，代码用编译 + 跑单测。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLVR（Reinforcement Learning with Verifiable Rewards，可验证奖励的强化学习）</strong>由 Tülu 3（Lambert et al., arXiv:2411.15124, 2024）命名：把 RLHF 里的"学习到的奖励模型"换成一个<strong>确定性的验证器</strong>——一个 Python 函数，吃进 prompt 和回答，吐出二元奖励：对给 α（Tülu 3 取 α=10，本课按 1 归一示意）、错给 0，再用 PPO（近端策略优化）优化。数学用符号等式比对答案，代码用编译 + 跑单测。</div>
       <div class="content-section"><p>上一张卡片看到偏好模型判不了对错。突破口在于：<strong>只要答案有客观对错，0/1 就不用"学"出来，可以直接"算"出来。</strong></p><p>可以把这<strong>类比</strong>成判卷机和评委的分工：数学题用判卷机（对/错一眼判定），作文用评委（偏好）。<strong>判卷机不要钱、不会累、还能无限出题</strong>——这就是推理强化的奖励为什么比偏好数据便宜得多。</p></div>
       <div class="calc-block">
         <div class="label">🧮 RLVR：验证器怎么给出 0/1，以及一个 batch 的优势怎么算</div>
@@ -440,7 +440,7 @@
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">只给"最终答案对不对"这一下奖励、中间过程全不给，模型凭什么学会"多想一想、自我检查"？</div><div class="card-q-hint">提示：想"稀疏奖励"——如果只有最后一步有奖励，模型为了拿到那 1 分，会自己探索出什么中间行为？没人教它"要检查"的时候，它会不会自己学会？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>DeepSeek-R1-Zero（DeepSeek-AI, arXiv:2501.12948, 2025）</strong>证明了一件事：跳过 SFT（监督微调），直接从基座模型 + 规则奖励（准确率 + 格式）用 GRPO 训练，模型能<strong>自己长出</strong>长思考、反思、自我验证——论文里最著名的是 "aha moment"（啊哈时刻）：模型中途停下来"重新评估自己最初的方法"，像人一样意识到走错路。</div>
-      <div class="content-section"><p>上一张卡片得到的是稀疏的 0/1 奖励——它只落在最终答案。R1-Zero 的惊人之处在于：<strong>中间不给任何奖励，模型反而自己长出了"多想一想"。</strong></p><p>可以把这<strong>类比</strong>成闭卷考试：最后只按答案给分，中间过程没人打草稿分，但学生为了拿分只能自己多打草稿、反复检查——<strong>没人教他"要检查"，是稀疏奖励把他逼出来的</strong>。这个自发行为在论文里叫<strong>反射 / 自我验证（self-reflection / self-verification）</strong>。</p></div>
+      <div class="content-section"><p>上一张卡片得到的是稀疏的 0/1 奖励——它只落在最终答案。R1-Zero 的惊人之处在于：<strong>中间不给任何奖励，模型反而自己长出了"多想一想"。</strong></p><p>可以把这<strong>类比</strong>成闭卷考试：最后只按答案给分，中间过程没人打草稿分，但学生为了拿分只能自己多打草稿、反复检查——<strong>没人教他"要检查"，是稀疏奖励把他逼出来的</strong>。这个自发行为在论文里叫<strong>反思 / 自我验证（self-reflection / self-verification）</strong>。</p></div>
       <div class="calc-block">
         <div class="label">🧮 R1-Zero 的成绩：AIME 大幅涨 + 回答越来越长</div>
         <div class="step"><div class="step-title">Step 1：AIME 2024 的 pass@1（一次采样做对的比例）</div>
@@ -508,12 +508,12 @@
   <div class="card" data-card="42-6">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">6</div><div class="card-q-content"><div class="card-q-text">推理 RL 让模型"算得对"、偏好对齐让模型"答得好听"——一个要发布的模型，怎么把这两条线串起来？</div><div class="card-q-hint">提示：想 DeepSeek-R1 正式版不是纯 RL——它先做了什么、RL 之后又做了什么；再想"算对"和"好听"谁先谁后、顺序反了会怎样。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>DeepSeek-R1 正式版（DeepSeek-AI, arXiv:2501.12948, 2025）</strong>走四阶段：①冷启动 SFT（几千条高质量 CoT）→ ②推理 RL（R1-Zero 同款规则奖励）→ ③拒绝采样 + SFT（约 60 万条推理 + 约 20 万条非推理）→ ④全场景 RL（规则奖励 + 偏好奖励混合）。它解决了 R1-Zero 的可读性问题。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>DeepSeek-R1 正式版（DeepSeek-AI, arXiv:2501.12948, 2025）</strong>走四阶段：①冷启动 SFT（几千条高质量 CoT）→ ②推理 RL（R1-Zero 的规则奖励 + 语言一致性奖励）→ ③拒绝采样 + SFT（约 60 万条推理 + 约 20 万条非推理）→ ④全场景 RL（规则奖励 + 偏好奖励混合）。它解决了 R1-Zero 的可读性问题。</div>
       <div class="content-section"><p>上一张卡片把推理 RL 做稳了。但"算对"不等于"好听"——<strong>一个要发布的模型两样都要，靠的是"分阶段串起来"，而不是一个混合奖励通吃。</strong></p><p>可以把这<strong>类比</strong>成数学天才 + 语文老师：<strong>先让数学天才把题算对（推理 RL），再让语文老师把表达打磨顺（偏好对齐）</strong>——顺序不能反，反了就是"文笔漂亮但结论错"。</p></div>
       <div class="calc-block">
         <div class="label">🧮 R1 四阶段：推理 RL 与偏好对齐的组合顺序</div>
         <div class="step"><div class="step-title">Step 1：四个阶段各干什么</div>
-          <table><tr><th>阶段</th><th>做法</th><th>解决什么</th></tr><tr><td>① 冷启动 SFT</td><td>几千条高质量 CoT 示范</td><td>给个"会思考"的起点（可读性）</td></tr><tr><td>② 推理 RL</td><td>规则奖励（准确率 + 格式）</td><td>把"算对"逼出来</td></tr><tr><td>③ 拒绝采样 + SFT</td><td>采样高分回答再 SFT</td><td>把 RL 成果固化成数据</td></tr><tr><td>④ 全场景 RL</td><td>规则奖励 + 偏好奖励</td><td>补"好听"与"有用"</td></tr></table>
+          <table><tr><th>阶段</th><th>做法</th><th>解决什么</th></tr><tr><td>① 冷启动 SFT</td><td>几千条高质量 CoT 示范</td><td>给个"会思考"的起点（可读性）</td></tr><tr><td>② 推理 RL</td><td>规则奖励（准确率）+ 语言一致性奖励</td><td>把"算对"逼出来</td></tr><tr><td>③ 拒绝采样 + SFT</td><td>采样高分回答再 SFT</td><td>把 RL 成果固化成数据</td></tr><tr><td>④ 全场景 RL</td><td>规则奖励 + 偏好奖励</td><td>补"好听"与"有用"</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：第 ③ 阶段的数据账</div>
           <table><tr><th>数据</th><th>条数</th><th>占比</th></tr><tr><td>推理数据（拒绝采样）</td><td>约 60 万</td><td>60 ÷ 80 = 75%</td></tr><tr><td>非推理数据（写作/问答等）</td><td>约 20 万</td><td>20 ÷ 80 = 25%</td></tr><tr><td>合计</td><td>约 80 万</td><td>100%</td></tr></table>
@@ -539,7 +539,7 @@
 
 
 
-<script>window.__SITE__={"lesson":42,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.dcad42df.json","sem":{"vec":"sem-index.75a23301.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[42]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.84b77da2.js"></script>
+<script>window.__SITE__={"lesson":42,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[42]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.361b9c47.js"></script>
 </body>
 </html>
