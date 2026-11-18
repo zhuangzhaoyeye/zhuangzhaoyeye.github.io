@@ -257,7 +257,7 @@ function switchTab(btn, tab, cardId) {
 // 限流（单 IP 每分钟 / 每天、全站每天）与来源校验都在代理里做。
 const DS_ENDPOINT = 'https://tutor.taleverse.cn';
 // 额度说明与代理 proxy/wrangler.toml 保持一致：整站每天 1000 次、每人每天 200 次、每分钟 50 次，北京时间早上 8 点重置。
-const TUTOR_QUOTA_NOTE = 'AI 助教额度：全站每天共 1000 次，每人每天 200 次、每分钟 50 次，北京时间早上 8 点重置；用的是 DeepSeek Flash（已关闭思考），可联网搜索，回答基于这张卡片的内容。';
+const TUTOR_QUOTA_NOTE = 'AI 助教额度：全站每天共 1000 次，每人每天 200 次、每分钟 50 次，北京时间早上 8 点重置；用的是 DeepSeek Flash（已开启思考模式：先推导再作答，算得更准但等得久一点），可联网搜索，回答基于这张卡片的内容。';
 function quotaNoteEl() {
   const d = document.createElement('div');
   d.className = 'tutor-quota-note';
@@ -265,14 +265,22 @@ function quotaNoteEl() {
   return d;
 }
 
+// 思考模式下模型先写推理再落笔，等待时间明显长于非思考模式：给两段式文案，避免学员以为卡住。
+function startThinkingHint(el) {
+  el.textContent = '正在思考…';
+  const t = setTimeout(() => { if (el.isConnected) el.textContent = '正在推导与核对答案，通常 20–60 秒…'; }, 12000);
+  return () => clearTimeout(t);
+}
+
 async function callDeepSeek(history, signal) {
   const msgs = history.filter(m => m && m.role && !m.role.startsWith('_'));
   const sys  = msgs.filter(m => m.role === 'system').map(m => m.content).join('\n\n');
   const conv = msgs.filter(m => m.role !== 'system');
 
-  // 30 秒超时：网络连不上代理时给出明确提示，而不是一直转圈。用户点「停止」仍然生效（signal 来自外部 controller）。
+  // 90 秒超时：思考模式下模型要先写推理再作答，比非思考模式慢；网络连不上代理时仍要给明确提示。
+  // 用户点「停止」仍然生效（signal 来自外部 controller）。
   const timeoutCtl = new AbortController();
-  const timer = setTimeout(() => timeoutCtl.abort(), 30000);
+  const timer = setTimeout(() => timeoutCtl.abort(), 90000);
   const onUserAbort = () => timeoutCtl.abort();
   if (signal) signal.addEventListener('abort', onUserAbort, { once: true });
   let res;
@@ -285,7 +293,7 @@ async function callDeepSeek(history, signal) {
     });
   } catch (e) {
     if (signal && signal.aborted) throw e; // 用户主动停止：保持 AbortError，交给上层显示"已停止"
-    if (e.name === 'AbortError') throw new Error('连接超时（30 秒无响应）。可能是你的网络暂时无法访问 AI 助教服务（tutor.taleverse.cn），请换个网络或稍后再试；课程正文不受影响。');
+    if (e.name === 'AbortError') throw new Error('连接超时（90 秒无响应）。可能是你的网络暂时无法访问 AI 助教服务（tutor.taleverse.cn），请换个网络或稍后再试；课程正文不受影响。');
     throw new Error('无法连接 AI 助教服务。可能是你的网络无法访问 tutor.taleverse.cn，请换个网络或稍后再试；课程正文不受影响。');
   } finally {
     clearTimeout(timer);
@@ -393,7 +401,7 @@ async function sendQnAChat(chatId) {
 
   const loadingEl = document.createElement('div');
   loadingEl.className = 'chat-loading';
-  loadingEl.innerHTML = '生成答案中...';
+  startThinkingHint(loadingEl);
   msgsEl.appendChild(loadingEl);
   msgsEl.scrollTop = msgsEl.scrollHeight;
 
@@ -548,7 +556,7 @@ async function sendLLM(cardId) {
 
   const loadingEl = document.createElement('div');
   loadingEl.className = 'chat-loading';
-  loadingEl.innerHTML = '生成答案中...';
+  startThinkingHint(loadingEl);
   chatDiv.appendChild(loadingEl);
   chatDiv.scrollTop = chatDiv.scrollHeight;
 
