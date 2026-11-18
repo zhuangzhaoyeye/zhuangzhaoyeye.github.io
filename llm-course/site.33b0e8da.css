@@ -410,6 +410,11 @@
     content:''; width:6px; height:6px; border-radius:50%;
     background:var(--accent); animation: pulse 1.2s ease-in-out .2s infinite;
   }
+  /* 流式输出时的光标：让学员看出「还在写」而不是卡住 */
+  .chat-msg.streaming .msg-content::after {
+    content:'▍'; margin-left:2px; color:var(--accent);
+    animation: pulse 1s ease-in-out infinite;
+  }
 
   /* ── Q&A Module (Top 5 Questions) Tab ── */
   .qna-section { margin-top: 16px; }

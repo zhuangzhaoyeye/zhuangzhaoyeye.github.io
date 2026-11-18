@@ -257,7 +257,7 @@ function switchTab(btn, tab, cardId) {
 // 限流（单 IP 每分钟 / 每天、全站每天）与来源校验都在代理里做。
 const DS_ENDPOINT = 'https://tutor.taleverse.cn';
 // 额度说明与代理 proxy/wrangler.toml 保持一致：整站每天 1000 次、每人每天 200 次、每分钟 50 次，北京时间早上 8 点重置。
-const TUTOR_QUOTA_NOTE = 'AI 助教额度：全站每天共 1000 次，每人每天 200 次、每分钟 50 次，北京时间早上 8 点重置；用的是 DeepSeek Flash（已开启思考模式：先推导再作答，算得更准但等得久一点），可联网搜索，回答基于这张卡片的内容。';
+const TUTOR_QUOTA_NOTE = 'AI 助教额度：全站每天共 1000 次，每人每天 200 次、每分钟 50 次，北京时间早上 8 点重置；用的是 DeepSeek Flash（已开启思考模式：先推导再作答，答案边算边显示），可联网搜索，回答基于这张卡片的内容。';
 function quotaNoteEl() {
   const d = document.createElement('div');
   d.className = 'tutor-quota-note';
@@ -265,22 +265,51 @@ function quotaNoteEl() {
   return d;
 }
 
-// 思考模式下模型先写推理再落笔，等待时间明显长于非思考模式：给两段式文案，避免学员以为卡住。
+// 思考模式下模型先写推理再落笔：首字通常 1 秒内到，流式把每个 token 实时打出来，
+// 只有长时间没有任何增量时才升级文案，避免学员把「首字慢」当成卡死。
 function startThinkingHint(el) {
   el.textContent = '正在思考…';
-  const t = setTimeout(() => { if (el.isConnected) el.textContent = '正在推导与核对答案，通常 20–60 秒…'; }, 12000);
+  const t = setTimeout(() => { if (el.isConnected) el.textContent = '仍在推导，这个问题需要多算几步…'; }, 12000);
   return () => clearTimeout(t);
 }
 
-async function callDeepSeek(history, signal) {
+// 流式气泡：增量阶段用纯文本（避免半截 Markdown 抖动），结束后再渲染 Markdown + 公式。
+function beginStreamBubble(container, labelText) {
+  const el = document.createElement('div');
+  el.className = 'chat-msg assistant streaming';
+  el.innerHTML = `<div class="role-label">${labelText}</div><div class="msg-content"></div>`;
+  const content = el.querySelector('.msg-content');
+  content.style.whiteSpace = 'pre-wrap';
+  container.appendChild(el);
+  return {
+    update(text) {
+      content.textContent = text;
+      container.scrollTop = container.scrollHeight;
+    },
+    finish(text) {
+      el.classList.remove('streaming');
+      content.style.whiteSpace = '';
+      content.innerHTML = md2html(text);
+      renderMathIn(el);
+      container.scrollTop = container.scrollHeight;
+    },
+    remove() { el.remove(); }
+  };
+}
+
+// ui.onThinking(chars) / ui.onDelta(textSoFar)：流式回调，两个调用方共用。
+async function callDeepSeek(history, signal, ui = {}) {
   const msgs = history.filter(m => m && m.role && !m.role.startsWith('_'));
   const sys  = msgs.filter(m => m.role === 'system').map(m => m.content).join('\n\n');
   const conv = msgs.filter(m => m.role !== 'system');
 
-  // 90 秒超时：思考模式下模型要先写推理再作答，比非思考模式慢；网络连不上代理时仍要给明确提示。
-  // 用户点「停止」仍然生效（signal 来自外部 controller）。
+  // 90 秒总兜底 + 30 秒「没有任何字节」的空闲检测：流式时只要还在出字就不算超时，
+  // 网络连不上代理时仍能很快给出明确提示；用户点「停止」立即生效（signal 来自外部 controller）。
   const timeoutCtl = new AbortController();
+  let idleTimer = null;
+  const armIdle = () => { clearTimeout(idleTimer); idleTimer = setTimeout(() => timeoutCtl.abort(), 30000); };
   const timer = setTimeout(() => timeoutCtl.abort(), 90000);
+  armIdle();
   const onUserAbort = () => timeoutCtl.abort();
   if (signal) signal.addEventListener('abort', onUserAbort, { once: true });
   let res;
@@ -288,28 +317,80 @@ async function callDeepSeek(history, signal) {
     res = await fetch(DS_ENDPOINT, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ system: sys, messages: conv }),
+      body: JSON.stringify({ system: sys, messages: conv, stream: true }),
       signal: timeoutCtl.signal
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 429) throw new Error(data.error?.message || '提问太频繁或今日额度已用完，请稍后再试。');
+      throw new Error(data.error?.message || `AI 助教暂时不可用（${res.status}）`);
+    }
+
+    const ctype = res.headers.get('content-type') || '';
+    // 兜底：代理或中间层不支持流式时，退回整段 JSON（行为与旧版一致）。
+    if (!res.body || !ctype.includes('text/event-stream')) {
+      const data = await res.json().catch(() => ({}));
+      const texts = (data.content || []).filter(c => c.type === 'text' && c.text && c.text.trim());
+      const text = texts.length ? texts[texts.length - 1].text : '';
+      if (text && ui.onDelta) ui.onDelta(text);
+      return text || '（未收到回复）';
+    }
+
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '';
+    let answer = '';
+    let blockType = '';
+    let cur = '';
+    let thinkingChars = 0;
+    const handleLine = (line) => {
+      if (!line || line[0] === ':' || !line.startsWith('data:')) return;
+      const payload = line.slice(5).trim();
+      if (!payload || payload === '[DONE]') return;
+      let ev; try { ev = JSON.parse(payload); } catch { return; }
+      if (ev.type === 'content_block_start') {
+        blockType = ev.content_block?.type || '';
+        cur = '';
+      } else if (ev.type === 'content_block_delta') {
+        const d = ev.delta || {};
+        if (d.type === 'text_delta' && d.text) {
+          cur += d.text;
+          answer = cur;          // 联网时开场白那块会被正式回答那块自然替代
+          if (ui.onDelta) ui.onDelta(answer);
+        } else if (d.type === 'thinking_delta') {
+          thinkingChars += (d.thinking || '').length;
+          if (ui.onThinking) ui.onThinking(thinkingChars);
+        }
+      } else if (ev.type === 'content_block_stop') {
+        if (blockType === 'text' && cur) answer = cur;
+        cur = '';
+      } else if (ev.type === 'error') {
+        throw new Error(ev.error?.message || 'AI 助教返回了错误');
+      }
+    };
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      armIdle();
+      buf += dec.decode(value, { stream: true });
+      let idx;
+      while ((idx = buf.indexOf('\n')) >= 0) {
+        handleLine(buf.slice(0, idx).replace(/\r$/, ''));
+        buf = buf.slice(idx + 1);
+      }
+    }
+    buf += dec.decode();
+    if (buf.trim()) handleLine(buf.trim().replace(/\r$/, ''));
+    return answer.trim() || '（未收到回复）';
   } catch (e) {
     if (signal && signal.aborted) throw e; // 用户主动停止：保持 AbortError，交给上层显示"已停止"
-    if (e.name === 'AbortError') throw new Error('连接超时（90 秒无响应）。可能是你的网络暂时无法访问 AI 助教服务（tutor.taleverse.cn），请换个网络或稍后再试；课程正文不受影响。');
-    throw new Error('无法连接 AI 助教服务。可能是你的网络无法访问 tutor.taleverse.cn，请换个网络或稍后再试；课程正文不受影响。');
+    if (e.name === 'AbortError') throw new Error('连接超时（30 秒没有任何数据）。可能是你的网络暂时无法访问 AI 助教服务（tutor.taleverse.cn），请换个网络或稍后再试；课程正文不受影响。');
+    throw e;
   } finally {
     clearTimeout(timer);
+    clearTimeout(idleTimer);
     if (signal) signal.removeEventListener('abort', onUserAbort);
   }
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    if (res.status === 429) throw new Error(data.error?.message || '提问太频繁或今日额度已用完，请稍后再试。');
-    throw new Error(data.error?.message || `AI 助教暂时不可用（${res.status}）`);
-  }
-  // 联网搜索时 content 形如 [text(开场白), server_tool_use, web_search_tool_result, text(正式回答)]。
-  // 只取最后一个 text 块，避免把"我先联网核实一下"这类开场白和答案拼在一起。
-  const texts = (data.content || []).filter(c => c.type === 'text' && c.text && c.text.trim());
-  const text = texts.length ? texts[texts.length - 1].text : '';
-  return text || '（未收到回复）';
 }
 
 const cardTopics = {
@@ -408,17 +489,26 @@ async function sendQnAChat(chatId) {
   const controller = new AbortController();
   qnaChatState[chatId].controller = controller;
 
+  let bubble = null;
   try {
-    const answer = await callDeepSeek(qnaChatState[chatId].history, controller.signal);
+    const answer = await callDeepSeek(qnaChatState[chatId].history, controller.signal, {
+      onThinking: (chars) => { loadingEl.textContent = chars ? `正在思考…（已推导 ${chars} 字）` : '正在思考…'; },
+      onDelta: (text) => {
+        if (!bubble) { loadingEl.remove(); bubble = beginStreamBubble(msgsEl, 'AI 助教'); }
+        bubble.update(text);
+      }
+    });
 
-    loadingEl.remove();
+    if (bubble) bubble.finish(answer);
+    else {
+      loadingEl.remove();
+      msgsEl.innerHTML += `<div class="chat-msg assistant"><div class="role-label">AI 助教</div><div class="msg-content">${md2html(answer)}</div></div>`;
+      renderMathIn(msgsEl.lastElementChild);
+    }
     qnaChatState[chatId].history.push({ role:'assistant', content:answer });
 
-    msgsEl.innerHTML += `<div class="chat-msg assistant"><div class="role-label">AI 助教</div><div class="msg-content">${md2html(answer)}</div></div>`;
-    const lastMsg = msgsEl.lastElementChild;
-    renderMathIn(lastMsg);
-
   } catch (err) {
+    if (bubble) bubble.remove();
     if (err.name === 'AbortError') {
       loadingEl.remove();
       msgsEl.innerHTML += `<div class="chat-msg assistant"><div class="role-label" style="color:#f59e0b;">已停止</div><div class="msg-content">生成已被手动停止。</div></div>`;
@@ -563,17 +653,26 @@ async function sendLLM(cardId) {
   const controller = new AbortController();
   chatHistories[cardId]._controller = controller;
 
+  let bubble = null;
   try {
-    const answer = await callDeepSeek(chatHistories[cardId], controller.signal);
+    const answer = await callDeepSeek(chatHistories[cardId], controller.signal, {
+      onThinking: (chars) => { loadingEl.textContent = chars ? `正在思考…（已推导 ${chars} 字）` : '正在思考…'; },
+      onDelta: (text) => {
+        if (!bubble) { loadingEl.remove(); bubble = beginStreamBubble(chatDiv, 'AI 助教'); }
+        bubble.update(text);
+      }
+    });
 
-    loadingEl.remove();
+    if (bubble) bubble.finish(answer);
+    else {
+      loadingEl.remove();
+      chatDiv.innerHTML += `<div class="chat-msg assistant"><div class="role-label">AI 助教</div><div class="msg-content">${md2html(answer)}</div></div>`;
+      renderMathIn(chatDiv.lastElementChild);
+    }
     chatHistories[cardId].push({ role: 'assistant', content: answer });
 
-    chatDiv.innerHTML += `<div class="chat-msg assistant"><div class="role-label">AI 助教</div><div class="msg-content">${md2html(answer)}</div></div>`;
-    const lastCMsg = chatDiv.lastElementChild;
-    renderMathIn(lastCMsg);
-
   } catch (err) {
+    if (bubble) bubble.remove();
     if (err.name === 'AbortError') {
       loadingEl.remove();
       chatDiv.innerHTML += `<div class="chat-msg assistant"><div class="role-label" style="color:#f59e0b;">已停止</div><div class="msg-content">生成已被手动停止。</div></div>`;
