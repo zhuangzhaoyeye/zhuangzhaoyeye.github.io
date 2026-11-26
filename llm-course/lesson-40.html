@@ -366,19 +366,19 @@
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
-      <div class="goal-text">① 说出 DPO 的三个缺陷：β 敏感、要参考模型、隐式奖励被回答长度污染<br>② 对应说出每个变体砍掉哪个缺陷、用了什么机制<br>③ 会按"数据形态 / 要不要参考模型 / 目标"三个维度选变体</div>
+      <div class="goal-text">① 说出 DPO 的三个缺陷：β 敏感、要驻留参考模型、chosen 概率可能下滑（第四个"长度偏差"是 SimPO 另外指出的）<br>② 对应说出每个变体砍掉哪个缺陷、用了什么机制<br>③ 会按"数据形态 / 要不要参考模型 / 目标"三个维度选变体</div>
     </div>
 
     <div class="roadmap">
       <div class="roadmap-title">🗺 本节推理链（6 步：从"β 敏感"到"五个变体怎么选"）</div>
       <div class="roadmap-flow">
-        <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">DPO 的隐式奖励 r=β·log(π/π_ref) 让奖励差没有上限，<strong>因为</strong> sigmoid 把"越大的对数比"压成 1，模型就把 π(y_w)/π(y_l) 推到无穷，<strong>所以</strong>无论 β 取多大，KL 正则都拦不住过拟合。</span></div>
+        <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">DPO 的隐式奖励 r=β·log(π/π_ref) 没有上限：<strong>因为</strong>偏好越确定，DPO 的最优解对任何 β 都把负例概率压向 0，KL 正则的相对强度随之越来越弱，<strong>所以</strong> β 再大也拦不住过拟合；与此同时 σ 早已饱和、这一对的梯度趋近 0。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">这个病可以用"有界的二次回归"治，<strong>于是</strong> IPO 给对数比定一个固定目标 τ⁻¹/2——<strong>因为</strong>达标就好，不再"越高越好"。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">但 DPO/IPO 都要求"成对"偏好数据，<strong>所以</strong>当只有单个"好/坏"标签时 KTO 上场——<strong>因为</strong>前景理论按"相对参考点的得失"算价值，单条回答拿自己的奖励和参考点比就能算效用。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">成对数据里负例只当"分母"，<strong>因此</strong> CPO 去掉 π_ref 直接对比、再显式加一个正例 NLL 正则（对比项拉高正例、压低负例，NLL 项再拉一次正例）；再进一步，<strong>因为</strong>参考模型占显存，ORPO 用 odds ratio 把 SFT 和偏好合并成一个损失、把参考模型删掉。</span></div>
+        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">参考模型还要多占一份显存，<strong>因此</strong> CPO 把参考分布换成均匀先验 U（π_ref 项相消），再加一个只作用于正例的 NLL 项当正则；再进一步，<strong>因为</strong> ORPO 把 SFT 项与赔率形式的偏好项写进同一个单体损失，而赔率只含策略自己的 π，参考模型自然也不需要了。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">隐式奖励还有个坑：log 概率总和会被回答长短污染，<strong>所以</strong> SimPO 用"平均 log 概率"当奖励、除以长度归一，同时把参考模型也删掉。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -394,12 +394,12 @@
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">DPO 的 β 稍微调一点，模型就翻脸，这个"敏感"的根子在哪？</div><div class="card-q-hint">提示：回想上一课 DPO 的隐式奖励 r=β·log(π/π_ref) 里，那个对数比有没有上限；再想"无限大"的奖励差会让 sigmoid 变成什么。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>IPO（Identity Preference Optimization）</strong>出自 Azar et al. 2023（arXiv:2310.12036）《A General Theoretical Paradigm to Understand Learning from Human Preferences》。这篇论文不是只提 IPO，而是提出统一框架 <strong>ΨPO</strong>，把 RLHF（基于人类反馈的强化学习）和 DPO 都包进去，IPO 是其中一个特例。它要治的病正是 DPO 的过拟合：当数据集里所有标注者一致偏好 y_w 时，奖励差会趋向无穷，模型就把 π(y_w)/π(y_l) 推到无穷大。</div>
-      <div class="content-section"><p>上一课（第 39 课）DPO 用隐式奖励 r=β·log(π/π_ref) 把 RL 换成一次分类。但它有个隐患：<strong>奖励差没有上限。</strong>如果训练集里某对数据"好答案"被一边倒地偏好，模型会想把 π(y_w)/π(y_l) 推到无穷大——sigmoid 压成 1，梯度消失，而且无论 β 取多大，KL 正则都拦不住这种过拟合。</p><p>IPO 的做法是把<strong>"无界的 sigmoid 分类"换成"有界的二次回归"</strong>：给对数比值差定一个固定目标 τ⁻¹/2，让模型去"达标"，而不是"越高越好"。可以把这<strong>类比</strong>成两场考试——DPO 是没有上限的考试、分数越高越好，学生刷到天文数字；IPO 是达标考试、满分 5 分，考到 5 分就停，超了还要扣。</p></div>
+      <div class="content-section"><p>上一课（第 39 课）DPO 用隐式奖励 r=β·log(π/π_ref) 把 RL 换成一次分类。但它有个隐患：<strong>奖励差没有上限。</strong>如果训练集里某对数据"好答案"被一边倒地偏好，模型会想把 π(y_w)/π(y_l) 推到无穷大——sigmoid 压成 1，这一对的梯度趋近 0；更根本的问题是，偏好越确定，DPO 的最优解对任何 β 都令 π(y_l)≈0，KL 正则的相对强度越来越弱，所以 β 再大也拦不住过拟合。</p><p>IPO 的做法是把<strong>"无界的 sigmoid 分类"换成"有界的二次回归"</strong>：给对数比值差定一个固定目标 τ⁻¹/2，让模型去"达标"，而不是"越高越好"。可以把这<strong>类比</strong>成两场考试——DPO 是没有上限的考试、分数越高越好，学生刷到天文数字；IPO 是达标考试、满分 5 分，考到 5 分就停，超了还要扣。</p></div>
       <div class="calc-block">
         <div class="label">🧮 IPO 把"无界"改成"有界"</div>
         <div class="step"><div class="step-title">Step 1：DPO 的对数比无上限，sigmoid 迅速饱和</div>
           <table><tr><th>对数比 gap = log(π(y_w)/π_ref(y_w)) − log(π(y_l)/π_ref(y_l))</th><th>DPO 的 sigmoid σ(β·gap)，取 β=1</th></tr><tr><td>1.0</td><td>σ(1.0) = 0.731</td></tr><tr><td>5.0</td><td>σ(5.0) = 0.993</td></tr><tr><td>20.0</td><td>σ(20.0) ≈ 1.000</td></tr></table>
-          <div class="step-desc">gap 从 1 涨到 20，σ 从 0.73 顶到 1.00——<strong>奖励差没有上限，模型就被激励持续推高对数比，β 再大也拦不住。</strong></div>
+          <div class="step-desc">gap 从 1 涨到 20，σ 从 0.73 顶到 1.00——<strong>偏好越确定，DPO 的最优解对任何 β 都把 π(y_l) 压向 0，KL 正则的相对强度越来越弱，这才是"β 再大也拦不住"的原因；而 σ 饱和后这一对的梯度也趋于 0。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 2：IPO 定一个固定目标 τ⁻¹/2，超额反而扣分</div>
           <table><tr><th>对数比 gap</th><th>IPO 目标（τ=1 → 1/(2τ)=0.5）</th><th>损失 (gap − 0.5)²</th></tr><tr><td>0.5</td><td>0.5</td><td>0</td></tr><tr><td>1.0</td><td>0.5</td><td>0.25</td></tr><tr><td>5.0</td><td>0.5</td><td>20.25</td></tr><tr><td>20.0</td><td>0.5</td><td>380.25</td></tr></table>
@@ -439,10 +439,10 @@
 
   <!-- ============ CARD 3 ============ -->
   <div class="card" data-card="40-3">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">DPO 里负例（被拒的回答）只当分母，能不能更直接地"踩"它一脚？</div><div class="card-q-hint">提示：先看 DPO 损失里负例 y_l 出现在哪个位置——是不是只躲在 σ 的参数里；再想"同时拉高正例、压低负例"需要加一个什么项。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">参考模型还要多占一份显存，能不能一边学偏好、一边防止正例概率掉下去，顺手把参考模型省掉？</div><div class="card-q-hint">提示：CPO 把参考分布换成均匀先验 U，让 π_ref 项在对比里相消；再加一项只作用于正例的 MLE，起什么作用？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>CPO（Contrastive Preference Optimization）</strong>出自 Xu et al. 2024（arXiv:2401.08417）《Contrastive Preference Optimization: Pushing the Boundaries of LLM Performance in Machine Translation》。它最初为机器翻译提出：把 ALMA 模型用精心构造的偏好数据再训一步得到 ALMA-R，性能追平甚至超过 GPT-4 和 WMT 冠军。</div>
-      <div class="content-section"><p>上一张卡片看到 KTO 能处理非配对数据。回到配对场景：DPO 的对比项里，负例 y_l 只作为 σ 参数里的减数出现，模型"压负例"只能靠对比项间接实现。CPO 把这件事做直接——<strong>对比项用策略自身的 log 概率（不再除以 π_ref），再额外加一项 −λ·log π(y_w) 专门拉高正例。</strong></p><p>可以把这<strong>类比</strong>成老师改作业：DPO 只说"这篇比那篇好"（对比），CPO 不光说这句，还专门把好作文再表扬一遍（拉正例）——对比和表扬两个动作都落进损失。</p></div>
+      <div class="content-section"><p>上一张卡片看到 KTO 能处理非配对数据。现在换个方向：能不能把参考模型也省掉？CPO 的做法是把参考分布设成均匀先验 U——此时 π_ref(y_w) 与 π_ref(y_l) 相等、在对比项里直接相消，<strong>对比项只剩策略自己的 log 概率差，参考模型不必驻留。</strong>同时它加了一项 −λ·log π(y_w)，只作用于正例：论文把它当作 behavior cloning 正则，防止训练中正例概率下滑。</p><p>可以把这<strong>类比</strong>成老师改作业：DPO 只说"这篇比那篇好"；CPO 除了说这句，还把好作文再抄一遍（正例 MLE 正则），免得学生为了学"比较"反而把好作文本身写丢了。</p></div>
       <div class="calc-block">
         <div class="label">🧮 CPO 损失：对比项 + 正例 MLE 项</div>
         <div class="step"><div class="step-title">Step 1：损失拆成两项</div>
@@ -453,7 +453,7 @@
           <div class="step-desc">对比项贡献 0.2877、MLE 项贡献 0.0511——<strong>对比项是主力（拉高正、压低负），MLE 项再给正例加一把劲。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>负例只当分母 → 压得不够狠；CPO 加对比项 + 正例 MLE 项 → 正负一起拉。<strong>下一个问题：DPO 还要驻留一份参考模型占显存，能不能把 SFT 和偏好对齐合进一个损失、参考模型也不要了？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>参考模型多占一份显存 → CPO 用均匀先验让 π_ref 相消，再加正例 MLE 防概率下滑。<strong>下一个问题：CPO 还是"偏好项 + 正例 MLE"两件事，能不能把 SFT 和偏好对齐合进一个损失、一步训完？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','40-3')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','40-3')">🤔 你可能还想问</button></div>
       <div id="tab-ai-40-3" class="llm-section"><button class="llm-btn" onclick="startChat('40-3')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="40-3"><div class="chat-toolbar"><button onclick="copyChat('40-3')">📋 复制对话</button><button onclick="clearChat('40-3')">🗑 清空</button><button onclick="stopLLM('40-3')" id="stop-btn-40-3" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('40-3')" id="regen-btn-40-3" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="40-3"><div class="role-label">AI 助教</div><div class="msg-content">👋 对 CPO 有疑问？比如"它和 DPO 的区别到底在哪？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="40-3" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('40-3')}" rows="1" placeholder="例如：CPO 为什么不需要参考模型？"></textarea><button onclick="sendLLM('40-3')">发送</button></div></div></div>
       <div id="tab-qna-40-3" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('40-3')">🔄 换一批</button></div><div class="qna-list" data-qna="40-3"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -462,10 +462,10 @@
 
   <!-- ============ CARD 4 ============ -->
   <div class="card" data-card="40-4">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">参考模型占一份显存，SFT 和偏好对齐还得分两段，能不能一起省掉？</div><div class="card-q-hint">提示：先想 DPO 为什么非要有 π_ref——它的隐式奖励是 π 和 π_ref 的比值；再想有没有一个"自己和自己比"的量（比如赔率）能替代这个比值。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">参考模型占一份显存，SFT 和偏好对齐还得分两段，能不能一起省掉？</div><div class="card-q-hint">提示：DPO 的隐式奖励是 π 与 π_ref 的比值，所以要多驻留一份模型；再想：如果偏好项直接用"赔率 π/(1−π)"这种只含策略自己的量，能不能把它和 SFT 项写进同一个损失？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>ORPO（Odds Ratio Preference Optimization）</strong>出自 Hong, Lee & Thorne 2024（arXiv:2403.07691，KAIST）《ORPO: Monolithic Preference Optimization without Reference Model》。"Monolithic（单体）"是它的核心卖点：把 SFT 和偏好对齐合进<strong>一个</strong>损失，不需要 SFT 预热阶段，也不需要参考模型。</div>
-      <div class="content-section"><p>上一张卡片 CPO 已经不用参考模型了（它的对比项直接用策略自身 log 概率）。ORPO 再往前走一步：<strong>用"赔率"（odds ratio）替代"π 与 π_ref 的比值"，把 SFT 损失和偏好损失合并成一个单体损失。</strong>赔率 odds = π/(1−π)，它天然是"自己和自己比"，不需要第二个模型当参照。</p><p>可以把这<strong>类比</strong>成赛马赔率：1:4 的赔率直接表达"这匹马更可能赢"，不需要另外找一匹"基准马"来比——ORPO 就把这种"自比较"用在了偏好上。</p></div>
+      <div class="content-section"><p>上一张卡片 CPO 已经不用参考模型了（参考分布取均匀先验，π_ref 项相消）。ORPO 再往前走一步：<strong>不再分"先 SFT、再偏好"两段，而是把 SFT 项和偏好项写进同一个单体损失。</strong>偏好项用 odds ratio（赔率）odds = π/(1−π)——它只含策略自己的概率，本来就不需要参考模型；论文选它而不是概率比的理由是<strong>更稳定、对不被偏好回答的打压更温和、优先拉正例</strong>。</p><p>可以把这<strong>类比</strong>成赛马赔率：1:4 的赔率直接表达"这匹马更可能赢"，不需要另外找一匹"基准马"来比——ORPO 就把这种"自比较"用在了偏好上。</p></div>
       <div class="calc-block">
         <div class="label">🧮 Odds Ratio 把差距放大，还不用参考模型</div>
         <div class="step"><div class="step-title">Step 1：同一对概率，odds ratio 比 log ratio 更"敏感"</div>
@@ -517,14 +517,14 @@
       <div class="calc-block">
         <div class="label">🧮 五个变体 × DPO 缺陷对照表</div>
         <div class="step"><div class="step-title">Step 1：每个变体砍掉什么、要什么、要不要参考模型</div>
-          <table><tr><th>变体</th><th>砍掉 DPO 哪个缺陷</th><th>数据要求</th><th>参考模型</th></tr><tr><td>DPO</td><td>（基线）</td><td>成对 (y_w,y_l)</td><td>要</td></tr><tr><td>IPO</td><td>β 敏感 / 过拟合</td><td>成对</td><td>要</td></tr><tr><td>KTO</td><td>必须成对数据</td><td><strong>单条好/坏</strong></td><td>要</td></tr><tr><td>CPO</td><td>负例只当分母</td><td>成对</td><td>不要</td></tr><tr><td>ORPO</td><td>参考模型 + 两段训练</td><td>成对</td><td>不要</td></tr><tr><td>SimPO</td><td>参考模型 + 长度污染</td><td>成对</td><td>不要</td></tr></table>
+          <table><tr><th>变体</th><th>砍掉 DPO 哪个缺陷</th><th>数据要求</th><th>参考模型</th></tr><tr><td>DPO</td><td>（基线）</td><td>成对 (y_w,y_l)</td><td>要</td></tr><tr><td>IPO</td><td>β 敏感 / 过拟合</td><td>成对</td><td>要</td></tr><tr><td>KTO</td><td>必须成对数据</td><td><strong>单条好/坏</strong></td><td>要</td></tr><tr><td>CPO</td><td>参考模型 + 正例概率下滑</td><td>成对</td><td>不要（均匀先验）</td></tr><tr><td>ORPO</td><td>参考模型 + 两段训练</td><td>成对</td><td>不要</td></tr><tr><td>SimPO</td><td>参考模型 + 长度污染</td><td>成对</td><td>不要</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：按三个维度选</div>
-          <table><tr><th>你的情况</th><th>选哪个</th><th>理由</th></tr><tr><td>只有单条好/坏，没配对</td><td>KTO</td><td>唯一不要配对数据的</td></tr><tr><td>显存紧，不想驻留参考模型</td><td>CPO / ORPO / SimPO</td><td>三者都删了 π_ref</td></tr><tr><td>怕 β 调不好、易过拟合</td><td>IPO</td><td>有界回归，达标即停</td></tr><tr><td>回答长短是干扰（如摘要/翻译）</td><td>SimPO</td><td>长度归一</td></tr></table>
+          <table><tr><th>你的情况</th><th>选哪个</th><th>理由</th></tr><tr><td>只有单条好/坏，没配对</td><td>KTO</td><td>本课六个变体里唯一不要配对的</td></tr><tr><td>显存紧，不想驻留参考模型</td><td>CPO / ORPO / SimPO</td><td>三者都删了 π_ref</td></tr><tr><td>怕 β 调不好、易过拟合</td><td>IPO</td><td>有界回归，达标即停</td></tr><tr><td>回答长短是干扰（如摘要/翻译）</td><td>SimPO</td><td>长度归一</td></tr></table>
           <div class="step-desc">三个维度一填，答案基本确定——<strong>这就是"选型不看名字新不新，看诊断"。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>这一课可以压成三句话：<strong>DPO 有"β 敏感 / 要参考模型 / 长度污染"三个缺陷</strong>；<strong>五个变体各砍一个</strong>（IPO→β、KTO→配对数据、CPO→负例、ORPO/SimPO→参考模型、SimPO→长度）；<strong>选型看三问：数据配对吗、显存够吗、长度是干扰吗</strong>。<strong>下一个问题（第 41 课）：把 DPO 的"离线"也砍掉、回到在线探索，参考模型和 critic 一起删，会怎样？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>这一课可以压成三句话：<strong>DPO 有三个缺陷：β 敏感 / 要驻留参考模型 / chosen 概率可能下滑</strong>（长度偏差是 SimPO 另外指出的第四个）；<strong>五个变体各砍一个</strong>（IPO→β 敏感、KTO→配对数据、CPO→参考模型 + 正例下滑、ORPO→两段训练、SimPO→参考模型 + 长度）；<strong>选型看三问：数据配对吗、显存够吗、长度是干扰吗</strong>。<strong>下一个问题（第 41 课）：把 DPO 的"离线"也砍掉、回到在线探索，参考模型和 critic 一起删，会怎样？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','40-6')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','40-6')">🤔 你可能还想问</button></div>
       <div id="tab-ai-40-6" class="llm-section"><button class="llm-btn" onclick="startChat('40-6')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="40-6"><div class="chat-toolbar"><button onclick="copyChat('40-6')">📋 复制对话</button><button onclick="clearChat('40-6')">🗑 清空</button><button onclick="stopLLM('40-6')" id="stop-btn-40-6" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('40-6')" id="regen-btn-40-6" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="40-6"><div class="role-label">AI 助教</div><div class="msg-content">👋 对选型有疑问？比如"SimPO 是不是一定比 DPO 好？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="40-6" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('40-6')}" rows="1" placeholder="例如：我的任务有配对数据但显存紧，选哪个？"></textarea><button onclick="sendLLM('40-6')">发送</button></div></div></div>
       <div id="tab-qna-40-6" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('40-6')">🔄 换一批</button></div><div class="qna-list" data-qna="40-6"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -543,7 +543,7 @@
 
 
 
-<script>window.__SITE__={"lesson":40,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[40]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.361b9c47.js"></script>
+<script>window.__SITE__={"lesson":40,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[40]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.cc424169.js"></script>
 </body>
 </html>

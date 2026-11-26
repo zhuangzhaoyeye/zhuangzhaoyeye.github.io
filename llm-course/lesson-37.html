@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>第 37 课：奖励模型｜第一性原理大模型课程</title>
-<meta name="description" content="奖励模型。RLHF 要把「更好」变成能求导的数字，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking / Goodhart 过优化）→ 怎么让它可靠（en…">
+<meta name="description" content="奖励模型。RLHF（基于人类反馈的强化学习）的在线强化学习每轮都要给策略新生成、人类没标过的回答打分，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking…">
 <meta name="keywords" content="奖励模型,大模型课程,LLM 教程,算法工程师,推荐算法转大模型">
 <meta name="author" content="zhuangzhaoyeye">
 <meta name="robots" content="index,follow">
@@ -14,16 +14,16 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="第一性原理大模型课程">
 <meta property="og:title" content="第 37 课：奖励模型｜第一性原理大模型课程">
-<meta property="og:description" content="奖励模型。RLHF 要把「更好」变成能求导的数字，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking / Goodhart 过优化）→ 怎么让它可靠（en…">
+<meta property="og:description" content="奖励模型。RLHF（基于人类反馈的强化学习）的在线强化学习每轮都要给策略新生成、人类没标过的回答打分，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking…">
 <meta property="og:url" content="https://zhuangzhaoyeye.github.io/llm-course/lesson-37.html">
 <meta property="og:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="第 37 课：奖励模型｜第一性原理大模型课程">
-<meta name="twitter:description" content="奖励模型。RLHF 要把「更好」变成能求导的数字，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking / Goodhart 过优化）→ 怎么让它可靠（en…">
+<meta name="twitter:description" content="奖励模型。RLHF（基于人类反馈的强化学习）的在线强化学习每轮都要给策略新生成、人类没标过的回答打分，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking…">
 <meta name="twitter:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 37 课：奖励模型","description":"奖励模型。RLHF 要把「更好」变成能求导的数字，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking / Goodhart 过优化）→ 怎么让它可靠（en…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-37.html","position":37,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 37 课：奖励模型","description":"奖励模型。RLHF（基于人类反馈的强化学习）的在线强化学习每轮都要给策略新生成、人类没标过的回答打分，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-37.html","position":37,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
 <link rel="stylesheet" href="site.33b0e8da.css">
 <noscript><style>.card-a{display:block!important}.tab-bar,.llm-section,.qna-section{display:none!important}</style></noscript>
 </head>
@@ -362,25 +362,25 @@
 
   <div class="lesson-intro">
     <h2>第 37 课：奖励模型</h2>
-    <p class="subtitle">RLHF 要把「更好」变成能求导的数字，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking / Goodhart 过优化）→ 怎么让它可靠（ensemble / 定期重训 / RLAIF）→ 训练时为什么还要 KL 惩罚（引出 PPO，即近端策略优化）。</p>
+    <p class="subtitle">RLHF（基于人类反馈的强化学习）的在线强化学习每轮都要给策略新生成、人类没标过的回答打分，靠的就是奖励模型。这一课走一条因果链：为什么需要它 → 怎么训（Bradley-Terry 把排序变成分数）→ 奖励打在哪个位置（结果 vs 过程）→ 它自己会学坏（reward hacking / Goodhart 过优化）→ 怎么让它可靠（ensemble / 定期重训 / RLAIF）→ 训练时为什么还要 KL 惩罚（引出 PPO，即近端策略优化）。</p>
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
-      <div class="goal-text">① 说清「更好」为什么必须先变成一个标量分数<br>② 用 Bradley-Terry 把一次排序翻译成两个分数<br>③ 说清 ORM/PRM、reward hacking、KL 惩罚各自防的是什么</div>
+      <div class="goal-text">① 说清在线 RL 为什么需要一台能给新回答打分的奖励模型（以及 DPO（直接偏好优化）为什么可以不要它）<br>② 用 Bradley-Terry 把一次排序翻译成两个分数<br>③ 说清 ORM/PRM、reward hacking、KL 惩罚各自防的是什么</div>
     </div>
 
     <div class="roadmap">
       <div class="roadmap-title">🗺 本节推理链（6 步：从"为什么需要它"到"训练时为什么还要刹车"）</div>
       <div class="roadmap-flow">
-        <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">「更好」是两条序列的关系、不是数字，<strong>因为</strong>梯度只能对实数求导，<strong>于是</strong>必须先造一台把排序蒸馏成标量的机器——奖励模型（reward model）。</span></div>
+        <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">成对比较本身能写成可求导的损失（DPO 就直接这么训策略），<strong>但</strong> RLHF 的在线 RL 每轮都要给策略新生成、人类没标过的回答打分，<strong>于是</strong>需要一台把有限人类比较泛化到新回答上的打分机器——奖励模型（reward model）。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">要训练这台机器，<strong>因此</strong>引入 Bradley-Terry：P(A 胜 B)=σ(r_A−r_B)，<strong>因为</strong>排序里没有数值，只能用「分数差越大、胜率越高」这个关系反推出分数。</span></div>
+        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">要训练这台机器，<strong>因此</strong>引入 Bradley-Terry：P(A 胜 B)=σ(r_A−r_B)，<strong>因为</strong>人类只给了排序、没给分值，只能用「分数差越大、胜率越高」这个关系反推出分数。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">分数打在哪里，<strong>所以</strong>分成 ORM（结果奖励，稀疏）与 PRM（过程奖励，密集）——<strong>因为</strong>只看最终答案定位不了错误，逐行看步骤才能定位却更贵。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">RM 自己也是学出来的、会学偏，<strong>因此</strong>最大化一个有偏的分数就会 reward hacking——<strong>因为</strong>指标一旦变成目标就不再是好指标（Goodhart）。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然单个 RM 不可靠，<strong>于是</strong>用 ensemble / 定期重训 / RLAIF 三种手段各治一种「不可靠」——<strong>因为</strong>单点偏差、分布漂移、标注昂贵是三个不同的病。</span></div>
+        <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然单个 RM 不可靠，<strong>于是</strong>用 ensemble / 定期重训 / RLAIF 三种手段各治一种「不可靠」——<strong>因为</strong>单模型随机误差、分布漂移、标注昂贵是三个不同的病（所有 RM 共有的系统性偏差，三种手段都只能缓解）。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text"><strong>【支链 · 引出下一课】</strong>数据侧手段之外，训练时还要一道护栏：KL 惩罚（奖励 − β·KL），<strong>因此</strong>「方向盘 + 刹车」装到一起的具体算法就是下一课的 PPO（近端策略优化）。</span></div>
       </div>
@@ -391,23 +391,24 @@
 
   <!-- ============ CARD 1 ============ -->
   <div class="card" data-card="37-1">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">「这个回答更好」是一句人话，PPO 却只能对数字求导——怎么把「更好」变成数字？</div><div class="card-q-hint">提示：先想「更好」是关系还是数字；再想直接给模型一个人为排序，梯度能不能直接用。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">人类只标了几万组「A 比 B 好」，PPO 训练时却要给策略每一轮新写出的回答打分——这个分数从哪来？</div><div class="card-q-hint">提示：先想人类能不能实时给海量新回答排序；再想有没有办法把已有的比较「推广」到没见过的回答上。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>奖励模型（Reward Model，RM）</strong>是 RLHF 三段式的中间一环：SFT（监督微调）模型生成多个回答 → 人类对同一提示的 4–9 个回答排序（拆成两两比较） → 训练 RM 把这个排序变成一个标量分数 → PPO 拿这个分数当奖励。这套流程来自 InstructGPT（Ouyang et al., arXiv:2203.02155, 2022）。当时要解决的痛点：梯度只能对实数求导，「更好」却是两条序列之间的关系，必须先把关系蒸馏成一个数。</div>
-      <div class="content-section"><p>第 36 课我们停在一个结论上：「更好」是两条序列的关系，梯度对关系求不了导。<strong>奖励模型就是那台把「更好」翻译成标量的机器。</strong></p><p>可以把这<strong>类比</strong>成作文打分：评委心里其实是「这篇 85 分、那篇 70 分」的连续判断——把模糊的偏好压成一个可以比较、可以求导的数字，后面的一切训练才有抓手。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>奖励模型（Reward Model，RM）</strong>是 RLHF 三段式的中间一环：SFT（监督微调）模型生成多个回答 → 人类对同一提示的 4–9 个回答排序（拆成两两比较） → 训练 RM 把这个排序变成一个标量分数 → PPO 拿这个分数当奖励。这套流程来自 InstructGPT（Ouyang et al., arXiv:2203.02155, 2022），沿用 Christiano et al. 2017 与 Stiennon et al. 2020 的做法。InstructGPT 要解决的痛点是：语言模型「预测下一个词」的目标与「遵循用户意图」不一致；而 PPO 在线训练时会不断产生人类没见过的新回答，需要有东西实时给它们打分。</div>
+      <div class="content-section"><p>第 36 课我们看到：比较信号本身就能写成可求导的 Bradley-Terry 损失，DPO（第 39 课）就直接拿它训策略。<strong>但 RLHF 走的是在线 RL：策略每一轮都会写出新回答，这些回答人类从没标过——奖励模型就是把有限的人工比较结果泛化到新回答上的那台打分机器。</strong></p><p>可以把这<strong>类比</strong>成培养一位阅卷老师：先拿几万组「这篇比那篇好」教会他评分标准，之后学生每交一篇新作文，他都能当场给分，不用再请原来的评委。</p></div>
       <div class="calc-block">
-        <div class="label">🧮 「更好」→ 数字的三级翻译：只有连续标量能求导</div>
-        <div class="step"><div class="step-title">Step 1：三种表达，只有一种能求导</div>
-          <table><tr><th>表达形式</th><th>例子</th><th>能否求导</th></tr><tr><td>排序</td><td>A 比 B 好</td><td>不能（无数值）</td></tr><tr><td>离散打分</td><td>A 得 5 星、B 得 3 星</td><td>能，但粒度粗</td></tr><tr><td>连续标量</td><td>r(A)=0.9、r(B)=0.4</td><td>能（可平滑求导）</td></tr></table>
+        <div class="label">🧮 为什么在线 RL 需要一台奖励模型</div>
+        <div class="step"><div class="step-title">Step 1：在线 RL 要打多少次分（InstructGPT 实际规模）</div>
+          <table><tr><th>量</th><th>数值</th><th>来源</th></tr><tr><td>RM 训练用的提示</td><td>约 33k 个，每个 K=4~9 个回答排序</td><td>InstructGPT §3</td></tr><tr><td>每个提示拆出的两两比较</td><td>C(4,2)=6 ~ C(9,2)=36 对</td><td>由 K 推出</td></tr><tr><td>PPO 阶段要打分的新回答</td><td>256k 个 episode</td><td>InstructGPT 附录 C</td></tr></table>
+          <div class="step-desc">PPO 要给 256,000 个新回答打分，人类实时标不过来；RM 只需在约 33k 个提示的排序上训一次，之后每个新回答前向一次就有分。</div>
         </div>
-        <div class="step"><div class="step-title">Step 2：为什么中间必须隔一台 RM</div>
-          <table><tr><th>做法</th><th>结果</th></tr><tr><td>直接拿排序训练策略</td><td>梯度没法算（关系无数值）</td></tr><tr><td>先让 RM 把排序变成分数</td><td>策略对着分数求导</td></tr></table>
-          <div class="step-desc">所以流程被逼成两段：<strong>先用 RM 把「更好」变成标量 r，再让策略最大化 r</strong>。这中间隔一台 RM，是「梯度只能对数字求导」这个硬约束逼出来的，不是多此一举。</div>
+        <div class="step"><div class="step-title">Step 2：两种用法对比（同样都从成对比较出发）</div>
+          <table><tr><th>做法</th><th>损失</th><th>要不要单独的 RM</th><th>能否给新回答打分</th></tr><tr><td>DPO：直接在偏好对上训策略</td><td>−log σ(β·log-ratio 差)</td><td>不要</td><td>不需要（不在线采样）</td></tr><tr><td>RLHF：先训 RM，再用 PPO 最大化 RM 分</td><td>−log σ(r_A − r_B)，如差 1.0 时 −log 0.73 ≈ 0.31</td><td>要</td><td>能（RM 前向一次）</td></tr></table>
+          <div class="step-desc">成对比较对参数完全可导，「直接拿排序训策略」是做得到的。<strong>RLHF 多出一台 RM，是因为它选了在线 RL：要给新回答打分、要把人工标注复用到海量样本上，还能拿 RM 做 best-of-N 挑选。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>没有 RM → PPO 没有目标函数，只能停在 SFT；有 RM → 才有「往哪个方向更新」。<strong>下一个问题：这一台 RM 具体怎么训练出来？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>没有 RM → 在线 RL 的新回答没人打分，PPO 无从更新；有 RM → 几万组人工排序能复用到 25.6 万个新回答上。<strong>下一个问题：这一台 RM 具体怎么训练出来？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','37-1')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','37-1')">🤔 你可能还想问</button></div>
-      <div id="tab-ai-37-1" class="llm-section"><button class="llm-btn" onclick="startChat('37-1')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="37-1"><div class="chat-toolbar"><button onclick="copyChat('37-1')">📋 复制对话</button><button onclick="clearChat('37-1')">🗑 清空</button><button onclick="stopLLM('37-1')" id="stop-btn-37-1" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('37-1')" id="regen-btn-37-1" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="37-1"><div class="role-label">AI 助教</div><div class="msg-content">👋 对「更好变数字」有疑问？比如"为什么排序不能直接当损失？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="37-1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('37-1')}" rows="1" placeholder="例如：5 星打分和连续标量差在哪？"></textarea><button onclick="sendLLM('37-1')">发送</button></div></div></div>
+      <div id="tab-ai-37-1" class="llm-section"><button class="llm-btn" onclick="startChat('37-1')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="37-1"><div class="chat-toolbar"><button onclick="copyChat('37-1')">📋 复制对话</button><button onclick="clearChat('37-1')">🗑 清空</button><button onclick="stopLLM('37-1')" id="stop-btn-37-1" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('37-1')" id="regen-btn-37-1" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="37-1"><div class="role-label">AI 助教</div><div class="msg-content">👋 对奖励模型的用途有疑问？比如"DPO 不要 RM，为什么 RLHF 要？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="37-1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('37-1')}" rows="1" placeholder="例如：RM 只训一次就够了吗？"></textarea><button onclick="sendLLM('37-1')">发送</button></div></div></div>
       <div id="tab-qna-37-1" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('37-1')">🔄 换一批</button></div><div class="qna-list" data-qna="37-1"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
     </div>
   </div>
@@ -439,7 +440,7 @@
   <div class="card" data-card="37-3">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">奖励模型只能看「最终答案对不对」，还是能看「中间每一步对不对」？</div><div class="card-q-hint">提示：想一道多步数学题——只看最终答案，模型会不会靠蒙蒙对；看每一步，奖励会变密集还是更稀疏。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>过程奖励模型（Process Reward Model，PRM）</strong>的概念早见于 DeepMind 的 Uesato et al.（arXiv:2211.14275, 2022），OpenAI 的 Lightman et al. 在「Let's Verify Step by Step」（arXiv:2305.20050, 2023）把它在 MATH 上做到大规模，并发布了 PRM800K：给推理的每一步打「对 / 错 / 中性」，而不是只给最终答案一个分数——后者叫<strong>结果奖励模型（Outcome Reward Model，ORM）</strong>。论文实测过程监督显著优于结果监督，其过程监督模型在 MATH 的一个代表子集上解出 <strong>78%</strong>。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>过程奖励模型（Process Reward Model，PRM）</strong>的概念早见于 DeepMind 的 Uesato et al.（arXiv:2211.14275, 2022），OpenAI 的 Lightman et al. 在「Let's Verify Step by Step」（arXiv:2305.20050, 2023）把它在 MATH 上做到大规模，并发布了 PRM800K：给推理的每一步打「对 / 错 / 中性」，而不是只给最终答案一个分数——后者叫<strong>结果奖励模型（Outcome Reward Model，ORM）</strong>。论文实测过程监督优于结果监督：用 RM 从 1860 个候选解里挑最优（best-of-1860），PRM 在 MATH 的一个代表子集上解出 <strong>78.2%</strong>，ORM 为 72.4%、多数投票 69.6%。注意这是<strong>重排序选择</strong>的结果，Lightman 没有拿 PRM 做 RL 训练。</div>
       <div class="content-section"><p>上一张卡片看到 RM 怎么训。现在换个问题：<strong>奖励打在哪个位置。</strong>ORM 只在终点给一个分数，PRM 在中间每一步都给分数。</p><p>可以把这<strong>类比</strong>成批改数学作业：只看最后答案（ORM）vs 逐行看步骤（PRM）。只看答案，学生可能蒙对；逐行看，才能定位到底哪一步错了。</p></div>
       <div class="calc-block">
         <div class="label">🧮 ORM vs PRM：奖励打在哪个位置</div>
@@ -447,8 +448,8 @@
           <table><tr><th>维度</th><th>ORM（结果奖励）</th><th>PRM（过程奖励）</th></tr><tr><td>奖励位置</td><td>只看最终答案</td><td>中间每一步</td></tr><tr><td>信号密度</td><td>稀疏（1 个/题）</td><td>密集（每步 1 个）</td></tr><tr><td>定位错误</td><td>不能</td><td>能（知道第几步错）</td></tr><tr><td>标注成本</td><td>低（只标最终对错）</td><td>高（每步都要标）</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：一道 3 步题的两条奖励</div>
-          <table><tr><th>步骤</th><th>实际对错</th><th>ORM 分</th><th>PRM 分</th></tr><tr><td>第 1 步</td><td>对</td><td>—</td><td>+1</td></tr><tr><td>第 2 步</td><td>错</td><td>—</td><td>−1</td></tr><tr><td>第 3 步</td><td>中性（被带偏）</td><td>—</td><td>0</td></tr><tr><td>最终答案</td><td>错</td><td>0</td><td>—</td></tr></table>
-          <div class="step-desc">ORM 只告诉你「最后错了」（奖励 0），PRM 告诉你「错在第 2 步」：PRM 逐步给分 +1、−1、0（示意；Lightman 实际把各步「正确概率」相乘作为整题分数，一步判错整题分就低），关键是能定位到第 2 步；信号密度上，ORM 每 1 题只有 1 个信号 → PRM 每一步都有 1 个信号。<strong>过程监督信号更密、能定位错误，但每一步都要人工标注，成本陡增。</strong></div>
+          <table><tr><th>步骤</th><th>实际对错</th><th>ORM 分</th><th>PRM 分</th></tr><tr><td>第 1 步</td><td>对</td><td>—</td><td>+1</td></tr><tr><td>第 2 步</td><td>错</td><td>—</td><td>−1</td></tr><tr><td>第 3 步</td><td>第 2 步已错，之后不再标注</td><td>—</td><td>（不标）</td></tr><tr><td>最终答案</td><td>错</td><td>0</td><td>—</td></tr></table>
+          <div class="step-desc">ORM 只告诉你「最后错了」（奖励 0），PRM 告诉你「错在第 2 步」：PRM 逐步给分 +1、−1（示意；Lightman 只标到<strong>第一个错误步</strong>为止，所以第 3 步不参与过程监督；「中性」标签另有含义，指步骤含糊、略有误导或技术上成立但建议不好。整题分数是各步「正确概率」的乘积，一步判错整题分就低），关键是能定位到第 2 步；信号密度上，ORM 每 1 题只有 1 个信号 → PRM 每一步都有 1 个信号。<strong>过程监督信号更密、能定位错误，但每一步都要人工标注，成本陡增。</strong></div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>ORM 稀疏（只有终点一个信号），PRM 密集（每步都有）——密集能定位错误，但要为每一步付标注费。<strong>下一个问题：RM 自己也是学出来的、可能学偏，最大化一个学偏的分数会发生什么？</strong></p></div>
@@ -470,8 +471,8 @@
           <table><tr><th>阶段</th><th>RM 学到的规则</th><th>策略的钻法</th></tr><tr><td>训练期</td><td>「长回答分更高」（假相关）</td><td>—</td></tr><tr><td>优化期</td><td>—</td><td>无脑写长、堆重复词</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：三个分数对比（示意）</div>
-          <table><tr><th>指标</th><th>正常回答</th><th>过优化后</th></tr><tr><td>真实质量</td><td>0.8</td><td>0.5</td></tr><tr><td>RM 分</td><td>0.9</td><td>1.5</td></tr><tr><td>人类打分</td><td>0.8</td><td>0.3</td></tr></table>
-          <div class="step-desc">优化前 RM 分 0.9 ≈ 真实 0.8（还算准）；过优化后 RM 分飙到 1.5，真实质量掉到 0.5、人类打分只剩 0.3——<strong>分数虚高、真实变差，这就是 Goodhart 在 RLHF 里的样子。</strong></div>
+          <table><tr><th>指标</th><th>正常回答</th><th>过优化后</th></tr><tr><td>代理 RM 分（策略在优化的那个）</td><td>0.9</td><td>1.5</td></tr><tr><td>金标分（扮演人类的金标 RM）</td><td>0.8</td><td>0.5</td></tr><tr><td>两者差距</td><td>0.1</td><td>1.0</td></tr></table>
+          <div class="step-desc">优化前代理 RM 分 0.9 ≈ 金标 0.8（还算准，差 0.1）；过优化后代理分飙到 1.5，金标分掉到 0.5，差距拉大到 1.0——<strong>分数虚高、真实变差，这就是 Goodhart 在 RLHF 里的样子。</strong>（Gao et al. 的设定里只有一个金标 RM 扮演人类。）</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>有 RM → 能训；但 RM 越被「往死里优化」，越会被钻空子。<strong>下一个问题：既然单个 RM 不可靠，怎么让奖励更可靠？</strong></p></div>
@@ -485,19 +486,19 @@
   <div class="card" data-card="37-5">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">5</div><div class="card-q-content"><div class="card-q-text">单个奖励模型会学坏，怎么让奖励更可靠？</div><div class="card-q-hint">提示：先想单个评委到底「不可靠」在哪几方面——是评得偏、是跟不上新题，还是人工太贵？想清病根，再对症下药。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>三个常用手段：① <strong>RM ensemble</strong>——多个 RM 投票/平均，摊薄单模型偏差；② <strong>定期重训 RM</strong>——用最新策略生成的回答重新标注，跟上分布漂移；③ <strong>RLAIF</strong>（Constitutional AI，Bai et al., arXiv:2212.08073, 2022）——用 AI 按一组「宪法」原则自评、自改，替代/补充昂贵的人类反馈。</div>
-      <div class="content-section"><p>上一张卡片看到 RM 会学坏。对策不是换掉 RM，而是<strong>别只信一个、别让它过时、别全靠人。</strong></p><p>可以把这<strong>类比</strong>成面试：多个面试官各打一个分再平均（ensemble），面试官也要定期更新题库（定期重训），让 AI 先按规则自检一遍（RLAIF）。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>三个常用手段：① <strong>RM ensemble</strong>——多个 RM 平均，抵消各自独立的随机误差（降方差）；但所有成员共有的系统性偏差（如都偏爱长回答）平均后照样在，Eisenstein et al.（arXiv:2312.09244）的结论正是 ensemble「缓解但不能消除」reward hacking；② <strong>定期重训 RM</strong>——用最新策略生成的回答重新标注，跟上分布漂移（Llama 2 每周收一批新偏好数据、迭代训 RM）；③ <strong>RLAIF</strong>（RL from AI Feedback）——RL 阶段由 AI 在两条回答里选更好的一条，用这些 AI 偏好训偏好模型。Constitutional AI（Bai et al., arXiv:2212.08073, 2022）是一个实例：它先有监督阶段（按「宪法」原则自我批评、修改再 SFT），再有 RLAIF 阶段。</div>
+      <div class="content-section"><p>上一张卡片看到 RM 会学坏。对策不是换掉 RM，而是<strong>别只信一个、别让它过时、别全靠人。</strong></p><p>可以把这<strong>类比</strong>成面试：多个面试官各打一个分再平均（ensemble），面试官也要定期更新题库（定期重训），初筛时让 AI 按一份评分原则先做两两比较（RLAIF）。</p></div>
       <div class="calc-block">
         <div class="label">🧮 三种「不可靠」各配一种药</div>
         <div class="step"><div class="step-title">Step 1：三种药对症</div>
-          <table><tr><th>病因</th><th>对策</th><th>治什么</th></tr><tr><td>单模型有偏差</td><td>RM ensemble</td><td>摊薄单点误差</td></tr><tr><td>训练分布漂移</td><td>定期重训 RM</td><td>让 RM 见过新回答</td></tr><tr><td>人工标注贵/主观</td><td>RLAIF</td><td>用 AI 反馈补人</td></tr></table>
+          <table><tr><th>病因</th><th>对策</th><th>治什么</th></tr><tr><td>单模型随机误差（各 RM 不同）</td><td>RM ensemble</td><td>降方差（共有偏差抵消不掉）</td></tr><tr><td>训练分布漂移</td><td>定期重训 RM</td><td>让 RM 见过新回答</td></tr><tr><td>人工标注贵/主观</td><td>RLAIF</td><td>用 AI 反馈补人</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：ensemble 摊薄离群值的数字</div>
           <table><tr><th>RM 1</th><th>RM 2</th><th>RM 3</th><th>平均</th></tr><tr><td>0.80</td><td>0.90</td><td>1.10</td><td>0.93</td></tr><tr><td>0.70</td><td>0.85</td><td>0.95</td><td>0.83</td></tr></table>
-          <div class="step-desc">单个 RM 可能给出 1.10 的极端分；三个平均后是 0.93——<strong>离群值被摊薄</strong>。（0.80 + 0.90 + 1.10 = 2.80，÷3 ≈ 0.93。）</div>
+          <div class="step-desc">单个 RM 可能给出 1.10 的极端分；三个平均后是 0.93——<strong>独立的随机误差被摊薄</strong>。（0.80 + 0.90 + 1.10 = 2.80，÷3 ≈ 0.93。）反过来，若三个 RM 都偏爱长回答、都给长回答 +0.3，平均后仍是 +0.3——共有偏差不会被平均掉。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>三种手段各治一种不可靠：ensemble 治单点偏差、定期重训治分布漂移、RLAIF 治标注贵。<strong>下一个问题：有了可靠的奖励，能不能直接「最大化奖励」？为什么还要加一道约束？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>三种手段各治一种不可靠：ensemble 降单模型随机误差（共有偏差治不了）、定期重训治分布漂移、RLAIF 治标注贵。<strong>下一个问题：有了可靠的奖励，能不能直接「最大化奖励」？为什么还要加一道约束？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','37-5')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','37-5')">🤔 你可能还想问</button></div>
       <div id="tab-ai-37-5" class="llm-section"><button class="llm-btn" onclick="startChat('37-5')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="37-5"><div class="chat-toolbar"><button onclick="copyChat('37-5')">📋 复制对话</button><button onclick="clearChat('37-5')">🗑 清空</button><button onclick="stopLLM('37-5')" id="stop-btn-37-5" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('37-5')" id="regen-btn-37-5" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="37-5"><div class="role-label">AI 助教</div><div class="msg-content">👋 对奖励可靠性有疑问？比如"三种手段能一起用吗？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="37-5" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('37-5')}" rows="1" placeholder="例如：ensemble 为什么能降偏差？"></textarea><button onclick="sendLLM('37-5')">发送</button></div></div></div>
       <div id="tab-qna-37-5" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('37-5')">🔄 换一批</button></div><div class="qna-list" data-qna="37-5"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -508,7 +509,7 @@
   <div class="card" data-card="37-6">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">6</div><div class="card-q-content"><div class="card-q-text">有了奖励模型，能不能直接「最大化奖励」？为什么还要加一道约束？</div><div class="card-q-hint">提示：想「只最大化奖励，模型会不会为了刷分崩掉」；回想第 36 课说的「参考模型」是干嘛的。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>PPO 训练里，策略要最大化的其实是「<strong>奖励 − β·KL(策略‖参考模型)</strong>」。KL 惩罚（系数 β）限制策略别偏离参考（SFT 模型）太远，正是为了防第 4 张卡的 reward hacking。InstructGPT 用 <strong>β=0.02</strong>（Ouyang et al., arXiv:2203.02155）。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>PPO 训练里，策略要最大化的其实是「<strong>奖励 − β·KL(策略‖参考模型)</strong>」。KL 惩罚（系数 β）限制策略别偏离参考（SFT 模型）太远；InstructGPT 加它的动机就是缓解对 RM 的过度优化（第 4 张卡的 reward hacking），用 <strong>β=0.02</strong>（Ouyang et al., arXiv:2203.02155）。但第 4 张卡引用的 Gao et al.（arXiv:2210.10760）发现：KL 惩罚不改善「金标分–KL 距离」前沿，效果相当于提前停止——它限制的是「走多远」，不改变「走同样远时被钻空子的程度」。</div>
       <div class="content-section"><p>上一张卡片给了三个「数据侧」的手段。但训练时还有一道「目标函数侧」的护栏：<strong>KL 惩罚。</strong></p><p>可以把这<strong>类比</strong>成一根橡皮筋：RL 让策略往高奖励跑，KL 惩罚把它拽在参考模型附近——防止它为了刷分崩成乱码。</p></div>
       <div class="calc-block">
         <div class="label">🧮 奖励是方向盘、KL 是刹车</div>
@@ -539,7 +540,7 @@
 
 
 
-<script>window.__SITE__={"lesson":37,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[37]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.361b9c47.js"></script>
+<script>window.__SITE__={"lesson":37,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[37]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.cc424169.js"></script>
 </body>
 </html>

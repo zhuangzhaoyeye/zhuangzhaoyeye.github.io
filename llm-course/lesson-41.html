@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>第 41 课：在线与无参考优化｜第一性原理大模型课程</title>
-<meta name="description" content="在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是&quot;别人写好的&quot;，模型从不自己采样。这一课回到&quot;在线&quot;训练——让模型边采样边学，再沿着&quot;删 critic → 删参考模型 → 换优化单元&quot;的路线，把 RLOO / REINFORCE++ / GRPO（…">
+<meta name="description" content="在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是&quot;别人写好的&quot;，模型从不自己采样。这一课回到&quot;在线&quot;训练——让模型边采样边学，再沿着&quot;删 critic → 组内基线 → 序列级优化单元&quot;的路线，把 RLOO / REINFORCE++ / GRPO…">
 <meta name="keywords" content="在线与无参考优化,大模型课程,LLM 教程,算法工程师,推荐算法转大模型">
 <meta name="author" content="zhuangzhaoyeye">
 <meta name="robots" content="index,follow">
@@ -14,16 +14,16 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="第一性原理大模型课程">
 <meta property="og:title" content="第 41 课：在线与无参考优化｜第一性原理大模型课程">
-<meta property="og:description" content="在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是&quot;别人写好的&quot;，模型从不自己采样。这一课回到&quot;在线&quot;训练——让模型边采样边学，再沿着&quot;删 critic → 删参考模型 → 换优化单元&quot;的路线，把 RLOO / REINFORCE++ / GRPO（…">
+<meta property="og:description" content="在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是&quot;别人写好的&quot;，模型从不自己采样。这一课回到&quot;在线&quot;训练——让模型边采样边学，再沿着&quot;删 critic → 组内基线 → 序列级优化单元&quot;的路线，把 RLOO / REINFORCE++ / GRPO…">
 <meta property="og:url" content="https://zhuangzhaoyeye.github.io/llm-course/lesson-41.html">
 <meta property="og:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="第 41 课：在线与无参考优化｜第一性原理大模型课程">
-<meta name="twitter:description" content="在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是&quot;别人写好的&quot;，模型从不自己采样。这一课回到&quot;在线&quot;训练——让模型边采样边学，再沿着&quot;删 critic → 删参考模型 → 换优化单元&quot;的路线，把 RLOO / REINFORCE++ / GRPO（…">
+<meta name="twitter:description" content="在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是&quot;别人写好的&quot;，模型从不自己采样。这一课回到&quot;在线&quot;训练——让模型边采样边学，再沿着&quot;删 critic → 组内基线 → 序列级优化单元&quot;的路线，把 RLOO / REINFORCE++ / GRPO…">
 <meta name="twitter:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 41 课：在线与无参考优化","description":"在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是\"别人写好的\"，模型从不自己采样。这一课回到\"在线\"训练——让模型边采样边学，再沿着\"删 critic → 删参考模型 → 换优化单元\"的路线，把 RLOO / REINFORCE++ / GRPO（…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-41.html","position":41,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 41 课：在线与无参考优化","description":"在线与无参考优化。上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是\"别人写好的\"，模型从不自己采样。这一课回到\"在线\"训练——让模型边采样边学，再沿着\"删 critic → 组内基线 → 序列级优化单元\"的路线，把 RLOO / REINFORCE++ / GRPO…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-41.html","position":41,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
 <link rel="stylesheet" href="site.33b0e8da.css">
 <noscript><style>.card-a{display:block!important}.tab-bar,.llm-section,.qna-section{display:none!important}</style></noscript>
 </head>
@@ -362,7 +362,7 @@
 
   <div class="lesson-intro">
     <h2>第 41 课：在线与无参考优化</h2>
-    <p class="subtitle">上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是"别人写好的"，模型从不自己采样。这一课回到"在线"训练——让模型边采样边学，再沿着"删 critic → 删参考模型 → 换优化单元"的路线，把 RLOO / REINFORCE++ / GRPO（组相对策略优化）/ GSPO 串起来，最后回答：在线和离线到底怎么选。</p>
+    <p class="subtitle">上一课我们看到 DPO（直接偏好优化）变体族越改越省，但它们共享一个前提：数据是"别人写好的"，模型从不自己采样。这一课回到"在线"训练——让模型边采样边学，再沿着"删 critic → 组内基线 → 序列级优化单元"的路线，把 RLOO / REINFORCE++ / GRPO（组相对策略优化）/ GSPO 串起来，最后回答：在线和离线到底怎么选。</p>
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
@@ -402,7 +402,7 @@
         </div>
         <div class="step"><div class="step-title">Step 2：探索为 0 的代价</div>
           <table><tr><th>情形</th><th>离线 DPO</th><th>在线</th></tr><tr><td>回答在数据集覆盖内</td><td>有梯度信号，能学</td><td>能学</td></tr><tr><td>回答在数据集覆盖外</td><td>无梯度信号，只能靠隐式奖励 r=β·log(π/π_ref) 外推</td><td>采到就能学</td></tr></table>
-          <div class="step-desc">DPO 的隐式奖励 r = β·log(π/π_ref) 只在"数据里出现的那些回答"上有监督；数据之外，模型只能靠外推——这就是 DPO 长度坍缩、β 敏感这些毛病的深层原因。<strong>要补探索，就得让模型自己采样、拿采样结果去算奖励，也就是回到在线。</strong></div>
+          <div class="step-desc">DPO 的隐式奖励 r = β·log(π/π_ref) 只在"数据里出现的那些回答"上有监督；数据之外，模型拿不到任何反馈——这是"没有探索"。注意：它并不解释 DPO 的长度偏差（来自用总 log 概率当奖励）和 β 敏感（来自 BT 假设 + 确定性偏好），那两条与是否采样无关。<strong>要补探索，就得让模型自己采样、拿采样结果去算奖励，也就是回到在线。</strong></div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>只做离线 → 便宜稳定，但探索为 0、分布外漂移；回到在线 → 能探索，但要重新面对采样成本和方差。<strong>下一个问题：回到在线后，PPO（近端策略优化）最贵的 critic 能不能不训？</strong></p></div>
@@ -439,8 +439,8 @@
   <div class="card" data-card="41-3">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">删了 critic 的 REINFORCE 方差大，怎么让它稳定下来？</div><div class="card-q-hint">提示：两件事——优势数值随 batch 乱飘怎么办？策略学得太激进"跑飞"怎么办？各对应什么技巧。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>REINFORCE++</strong>（Hu et al., arXiv:2501.03262, 2025，最新版标题《REINFORCE++: Stabilizing Critic-Free Policy Optimization with Global Advantage Normalization》）补两块让 critic-free 的训练稳定：<strong>token 级 KL 惩罚</strong>（防策略跑飞）与<strong>全局优势归一化</strong>（全 batch 减均值除标准差）。</div>
-      <div class="content-section"><p>上一张卡片 RLOO 给了无 critic 的梯度，但优势数值会随 batch 漂移、策略会跑飞。REINFORCE++ 用两招稳住：<strong>①优势归一化</strong>——把整个 batch 的优势减均值、除标准差；<strong>②token 级 KL 惩罚</strong>——每个 token 的奖励都扣掉它和 SFT（监督微调）模型之间的 KL 散度。</p><p>可以把这<strong>类比</strong>成标准化考试：归一化像"把全班原始分换成标准分（Z 分数）"，让不同难度的卷子也能横向比；KL 惩罚像"扣分项，防止你离课本（SFT 模型）太远、开始胡编"。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>REINFORCE++</strong>（Hu et al., arXiv:2501.03262, 2025，最新版标题《REINFORCE++: Stabilizing Critic-Free Policy Optimization with Global Advantage Normalization》）的贡献是<strong>全局优势归一化</strong>（全 batch 减均值除标准差）与更稳的 k2 形式 KL 估计；<strong>token 级 KL 惩罚</strong>（防策略跑飞）不是它发明的，而是沿用标准 PPO 奖励形式（reward 里直接扣 KL）。</div>
+      <div class="content-section"><p>上一张卡片 RLOO 给了无 critic 的梯度，但优势数值会随 batch 漂移、策略会跑飞。REINFORCE++ 的主招是<strong>①全局优势归一化</strong>——把整个 batch 的优势减均值、除标准差；它同时沿用 PPO 的标准奖励形式<strong>②token 级 KL 惩罚</strong>——每个 token 的奖励扣掉它和 SFT（监督微调）模型之间的 KL 散度（这是继承项，不是新贡献）。</p><p>可以把这<strong>类比</strong>成标准化考试：归一化像"把全班原始分换成标准分（Z 分数）"，让不同难度的卷子也能横向比；KL 惩罚像"扣分项，防止你离课本（SFT 模型）太远、开始胡编"。</p></div>
       <div class="calc-block">
         <div class="label">🧮 REINFORCE++ 的两招各怎么算</div>
         <div class="step"><div class="step-title">Step 1：token 级 KL 惩罚扣多少</div>
@@ -460,7 +460,7 @@
 
   <!-- ============ CARD 4 ============ -->
   <div class="card" data-card="41-4">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">GRPO 和 REINFORCE++ 都删了 critic，它凭什么还能再删掉参考模型？</div><div class="card-q-hint">提示：先想归一化的口径——用"全 batch"还是"同一题的一组"？再想 KL 惩罚依赖的参考模型，能不能直接去掉。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">GRPO 用"同一题的一组答案"当基线，它和 RLOO 的 leave-one-out 差在哪、显存又是怎么省下来的？</div><div class="card-q-hint">提示：比较两种"无 critic"基线的口径（留一平均 vs 组均值再除以组内标准差）；再想 KL 项是不是必选项——原版与 DAPO 各怎么设。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>GRPO（Group Relative Policy Optimization）</strong>出自 DeepSeekMath（Shao et al., arXiv:2402.03300, 2024）。它用"同一 prompt 一组 G 个输出的平均奖励"当基线，<strong>删掉 critic</strong>；组大小 G 常见 8~64（DeepSeekMath 用 64，TRL 默认 8）。原论文仍保留对参考模型的 KL 项，后续工作在规则奖励下把 β 取 0（如 DAPO，arXiv:2503.14476；TRL 的 GRPOConfig 默认 beta=0.0），<strong>连参考模型也删了</strong>；DeepSeek-R1-Zero 本身仍保留 KL（系数 0.001）。</div>
       <div class="content-section"><p>上一张卡片 REINFORCE++ 在全 batch 上归一化。GRPO 换个口径：<strong>在"同一道题的一组回答"内做相对比较（组内基线）</strong>，组大小 G 常见 8~64。因为组内是"同题"的对比，基线更贴题；而且在规则奖励下，DAPO 等后续工作干脆把 KL 项去掉（β=0），参考模型也省了（R1-Zero 本身仍保留 β=0.001）。</p><p>可以把这<strong>类比</strong>成排名：REINFORCE++ 是"全年级统一排名"（全局归一化），GRPO 是"同一道题的小组内互相对比"（组内基线）——<strong>同一道题上谁答得好，直接和同组的人比就够了，不必等全年级算完。</strong></p></div>
@@ -470,11 +470,11 @@
           <table><tr><th>样本</th><th>奖励 r</th><th>r − 组均值</th><th>归一化优势</th></tr><tr><td>1</td><td>1</td><td>1−0.5=+0.5</td><td>+1.0</td></tr><tr><td>2</td><td>0</td><td>0−0.5=−0.5</td><td>−1.0</td></tr><tr><td>3</td><td>0</td><td>0−0.5=−0.5</td><td>−1.0</td></tr><tr><td>4</td><td>1</td><td>1−0.5=+0.5</td><td>+1.0</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：删 critic / 删参考模型，省多少显存（以 7B 模型、fp16 权重口径为例，梯度与优化器状态另算）</div>
-          <table><tr><th>方法</th><th>驻留模型</th><th>显存</th></tr><tr><td>PPO</td><td>策略 + critic + 参考 + 奖励 = 4 份</td><td>4 × 14GB = 56GB</td></tr><tr><td>DPO</td><td>策略 + 参考 = 2 份</td><td>2 × 14GB = 28GB</td></tr><tr><td>GRPO（规则奖励）</td><td>仅策略 = 1 份</td><td>1 × 14GB = 14GB</td></tr></table>
-          <div class="step-desc">组均值 = (1+0+0+1)÷4 = 0.5；标准差 = 0.5（四个样本距均值都是 0.5），归一化后优势就是 [1, −1, −1, 1]。7B 模型 fp16 约 14GB，PPO 四份模型 56GB、GRPO 一份 14GB，<strong>省下 42GB</strong>。代价是：组内基线要求同一题采 G 个回答，采样量是 G 倍。</div>
+          <table><tr><th>方法</th><th>驻留模型</th><th>显存</th></tr><tr><td>PPO</td><td>策略 + critic + 参考 + 奖励 = 4 份</td><td>4 × 14GB = 56GB</td></tr><tr><td>DPO</td><td>策略 + 参考 = 2 份</td><td>2 × 14GB = 28GB</td></tr><tr><td>GRPO（原版，保留 KL，β=0.04）</td><td>策略 + 参考 = 2 份</td><td>2 × 14GB = 28GB</td></tr><tr><td>GRPO（规则奖励 + β=0，如 DAPO）</td><td>仅策略 = 1 份</td><td>1 × 14GB = 14GB</td></tr></table>
+          <div class="step-desc">组均值 = (1+0+0+1)÷4 = 0.5；标准差 = 0.5（四个样本距均值都是 0.5），归一化后优势就是 [1, −1, −1, 1]。7B 模型 fp16 约 14GB：删 critic 后从 4 份降到 2 份（省 28GB），再把 KL 项去掉（β=0）才降到 1 份（省 42GB）。<strong>代价是：组内基线要求同一题采 G 个回答，采样量是 G 倍。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>组内基线依赖"同一题多采样"，采样量 = G × 题数，是“每题只采 1 个”的 G 倍（离线 DPO 训练时不采样）；但换来删 critic + 删参考模型，显存从 4 份砍到 1 份。<strong>下一个问题：GRPO 在"每个 token"上算重要性比，可奖励是给整条序列的，这错配了吗？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>组内基线依赖"同一题多采样"，采样量 = G × 题数，是"每题只采 1 个"的 G 倍（离线 DPO 训练时不采样）；换来的是删掉 critic，显存从 4 份降到 2 份；若规则奖励且 β=0（如 DAPO、TRL 默认），连参考模型也省，降到 1 份。<strong>下一个问题：GRPO 在"每个 token"上算重要性比，可奖励是给整条序列的，这错配了吗？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','41-4')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','41-4')">🤔 你可能还想问</button></div>
       <div id="tab-ai-41-4" class="llm-section"><button class="llm-btn" onclick="startChat('41-4')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="41-4"><div class="chat-toolbar"><button onclick="copyChat('41-4')">📋 复制对话</button><button onclick="clearChat('41-4')">🗑 清空</button><button onclick="stopLLM('41-4')" id="stop-btn-41-4" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('41-4')" id="regen-btn-41-4" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="41-4"><div class="role-label">AI 助教</div><div class="msg-content">👋 对 GRPO 有疑问？比如"组内基线和 leave-one-out 是一回事吗？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="41-4" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('41-4')}" rows="1" placeholder="例如：G 取多大、采样贵多少？"></textarea><button onclick="sendLLM('41-4')">发送</button></div></div></div>
       <div id="tab-qna-41-4" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('41-4')">🔄 换一批</button></div><div class="qna-list" data-qna="41-4"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -539,7 +539,7 @@
 
 
 
-<script>window.__SITE__={"lesson":41,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[41]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.361b9c47.js"></script>
+<script>window.__SITE__={"lesson":41,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[41]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.cc424169.js"></script>
 </body>
 </html>

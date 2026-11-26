@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>第 36 课：后训练范式地图｜第一性原理大模型课程</title>
-<meta name="description" content="后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但&quot;判断哪个回答更好&quot;和&quot;把多步问题想清楚&quot;这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号，再沿着&quot;越来越简单&quot;的演进主线，把 RLHF（人类反馈强化学习）、DPO（直接偏好优化）、GRPO…">
+<meta name="description" content="后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但&quot;判断哪个回答更好&quot;和&quot;把多步问题想清楚&quot;这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号；再看 RLHF（人类反馈强化学习）的 PPO 之后分出的两条减负路——DPO（直接偏好优化）砍掉奖…">
 <meta name="keywords" content="后训练范式地图,大模型课程,LLM 教程,算法工程师,推荐算法转大模型">
 <meta name="author" content="zhuangzhaoyeye">
 <meta name="robots" content="index,follow">
@@ -14,16 +14,16 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="第一性原理大模型课程">
 <meta property="og:title" content="第 36 课：后训练范式地图｜第一性原理大模型课程">
-<meta property="og:description" content="后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但&quot;判断哪个回答更好&quot;和&quot;把多步问题想清楚&quot;这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号，再沿着&quot;越来越简单&quot;的演进主线，把 RLHF（人类反馈强化学习）、DPO（直接偏好优化）、GRPO…">
+<meta property="og:description" content="后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但&quot;判断哪个回答更好&quot;和&quot;把多步问题想清楚&quot;这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号；再看 RLHF（人类反馈强化学习）的 PPO 之后分出的两条减负路——DPO（直接偏好优化）砍掉奖…">
 <meta property="og:url" content="https://zhuangzhaoyeye.github.io/llm-course/lesson-36.html">
 <meta property="og:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="第 36 课：后训练范式地图｜第一性原理大模型课程">
-<meta name="twitter:description" content="后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但&quot;判断哪个回答更好&quot;和&quot;把多步问题想清楚&quot;这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号，再沿着&quot;越来越简单&quot;的演进主线，把 RLHF（人类反馈强化学习）、DPO（直接偏好优化）、GRPO…">
+<meta name="twitter:description" content="后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但&quot;判断哪个回答更好&quot;和&quot;把多步问题想清楚&quot;这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号；再看 RLHF（人类反馈强化学习）的 PPO 之后分出的两条减负路——DPO（直接偏好优化）砍掉奖…">
 <meta name="twitter:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 36 课：后训练范式地图","description":"后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但\"判断哪个回答更好\"和\"把多步问题想清楚\"这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号，再沿着\"越来越简单\"的演进主线，把 RLHF（人类反馈强化学习）、DPO（直接偏好优化）、GRPO…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-36.html","position":36,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 36 课：后训练范式地图","description":"后训练范式地图。预训练给了模型知识，SFT（监督微调）教会了它接话，但\"判断哪个回答更好\"和\"把多步问题想清楚\"这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号；再看 RLHF（人类反馈强化学习）的 PPO 之后分出的两条减负路——DPO（直接偏好优化）砍掉奖…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-36.html","position":36,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
 <link rel="stylesheet" href="site.33b0e8da.css">
 <noscript><style>.card-a{display:block!important}.tab-bar,.llm-section,.qna-section{display:none!important}</style></noscript>
 </head>
@@ -362,11 +362,11 @@
 
   <div class="lesson-intro">
     <h2>第 36 课：后训练范式地图</h2>
-    <p class="subtitle">预训练给了模型知识，SFT（监督微调）教会了它接话，但"判断哪个回答更好"和"把多步问题想清楚"这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号，再沿着"越来越简单"的演进主线，把 RLHF（人类反馈强化学习）、DPO（直接偏好优化）、GRPO（组内相对策略优化）串起来，并给出本部分 8 课的路线图。</p>
+    <p class="subtitle">预训练给了模型知识，SFT（监督微调）教会了它接话，但"判断哪个回答更好"和"把多步问题想清楚"这两件事还差最后一段训练——这就是后训练。这一课先画一张地图：三类任务对应三种训练信号；再看 RLHF（人类反馈强化学习）的 PPO 之后分出的两条减负路——DPO（直接偏好优化）砍掉奖励模型与 critic、变成离线，GRPO（组内相对策略优化）只砍 critic、留在在线 RL；最后给出本部分 8 课的路线图。</p>
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
-      <div class="goal-text">① 说清 SFT 到顶的原因——示范教不了取舍<br>② 把后训练分成三类任务，并说出各自需要什么训练信号<br>③ 沿着 RLHF→DPO→GRPO 说出"砍掉了什么"，并会用判据选范式</div>
+      <div class="goal-text">① 说清 SFT 到顶的原因——示范教不了取舍<br>② 把后训练分成三类任务，并说出各自需要什么训练信号<br>③ 说出 DPO、GRPO 相对 PPO 各砍掉了什么、付出了什么，并会用判据选范式</div>
     </div>
 
     <div class="roadmap">
@@ -374,13 +374,13 @@
       <div class="roadmap-flow">
         <div class="roadmap-node"><span class="rn-num">1</span><span class="rn-text">基座学知识、SFT 学格式之后，<strong>还缺"判断好坏"与"想清楚"</strong>——<strong>因为</strong> SFT 只示范了回答"长什么样"，没教模型"哪个更好、怎么算对"。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">"更好"没法用示范教，<strong>这就要求</strong>一种能表达取舍的信号——<strong>因为</strong>示范只推高一条序列的似然，<strong>于是</strong>要引入"比较"（RLHF 的信号：这条比那条好）。</span></div>
+        <div class="roadmap-node"><span class="rn-num">2</span><span class="rn-text">"更好"没法用示范教，<strong>这就要求</strong>一种能表达取舍的信号——<strong>因为</strong>示范只推高一条序列的似然，<strong>于是</strong>要引入"比较"（RLHF 的信号：这条比那条好）；比较本身就能写成可求导的成对损失（Bradley-Terry）。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">把目标拆开，<strong>所以</strong>后训练分成三类任务：偏好对齐（好听，DPO/RLHF）、推理强化（算对，RLVR）、其余（安全等，RLAIF）——<strong>因此</strong>每类任务要配它自己的训练信号。</span></div>
+        <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">把目标拆开，<strong>所以</strong>后训练分成三类任务：偏好对齐（好听，DPO/RLHF）、推理强化（算对，RLVR）、其余（安全等，信号混合规则、红队与 AI 反馈）——<strong>因此</strong>每类任务要配它自己的训练信号。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">三类范式沿着一条主线越来越简单：<strong>因为</strong>每一步都在砍掉上一个方案的瓶颈，<strong>于是</strong> RLHF（4 模型）→ DPO（2 模型，离线）；另一支 GRPO 留在在线 RL、只删 critic（3 模型，规则奖励时 2）。</span></div>
+        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">RLHF 的 PPO 要同时驻留 4 个模型，<strong>于是</strong>后来分出两条减负路：DPO 砍掉奖励模型与 critic、变成离线（2 模型）；GRPO 只砍 critic、留在在线 RL（3 模型，规则奖励时 2）——<strong>因此</strong>这是「省资源」和「要探索」的取舍，不是一条线越变越简单。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">"好听"和"算对"不能互换信号，<strong>因此</strong>对齐（DPO）与推理强化（RLVR）是两条线——<strong>因为</strong>人类偏好给不出"算得对不对"的稳定判据，反之 0/1 对错也教不了"讨喜"。</span></div>
+        <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">"好听"和"算对"不能互换信号，<strong>因此</strong>对齐（DPO）与推理强化（RLVR）是两条线——<strong>因为</strong>学出来的偏好打分在大规模 RL 里容易被钻空子、判不稳对错，规则验证器却能直接判 0/1；反之 0/1 对错也教不了"讨喜"。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text"><strong>【支链 · 路线图】</strong>最后把选型收敛成一句话：奖励可验证吗（RLVR 判据）、要不要在线探索（DPO vs GRPO 判据）、显存够不够——<strong>因此</strong>这三点就是本部分 8 课的组织顺序。</span></div>
       </div>
@@ -393,16 +393,16 @@
   <div class="card" data-card="36-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">预训练给了知识、SFT 教会了接话，模型还缺什么？</div><div class="card-q-hint">提示：先想"会回答"和"答得好、答得对"是不是一回事；再想 SFT 学的到底是"格式"还是"判断"。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>后训练（post-training）</strong>在 2024~2025 成为主流术语，指基座模型在预训练之后的所有训练：SFT → 对齐（RLHF/DPO）→ 推理强化（RLVR 即「可验证奖励强化学习」/R1）。其中 InstructGPT（Ouyang et al., arXiv:2203.02155）是"SFT 之后还要对齐"这一转折的关键证据：1.3B 的 InstructGPT（SFT 之后再做 RLHF）在人类偏好评估上胜过 175B GPT-3，且 RLHF 版本也胜过同规模的纯 SFT 版本——"更好听"正是偏好训练补上的。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>后训练（post-training）</strong>是 Llama 3（2024-07）、Tülu 3（Lambert et al., arXiv:2411.15124, 2024-11）等技术报告采用的术语，指基座模型在预训练之后的所有训练：SFT → 对齐（RLHF/DPO）→ 推理强化（RLVR 即「可验证奖励强化学习」/R1）。其中 InstructGPT（Ouyang et al., arXiv:2203.02155）是"SFT 之后还要对齐"这一转折的关键证据：1.3B 的 InstructGPT（SFT 之后再做 RLHF）在人类偏好评估上胜过 175B GPT-3，且 RLHF 版本也胜过同规模的纯 SFT 版本——"更好听"正是偏好训练补上的。</div>
       <div class="content-section"><p>第 10 课我们做了 SFT。但 SFT 之后模型只是"会按格式接话"——<strong>它仍然不会判断哪个回答更好，也不会把多步问题想清楚。</strong></p><p>可以把这<strong>类比</strong>成一位新人入职：SFT 是"照抄示范"，后训练才是"告诉他什么样算好、什么样算对"——前者教动作，后者教判断。</p></div>
       <div class="calc-block">
-        <div class="label">🧮 三段训练的数据量递减：越往后越"贵"、越"精"</div>
+        <div class="label">🧮 预训练远多于后训练；后训练内部，偏好对反而比示范多</div>
         <div class="step"><div class="step-title">Step 1：三段各用了多少数据</div>
-          <table><tr><th>阶段</th><th>数据量级</th><th>教什么</th></tr><tr><td>预训练</td><td>约 15.6T token</td><td>语言与知识</td></tr><tr><td>SFT</td><td>约几十 M token</td><td>回答的格式与风格</td></tr><tr><td>后训练（偏好/推理）</td><td>几万~几十万条</td><td><strong>价值判断 + 多步推理</strong></td></tr></table>
+          <table><tr><th>阶段</th><th>数据量级</th><th>教什么</th></tr><tr><td>预训练</td><td>约 15.6T token（Llama 3）</td><td>语言与知识</td></tr><tr><td>SFT</td><td>约几十 M token（量级示意）</td><td>回答的格式与风格</td></tr><tr><td>后训练（偏好/推理）</td><td>几万~上百万条比较</td><td><strong>价值判断 + 多步推理</strong></td></tr></table>
         </div>
-        <div class="step"><div class="step-title">Step 2：差距有多大</div>
-          <table><tr><th>对比</th><th>计算</th><th>结果</th></tr><tr><td>预训练 vs SFT</td><td>15.6T ÷ 约 50M</td><td>约 3 × 10⁵ 倍</td></tr><tr><td>SFT vs 偏好数据</td><td>50M token ÷ 几万条</td><td>单条"更值钱"</td></tr></table>
-          <div class="step-desc">数据量一路暴跌，但每条信息的"含金量"一路暴涨——<strong>这就是后训练和预训练的本质区别：不是学新知识，而是把已有能力对齐到"更好、更对"。</strong>（口径：15.6T / 几十 M / 几万~几十万条均为量级示意，随模型与数据集浮动。）</div>
+        <div class="step"><div class="step-title">Step 2：差距有多大（同一量纲才能比）</div>
+          <table><tr><th>对比</th><th>计算</th><th>结果</th></tr><tr><td>预训练 vs SFT（都按 token）</td><td>15.6T ÷ 约 50M</td><td>约 3 × 10⁵ 倍</td></tr><tr><td>偏好 vs SFT（都按条数，Llama 2 实测）</td><td>1,418,091 对偏好 ÷ 27,540 条示范</td><td>约 51 倍</td></tr></table>
+          <div class="step-desc">预训练到后训练是数量级的暴跌；但后训练内部并不递减——Llama 2（arXiv:2307.09288）只收了 27,540 条 SFT 示范，却收了 1,418,091 对 Meta 偏好标注，因为两两比较比写示范更省、还能超出标注员自己的写作水平。<strong>后训练和预训练的本质区别：不是学新知识，而是把已有能力对齐到"更好、更对"。</strong>（口径：15.6T 来自 Llama 3 报告，50M 为量级示意。）</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>只做 SFT → 模型会接话但不会判断；补上后训练 → 才学会"哪个更好、怎么算对"。<strong>下一个问题：为什么"更好"这件事，SFT 的示范教不了？</strong></p></div>
@@ -416,7 +416,7 @@
   <div class="card" data-card="36-2">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">2</div><div class="card-q-content"><div class="card-q-text">"哪个回答更好"，为什么不能像 SFT 那样用示范教？</div><div class="card-q-hint">提示：先想示范只能做什么——它能把"这条好"和"这条比那条好"都表达出来吗？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLHF（基于人类反馈的强化学习）</strong>的起点正是"示范教不了取舍"：InstructGPT 发现，SFT 只推高单条序列的似然，但"回答 A 比回答 B 好"是<strong>两条序列之间的关系</strong>，示范表达不了。于是它引入人类对回答的<strong>排序</strong>，用 Bradley-Terry 模型把"比较"变成可训练的标量。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLHF（基于人类反馈的强化学习）</strong>"从人的成对比较学奖励、再做 RL"这套做法出自 Christiano et al.（arXiv:1706.03741, 2017），动机是奖励函数难以手写、而让人比较两段行为很容易；Stiennon et al.（arXiv:2009.01325, 2020）把它用到摘要，InstructGPT（arXiv:2203.02155, 2022）再把它用到指令遵循。示范只推高单条序列的似然，而"回答 A 比回答 B 好"是<strong>两条序列之间的关系</strong>；人类的<strong>排序</strong>经 Bradley-Terry 模型直接变成一条可求导的成对损失。</div>
       <div class="content-section"><p>上一张卡片看到 SFT 教不了判断。为什么？<strong>因为示范只能推高"一条"序列，而"更好"是"两条"序列之间的关系。</strong></p><p>可以把这<strong>类比</strong>成打分数：示范是"给他看一篇满分作文"，比较是"告诉他这篇比那篇好在哪"——前者只能模仿，后者才能学出判断标准。</p></div>
       <div class="calc-block">
         <div class="label">🧮 三种信号各能表达什么</div>
@@ -425,10 +425,10 @@
         </div>
         <div class="step"><div class="step-title">Step 2：为什么示范表达不了取舍</div>
           <table><tr><th>目标</th><th>示范能做到吗</th><th>原因</th></tr><tr><td>让模型学会"回答长什么样"</td><td>能</td><td>推高一条序列似然即可</td></tr><tr><td>让模型学会"A 比 B 好"</td><td><strong>不能</strong></td><td>需要两条序列的关系信号</td></tr></table>
-          <div class="step-desc">梯度只能对"数字"求导、不能对"更好"求导——<strong>所以必须先把"更好"翻译成一个标量（奖励），这一步就引出了下一课的奖励模型。</strong></div>
+          <div class="step-desc">比较信号本身就能直接训练：Bradley-Terry 把"A 胜 B"写成 −log σ(r_A − r_B)，例如分差 1.0 时损失 = −log 0.73 ≈ 0.31，对模型参数可导。<strong>用这条损失有两种走法：先训一个奖励模型，再让在线 RL 给策略新生成的回答打分（RLHF，下一课）；或者直接在偏好对上训策略（DPO，第 39 课）。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>示范教不了取舍 → 需要"比较"信号；比较信号必须先变成能求导的数字。<strong>下一个问题：后训练到底有几类任务，各要什么信号？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>示范教不了取舍 → 需要"比较"信号；没有比较 → 模型只能模仿、学不出"哪个更好"。<strong>下一个问题：后训练到底有几类任务，各要什么信号？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','36-2')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','36-2')">🤔 你可能还想问</button></div>
       <div id="tab-ai-36-2" class="llm-section"><button class="llm-btn" onclick="startChat('36-2')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="36-2"><div class="chat-toolbar"><button onclick="copyChat('36-2')">📋 复制对话</button><button onclick="clearChat('36-2')">🗑 清空</button><button onclick="stopLLM('36-2')" id="stop-btn-36-2" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('36-2')" id="regen-btn-36-2" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="36-2"><div class="role-label">AI 助教</div><div class="msg-content">👋 对"示范 vs 比较"有疑问？比如"能不能让示范也带上好坏标签？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="36-2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('36-2')}" rows="1" placeholder="例如：示范和比较在数学上差在哪？"></textarea><button onclick="sendLLM('36-2')">发送</button></div></div></div>
       <div id="tab-qna-36-2" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('36-2')">🔄 换一批</button></div><div class="qna-list" data-qna="36-2"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -439,19 +439,19 @@
   <div class="card" data-card="36-3">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">后训练要解决哪几类任务，各需要什么信号？</div><div class="card-q-hint">提示：先想"回答更讨喜"和"答案算得对"是不是同一个目标；它们需要的信号一样吗？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>2024~2025 的后训练研究把任务分成三类：<strong>偏好对齐</strong>（让回答更符合人类偏好，信号是成对比较，代表 DPO/RLHF）、<strong>推理强化</strong>（让多步推理更准，信号是可验证对错，代表 RLVR/R1（RLVR = 可验证奖励强化学习））、<strong>其他对齐</strong>（安全、多模态、文化等）。本部分前 6 课聚焦前两类，最后一课收口其余。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>本课把后训练任务分成三类（这是本课为教学做的划分，不是文献里的标准分类）：<strong>偏好对齐</strong>（让回答更符合人类偏好，信号是成对比较，代表 DPO/RLHF）、<strong>推理强化</strong>（让多步推理更准，信号是可验证对错，代表 RLVR/R1（RLVR = 可验证奖励强化学习））、<strong>其他对齐</strong>（安全、多模态、文化等）。本部分前 6 课聚焦前两类，最后一课收口其余。</div>
       <div class="content-section"><p>上一张卡片看到需要"比较"信号。但"比较"只是其中一类——<strong>把目标拆开，后训练其实是三类任务，各配各的信号。</strong></p><p>可以把这<strong>类比</strong>成训练三个不同的运动员：一个练"讨评委喜欢"（偏好），一个练"把题算对"（对错），一个练"别犯规"（安全）——裁判和计分规则完全不同。</p></div>
       <div class="calc-block">
         <div class="label">🧮 三类任务 × 信号 × 路线</div>
         <div class="step"><div class="step-title">Step 1：三类任务对照</div>
-          <table><tr><th>任务</th><th>目标</th><th>信号</th><th>代表方法</th></tr><tr><td>偏好对齐</td><td>回答更"好听"</td><td>成对比较</td><td>RLHF / DPO（GRPO 是可用于两条线的优化算法）</td></tr><tr><td>推理强化</td><td>答案更"算得对"</td><td>0/1 可验证对错</td><td>RLVR / R1-Zero（纯 RL 推理）</td></tr><tr><td>其他对齐</td><td>安全、多模态等</td><td>混合</td><td>RLAIF（AI 反馈替代人工）/ 安全 RL</td></tr></table>
+          <table><tr><th>任务</th><th>目标</th><th>信号</th><th>代表方法</th></tr><tr><td>偏好对齐</td><td>回答更"好听"</td><td>成对比较</td><td>RLHF / DPO（GRPO 是可用于两条线的优化算法）</td></tr><tr><td>推理强化</td><td>答案更"算得对"</td><td>0/1 可验证对错</td><td>RLVR / R1-Zero（纯 RL 推理）</td></tr><tr><td>其他对齐</td><td>安全、多模态等</td><td>混合</td><td>安全 RL / 红队 + 规则（反馈可来自人或 AI，即 RLAIF；RLAIF 是反馈来源，也可用于偏好对齐）</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：信号能不能互换</div>
           <table><tr><th>拿错信号</th><th>后果</th></tr><tr><td>用偏好信号训推理</td><td>学不会"算对"，只会学"像样"</td></tr><tr><td>用 0/1 对错训风格</td><td>风格僵硬、丢多样性</td></tr></table>
           <div class="step-desc">关键结论：<strong>信号必须匹配任务</strong>——这是本部分后面每一课反复出现的判据。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>三类任务、三种信号，各走各的路线。<strong>下一个问题：这些路线怎么一步步"越变越简单"？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>三类任务、三种信号，各走各的路线。<strong>下一个问题：偏好对齐这条线上，PPO 之后的方法各砍掉了什么、又付出了什么？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','36-3')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','36-3')">🤔 你可能还想问</button></div>
       <div id="tab-ai-36-3" class="llm-section"><button class="llm-btn" onclick="startChat('36-3')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="36-3"><div class="chat-toolbar"><button onclick="copyChat('36-3')">📋 复制对话</button><button onclick="clearChat('36-3')">🗑 清空</button><button onclick="stopLLM('36-3')" id="stop-btn-36-3" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('36-3')" id="regen-btn-36-3" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="36-3"><div class="role-label">AI 助教</div><div class="msg-content">👋 对三类任务有疑问？比如"安全对齐为什么单独一类？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="36-3" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('36-3')}" rows="1" placeholder="例如：三类任务的成本差多少？"></textarea><button onclick="sendLLM('36-3')">发送</button></div></div></div>
       <div id="tab-qna-36-3" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('36-3')">🔄 换一批</button></div><div class="qna-list" data-qna="36-3"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -460,10 +460,10 @@
 
   <!-- ============ CARD 4 ============ -->
   <div class="card" data-card="36-4">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">从 RLHF 到 DPO 到 GRPO，为什么训练越来越简单？</div><div class="card-q-hint">提示：数一数每个方法"训练时同时驻留"几个模型，再看它砍掉了哪个。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">RLHF 的 PPO 之后出现了 DPO 和 GRPO，它们各砍掉了 PPO 的什么、又各付出了什么代价？</div><div class="card-q-hint">提示：数一数每个方法"训练时同时驻留"几个模型，再看它砍掉了哪个。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>偏好对齐的主线是<strong>一条"减负"曲线</strong>：RLHF/PPO（InstructGPT, 2022）要同时驻留策略、参考、奖励、critic（价值网络，估 baseline 以压低梯度方差）四个模型；DPO（Rafailov et al., arXiv:2305.18290, 2023）用闭式解把 RL 换成一次分类，砍掉奖励模型和 critic；GRPO（Shao et al., DeepSeek, arXiv:2402.03300, 2024）用组内统计当基线（替代 critic），参考模型仍保留（KL 项直接加进损失），奖励来自奖励模型或规则验证器——相对 PPO 只砍掉 critic。</div>
-      <div class="content-section"><p>上一张卡片把任务分好了。现在看偏好对齐这条线怎么进化——<strong>训练之所以越来越简单，因为每一步都砍掉上一个方案的一个瓶颈。</strong></p><p>可以把这<strong>类比</strong>成搬家：RLHF 是"四台设备全开"，DPO 是"关掉两台"，GRPO 是"回到全套搬家流程、只把 critic 那台设备换成组内平均"——DPO 最省显存，GRPO 换来在线探索。</p></div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>PPO 之后分出<strong>两条"减负"路</strong>：RLHF/PPO（InstructGPT, 2022）要同时驻留策略、参考、奖励、critic（价值网络，估 baseline 以压低梯度方差）四个模型；DPO（Rafailov et al., arXiv:2305.18290, 2023）用闭式解把 RL 换成一次分类，砍掉奖励模型和 critic；GRPO（Shao et al., DeepSeek, arXiv:2402.03300, 2024）用组内统计当基线（替代 critic），参考模型仍保留（KL 项直接加进损失），奖励来自奖励模型或规则验证器——相对 PPO 只砍掉 critic。</div>
+      <div class="content-section"><p>上一张卡片把任务分好了。现在看偏好对齐这条线：<strong>DPO 和 GRPO 都从 PPO 出发、各砍掉一部分模型，但砍的东西不同、付出的代价也不同。</strong>GRPO 不是 DPO 的后继，它是 PPO 的变体。</p><p>可以把这<strong>类比</strong>成搬家：RLHF 是"四台设备全开"，DPO 是"关掉两台"，GRPO 是"回到全套搬家流程、只把 critic 那台设备换成组内平均"——DPO 最省显存，GRPO 换来在线探索。</p></div>
       <div class="calc-block">
         <div class="label">🧮 模型驻留账：PPO 4 → DPO 2；GRPO 3（规则奖励时 2）</div>
         <div class="step"><div class="step-title">Step 1：各方法要同时驻留几个模型</div>
@@ -474,7 +474,7 @@
           <div class="step-desc">注意 DPO 和 GRPO 不是"取代关系"：DPO 是离线（失去探索），GRPO 回到在线（能探索但回到 RL 的复杂性）——<strong>这条线不是单向变好，而是在"省资源"和"要探索"之间取舍。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>RLHF→DPO→GRPO 是"省资源 vs 要探索"的权衡。<strong>下一个问题：为什么偏好对齐和推理强化必须分成两条线？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>PPO→DPO 与 PPO→GRPO 是两条分支，体现"省资源 vs 要探索"的权衡：DPO 驻留 2 个模型但不探索，GRPO 驻留 3 个模型但能在线探索。<strong>下一个问题：偏好对齐和推理强化为什么会分成两条线？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','36-4')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','36-4')">🤔 你可能还想问</button></div>
       <div id="tab-ai-36-4" class="llm-section"><button class="llm-btn" onclick="startChat('36-4')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="36-4"><div class="chat-toolbar"><button onclick="copyChat('36-4')">📋 复制对话</button><button onclick="clearChat('36-4')">🗑 清空</button><button onclick="stopLLM('36-4')" id="stop-btn-36-4" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('36-4')" id="regen-btn-36-4" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="36-4"><div class="role-label">AI 助教</div><div class="msg-content">👋 对演进主线有疑问？比如"DPO 能完全取代 PPO 吗？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="36-4" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('36-4')}" rows="1" placeholder="例如：GRPO 是不是一定比 DPO 好？"></textarea><button onclick="sendLLM('36-4')">发送</button></div></div></div>
       <div id="tab-qna-36-4" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('36-4')">🔄 换一批</button></div><div class="qna-list" data-qna="36-4"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -485,7 +485,7 @@
   <div class="card" data-card="36-5">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">5</div><div class="card-q-content"><div class="card-q-text">"让回答更好听"和"让答案算得对"，为什么是两条线？</div><div class="card-q-hint">提示：先想人类偏好能不能稳定地判定"算得对不对"；再想 0/1 对错能不能教会"讨人喜欢"。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>偏好对齐</strong>与<strong>推理强化</strong>分家的关键，在 DeepSeek-R1 系列（arXiv:2501.12948, 2025）里最明显：偏好模型给不出"答案对不对"的稳定打分，于是推理训练改用<strong>程序验证器直接判 0/1</strong>（RLVR = 可验证奖励强化学习，Lambert et al., arXiv:2411.15124）。反过来，0/1 对错也教不了"语气更自然、更符合偏好"。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>偏好对齐</strong>与<strong>推理强化</strong>分家的关键，在 DeepSeek-R1 系列（arXiv:2501.12948, 2025）里最明显：论文写明神经奖励模型（无论结果式还是过程式）在大规模 RL 中容易被 reward hacking，重训它又增加算力和流程复杂度，于是推理任务改用<strong>规则验证器直接判 0/1</strong>（RLVR = 可验证奖励强化学习，Lambert et al., arXiv:2411.15124）。反过来，0/1 对错也教不了"语气更自然、更符合偏好"。</div>
       <div class="content-section"><p>上一张卡片看到偏好对齐的演进。但"好听"和"算对"之所以是两条线，<strong>因为这是两个不同的目标，信号不可互换。</strong></p><p>可以把这<strong>类比</strong>成作文评分：一篇作文可以"文笔好"（偏好）但"结论错"（对错），两个评委各管一件事——用同一个分数混合二者，只会两头都糊。</p></div>
       <div class="calc-block">
         <div class="label">🧮 两条线的信号不可互换</div>
@@ -493,7 +493,7 @@
           <table><tr><th>维度</th><th>偏好对齐</th><th>推理强化</th></tr><tr><td>目标</td><td>好听、符合偏好</td><td>算对、逻辑正确</td></tr><tr><td>信号</td><td>成对比较</td><td>0/1 可验证对错</td></tr><tr><td>代表</td><td>RLHF / DPO</td><td>RLVR / R1-Zero（用 GRPO 优化）</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：错配会怎样</div>
-          <table><tr><th>错配方向</th><th>后果</th></tr><tr><td>用偏好信号训推理</td><td>偏好模型对"算对"打分不可靠，学不到正确性</td></tr><tr><td>用 0/1 对错训风格</td><td>奖励太稀疏，学不到细腻的风格差异</td></tr></table>
+          <table><tr><th>错配方向</th><th>后果</th></tr><tr><td>用偏好信号训推理</td><td>偏好打分会被钻空子，"像对"不等于"算对"，学不到正确性</td></tr><tr><td>用 0/1 对错训风格</td><td>两个都"对"的回答同得 1 分，没有区分度，学不到细腻的风格差异</td></tr></table>
           <div class="step-desc">结论：<strong>信号必须匹配目标</strong>——这正是"为什么不能一个范式通吃"的根因。</div>
         </div>
       </div>
@@ -539,7 +539,7 @@
 
 
 
-<script>window.__SITE__={"lesson":36,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[36]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.361b9c47.js"></script>
+<script>window.__SITE__={"lesson":36,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[36]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.cc424169.js"></script>
 </body>
 </html>

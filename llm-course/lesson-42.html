@@ -378,7 +378,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">0/1 奖励只在最终答案、中间全无，<strong>要求</strong>模型自己探索出"多想一想"，<strong>于是</strong> R1-Zero 纯 RL（GRPO）就长出了长思考、反思与"啊哈时刻"。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">长思考里混着"刷分虚胖"：GRPO 梯度除以回答长度、除以组内标准差，<strong>因此</strong>长度与难度偏差让"拉长"本身得分——<strong>于是</strong> Dr.GRPO 修掉这两个除法。</span></div>
+        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">长思考里混着"刷分虚胖"：GRPO 梯度除以回答长度、除以组内标准差，<strong>因此</strong>长度偏差会改写激励方向——答对时偏好简短、答错时偏好冗长（错误回答被系统性地写长），<strong>于是</strong> Dr.GRPO 修掉这两个除法。</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">修了偏差，但"组内均值当 baseline"在超长 CoT 上估计不准，<strong>所以</strong>重新请回价值网络，<strong>于是</strong> VAPO 用 value-based 方法在长推理上反超 GRPO。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -416,19 +416,19 @@
   <div class="card" data-card="42-2">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">2</div><div class="card-q-content"><div class="card-q-text">偏好模型判不了对错，那 0/1 这个"对/错"信号，能不能不靠人、也不靠训练模型，直接由程序给出来？</div><div class="card-q-hint">提示：想数学题有没有标准答案、代码题有没有单元测试、证明题有没有形式化证明器；这些东西能不能自动判定"对"还是"错"。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLVR（Reinforcement Learning with Verifiable Rewards，可验证奖励的强化学习）</strong>由 Tülu 3（Lambert et al., arXiv:2411.15124, 2024）命名：把 RLHF 里的"学习到的奖励模型"换成一个<strong>确定性的验证器</strong>——一个 Python 函数，吃进 prompt 和回答，吐出二元奖励：对给 α（Tülu 3 取 α=10，本课按 1 归一示意）、错给 0，再用 PPO（近端策略优化）优化。数学用符号等式比对答案，代码用编译 + 跑单测。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>RLVR（Reinforcement Learning with Verifiable Rewards，可验证奖励的强化学习）</strong>由 Tülu 3（Lambert et al., arXiv:2411.15124, 2024）命名：把 RLHF 里的"学习到的奖励模型"换成一个<strong>确定性的验证器</strong>——一个 Python 函数，吃进 prompt 和回答，吐出二元奖励：对给 α（Tülu 3 取 α=10，本课按 1 归一示意）、错给 0，再用 PPO（近端策略优化）优化。Tülu 3 的 RLVR 只做了两个域：数学（符号等式比对答案）与精确指令跟随（IFEval 约束），合计约 3 万条 prompt；代码执行、定理证明被原文<strong>明确留作未来工作</strong>，不是 RLVR 定义的一部分。</div>
       <div class="content-section"><p>上一张卡片看到偏好模型判不了对错。突破口在于：<strong>只要答案有客观对错，0/1 就不用"学"出来，可以直接"算"出来。</strong></p><p>可以把这<strong>类比</strong>成判卷机和评委的分工：数学题用判卷机（对/错一眼判定），作文用评委（偏好）。<strong>判卷机不要钱、不会累、还能无限出题</strong>——这就是推理强化的奖励为什么比偏好数据便宜得多。</p></div>
       <div class="calc-block">
         <div class="label">🧮 RLVR：验证器怎么给出 0/1，以及一个 batch 的优势怎么算</div>
-        <div class="step"><div class="step-title">Step 1：三类任务的验证器</div>
-          <table><tr><th>任务</th><th>验证方式</th><th>奖励</th></tr><tr><td>数学题</td><td>提取最终答案，与标准答案做符号等式比对</td><td>对 1 / 错 0</td></tr><tr><td>代码题</td><td>编译通过 + 跑单元测试</td><td>全过 1 / 否则 0</td></tr><tr><td>定理证明</td><td>形式化证明器（如 Lean 4）逐步检查</td><td>全程验证 1 / 否则 0</td></tr></table>
+        <div class="step"><div class="step-title">Step 1：三类验证器（Tülu 3 只用了前两类）</div>
+          <table><tr><th>任务</th><th>验证方式</th><th>奖励</th><th>Tülu 3 的 RLVR 用了吗</th></tr><tr><td>数学题</td><td>提取最终答案，与标准答案做符号等式比对</td><td>对 1 / 错 0</td><td>用（GSM8K / MATH）</td></tr><tr><td>精确指令跟随</td><td>检查回答是否满足给定格式约束（IFEval）</td><td>满足 1 / 否则 0</td><td>用（IFEval）</td></tr><tr><td>代码 / 定理证明</td><td>编译 + 跑单测 / 形式化证明器（如 Lean 4）</td><td>全过 1 / 否则 0</td><td>未用，原文列为 future work</td></tr></table>
         </div>
-        <div class="step"><div class="step-title">Step 2：一个 batch 的 0/1 奖励 → REINFORCE 优势</div>
+        <div class="step"><div class="step-title">Step 2：一个 batch 的 0/1 奖励 → 优势（r − 组均值）</div>
           <table><tr><th>回答</th><th>验证器奖励 r</th><th>基线（均值）</th><th>优势 = r − 均值</th></tr><tr><td>1</td><td>1</td><td>0.667</td><td>+0.333</td></tr><tr><td>2</td><td>0</td><td>0.667</td><td>−0.667</td></tr><tr><td>3</td><td>1</td><td>0.667</td><td>+0.333</td></tr></table>
-          <div class="step-desc">均值 = (1+0+1) ÷ 3 = 2/3 ≈ 0.667。REINFORCE（一种用"采样回报估计梯度"的策略梯度法）就靠这条优势去抬"对"的、压"错"的——<strong>奖励是客观的、可复现的，还能量产：数学题和代码题只要有标准答案就能无限合成数据。</strong></div>
+          <div class="step-desc">均值 = (1+0+1) ÷ 3 = 2/3 ≈ 0.667。这里用"奖励 − 组均值"讲清优势的方向和量级（这是 GRPO 式的简化口径；Tülu 3 实际用 PPO，value model 由通用奖励模型初始化）。<strong>奖励客观、可复现；但题目本身要带可验证答案、数量有限，能大量增加的是对同一批题目的采样次数，不是凭空的"无限合成"。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>有可验证答案 → 0/1 奖励客观、可复现、能无限合成；没有可验证答案 → 只能退回偏好。<strong>下一个问题：0/1 只落在"最终答案"这一下，中间过程全无奖励——模型凭什么学会"多思考几步"？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>有可验证答案 → 0/1 奖励客观、可复现；没有可验证答案 → 只能退回偏好。<strong>下一个问题：0/1 只落在"最终答案"这一下，中间过程全无奖励——模型凭什么学会"多思考几步"？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','42-2')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','42-2')">🤔 你可能还想问</button></div>
       <div id="tab-ai-42-2" class="llm-section"><button class="llm-btn" onclick="startChat('42-2')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="42-2"><div class="chat-toolbar"><button onclick="copyChat('42-2')">📋 复制对话</button><button onclick="clearChat('42-2')">🗑 清空</button><button onclick="stopLLM('42-2')" id="stop-btn-42-2" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('42-2')" id="regen-btn-42-2" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="42-2"><div class="role-label">AI 助教</div><div class="msg-content">👋 对 RLVR 的验证器有疑问？比如"代码题只判编译通过算不算对？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="42-2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('42-2')}" rows="1" placeholder="例如：REINFORCE 的优势怎么算？"></textarea><button onclick="sendLLM('42-2')">发送</button></div></div></div>
       <div id="tab-qna-42-2" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('42-2')">🔄 换一批</button></div><div class="qna-list" data-qna="42-2"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -444,11 +444,11 @@
       <div class="calc-block">
         <div class="label">🧮 R1-Zero 的成绩：AIME 大幅涨 + 回答越来越长</div>
         <div class="step"><div class="step-title">Step 1：AIME 2024 的 pass@1（一次采样做对的比例）</div>
-          <table><tr><th>模型</th><th>AIME 2024 pass@1</th></tr><tr><td>基座（DeepSeek-V3-Base）</td><td>15.6%</td></tr><tr><td>R1-Zero（纯 RL）</td><td>71.0%</td></tr><tr><td>提升</td><td>71.0 − 15.6 = +55.4 个百分点</td></tr></table>
+          <table><tr><th>模型</th><th>AIME 2024 pass@1</th></tr><tr><td>基座（DeepSeek-V3-Base）</td><td>15.6%</td></tr><tr><td>R1-Zero（纯 RL）</td><td>71.0%（arXiv v1 口径；v2 已更新为 77.9%）</td></tr><tr><td>提升</td><td>71.0 − 15.6 = +55.4 个百分点（v2：77.9 − 15.6 = +62.3）</td></tr></table>
         </div>
         <div class="step"><div class="step-title">Step 2：平均回答长度随训练一路变长</div>
           <table><tr><th>训练阶段</th><th>平均回答长度</th></tr><tr><td>开始</td><td>约几百 token</td></tr><tr><td>结束</td><td>数千 token（约 10 倍，示意）</td></tr></table>
-          <div class="step-desc">71.0 ÷ 15.6 ≈ 4.55 倍，而且这是"纯 RL、没做任何 SFT"的成绩。长度从几百 token 涨到几千 token，是因为模型学会了<strong>给难题分配更多思考时间</strong>——这正是"啊哈时刻"的外在表现。</div>
+          <div class="step-desc">71.0 ÷ 15.6 ≈ 4.55 倍（按 arXiv v2 的 77.9% 则为 4.99 倍），而且这是"纯 RL、没做任何 SFT"的成绩。长度从几百 token 涨到几千 token，是因为模型学会了<strong>给难题分配更多思考时间</strong>——这正是"啊哈时刻"的外在表现。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>有纯 RL → 长出长思考与"啊哈时刻"；没有 SFT → 可读性差（中英文混用、格式乱）。<strong>下一个问题：这些长度增长里，有多少是"真思考"，有多少是 GRPO 的偏差让它"越长越占便宜"？</strong></p></div>
@@ -463,7 +463,7 @@
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">R1-Zero 的"长思考"里，有多少是真正的推理，有多少只是 GRPO 的偏差让它"越长越占便宜"？</div><div class="card-q-hint">提示：回想 GRPO 的梯度公式——它除以了回答长度、组内标准差。这些除法会不会让"把答案写长"这件事本身被奖励，而不是"想得更对"被奖励？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>Dr.GRPO（Liu et al., arXiv:2503.20783, 2025）</strong>《Understanding R1-Zero-Like Training: A Critical Perspective》指出 GRPO 有两个偏差：<strong>response-level length bias</strong>（长度偏差，因梯度除以回答长度 |oᵢ|）和 <strong>question-level difficulty bias</strong>（难度偏差，因除以组内标准差）。它还发现"啊哈时刻"在基座模型里其实早已存在，并非纯 RL 凭空造出。</div>
-      <div class="content-section"><p>上一张卡片看到 R1-Zero 的回答越训越长。Dr.GRPO 泼了盆冷水：<strong>这里面混着"刷分虚胖"——长度本身在 GRPO 里占便宜。</strong></p><p>可以把这<strong>类比</strong>成"按写满卷面给分"：如果评分公式奖励篇幅，学生就会把没把握的答案写得很长——<strong>长度成了得分项，而不是"想得对"的证据</strong>。Dr.GRPO 干的事，就是把这些不该有的奖励项从公式里抠掉。</p></div>
+      <div class="content-section"><p>上一张卡片看到 R1-Zero 的回答越训越长。Dr.GRPO 泼了盆冷水：<strong>这里面混着"刷分虚胖"——GRPO 除以回答长度，把长度的激励方向改写了。</strong></p><p>可以把这<strong>类比</strong>成"按写满卷面给分"：如果评分公式对"写得多"有隐含加成，学生在没把握时就会把答案写长——<strong>答错时长度成了免责项，而不是"想得对"的证据</strong>。Dr.GRPO 干的事，就是把这些不该有的奖励项从公式里抠掉。</p></div>
       <div class="calc-block">
         <div class="label">🧮 GRPO 的两个偏差，以及 Dr.GRPO 怎么修</div>
         <div class="step"><div class="step-title">Step 1：长度偏差——梯度被回答长度 |oᵢ| 除</div>
@@ -474,7 +474,7 @@
           <div class="step-desc">1/20 ÷ 1/100 = 5 倍——同样"答对"，20 token 的回答梯度是 100 token 的 5 倍，模型就被推着"能短则短"；反过来，答错的回答里，越长的被惩罚得越轻，又诱导"错了就把话写长"。<strong>Dr.GRPO 把这两个除法去掉，长度就不再是隐藏的得分项。</strong></div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>有偏差 → 模型为刷分而拉长，长度增长≠推理变强；去掉偏差 → 长度增长更接近真推理。<strong>下一个问题：GRPO 为了省显存用"组内均值"当 baseline、没训 critic——在越来越长的推理链上，这个省出来的代价是什么？</strong></p></div>
+      <div class="highlight-box"><div class="label">🎯 留下什么问题</div><p>有偏差 → 答对时被压短、答错时被拉长（错误回答的长度被系统性放大），长度增长≠推理变强；去掉偏差 → 长度的激励方向不再被扭曲。<strong>下一个问题：GRPO 为了省显存用"组内均值"当 baseline、没训 critic——在越来越长的推理链上，这个省出来的代价是什么？</strong></p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','42-4')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','42-4')">🤔 你可能还想问</button></div>
       <div id="tab-ai-42-4" class="llm-section"><button class="llm-btn" onclick="startChat('42-4')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="42-4"><div class="chat-toolbar"><button onclick="copyChat('42-4')">📋 复制对话</button><button onclick="clearChat('42-4')">🗑 清空</button><button onclick="stopLLM('42-4')" id="stop-btn-42-4" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('42-4')" id="regen-btn-42-4" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="42-4"><div class="role-label">AI 助教</div><div class="msg-content">👋 对 Dr.GRPO 的偏差有疑问？比如"难度偏差具体怎么坑人？"<br><br>我会用具体数字帮你算。</div></div><div class="chat-input-row"><textarea data-input="42-4" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('42-4')}" rows="1" placeholder="例如：长度偏差是怎么算出来的？"></textarea><button onclick="sendLLM('42-4')">发送</button></div></div></div>
       <div id="tab-qna-42-4" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('42-4')">🔄 换一批</button></div><div class="qna-list" data-qna="42-4"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -485,7 +485,7 @@
   <div class="card" data-card="42-5">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">5</div><div class="card-q-content"><div class="card-q-text">GRPO 为了省显存，用"组内均值"当 baseline、砍掉了 critic——在越来越长的推理链上，这个省出来的代价是什么？</div><div class="card-q-hint">提示：想"组内均值"能不能准确估计"这条回答值多少"；当组内方差很大、回答又很长时，拿一个平均值当基线还准不准。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>VAPO（Byte Seed, arXiv:2504.05118, 2025，Value-based Augmented PPO，即近端策略优化）</strong>反过来把价值网络（critic）请回来：在 Qwen 32B 上 AIME 2024 拿到 <strong>60.4 分</strong>。核心技巧是 <strong>Decoupled GAE</strong>（价值网络用 λ=1.0 学回报，策略用另一套 λ 算优势）+ <strong>长度自适应</strong> λ_policy = 1 − 1/(α·l)。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>VAPO（ByteDance Seed, arXiv:2504.05118, 2025，全称 Value-model-based Augmented Proximal Policy Optimization）</strong>反过来把价值网络（critic）请回来：在 Qwen 32B 上 AIME 2024 拿到 <strong>60.4 分</strong>。核心技巧是 <strong>Decoupled GAE</strong>（价值网络用 λ=1.0 学回报，策略用另一套 λ 算优势）+ <strong>长度自适应</strong> λ_policy = 1 − 1/(α·l)。</div>
       <div class="content-section"><p>上一张卡片 Dr.GRPO 修了偏差，但没动"组内均值当 baseline"这个结构。VAPO 的论点是：<strong>在超长 CoT 上，组内均值估计不准，还得把价值网络请回来。</strong></p><p>可以把这<strong>类比</strong>成用班级平均分当"你的成绩"：班里有人 100 分、有人 20 分，平均分对个体几乎没意义——<strong>你还需要一个"个体估值"</strong>。这个个体估值，在 RL 里就是<strong>价值网络（value network / critic）</strong>，VAPO 把它重新加了回来。</p></div>
       <div class="calc-block">
         <div class="label">🧮 VAPO：组内均值 vs 价值网络，以及长度自适应的 λ</div>
@@ -506,10 +506,10 @@
 
   <!-- ============ CARD 6 ============ -->
   <div class="card" data-card="42-6">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">6</div><div class="card-q-content"><div class="card-q-text">推理 RL 让模型"算得对"、偏好对齐让模型"答得好听"——一个要发布的模型，怎么把这两条线串起来？</div><div class="card-q-hint">提示：想 DeepSeek-R1 正式版不是纯 RL——它先做了什么、RL 之后又做了什么；再想"算对"和"好听"谁先谁后、顺序反了会怎样。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">6</div><div class="card-q-content"><div class="card-q-text">推理 RL 让模型"算得对"、偏好对齐让模型"答得好听"——一个要发布的模型，怎么把这两条线串起来？</div><div class="card-q-hint">提示：想 DeepSeek-R1 正式版不是纯 RL——它先做了什么、RL 之后又做了什么；再想这两段的先后顺序换成相反的，还成不成立（对比第 43 课的 Tülu 3）。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div><strong>DeepSeek-R1 正式版（DeepSeek-AI, arXiv:2501.12948, 2025）</strong>走四阶段：①冷启动 SFT（几千条高质量 CoT）→ ②推理 RL（R1-Zero 的规则奖励 + 语言一致性奖励）→ ③拒绝采样 + SFT（约 60 万条推理 + 约 20 万条非推理）→ ④全场景 RL（规则奖励 + 偏好奖励混合）。它解决了 R1-Zero 的可读性问题。</div>
-      <div class="content-section"><p>上一张卡片把推理 RL 做稳了。但"算对"不等于"好听"——<strong>一个要发布的模型两样都要，靠的是"分阶段串起来"，而不是一个混合奖励通吃。</strong></p><p>可以把这<strong>类比</strong>成数学天才 + 语文老师：<strong>先让数学天才把题算对（推理 RL），再让语文老师把表达打磨顺（偏好对齐）</strong>——顺序不能反，反了就是"文笔漂亮但结论错"。</p></div>
+      <div class="content-section"><p>上一张卡片把推理 RL 做稳了。但"算对"不等于"好听"——<strong>一个要发布的模型两样都要，靠的是"分阶段串起来"，而不是一个混合奖励通吃。</strong></p><p>可以把这<strong>类比</strong>成数学天才 + 语文老师：<strong>R1 选择先让数学天才把题算对（推理 RL），再让语文老师把表达打磨顺（偏好对齐）</strong>。这是 R1 的配方选择，不是唯一可行顺序——第 43 课会看到 Tülu 3 就是先把偏好（用 DPO，即直接偏好优化）做完、再上 RLVR。</p></div>
       <div class="calc-block">
         <div class="label">🧮 R1 四阶段：推理 RL 与偏好对齐的组合顺序</div>
         <div class="step"><div class="step-title">Step 1：四个阶段各干什么</div>
@@ -517,7 +517,7 @@
         </div>
         <div class="step"><div class="step-title">Step 2：第 ③ 阶段的数据账</div>
           <table><tr><th>数据</th><th>条数</th><th>占比</th></tr><tr><td>推理数据（拒绝采样）</td><td>约 60 万</td><td>60 ÷ 80 = 75%</td></tr><tr><td>非推理数据（写作/问答等）</td><td>约 20 万</td><td>20 ÷ 80 = 25%</td></tr><tr><td>合计</td><td>约 80 万</td><td>100%</td></tr></table>
-          <div class="step-desc">顺序的深意：<strong>先推理后偏好</strong>——先确保"算对"（②③），最后才用偏好奖励补"好听"（④）。若反过来先偏好后推理，偏好那一步会把"像样但错"的回答固化进数据，后面怎么 RL 都救不回来。</div>
+          <div class="step-desc">顺序的深意：<strong>R1 选择先推理后偏好</strong>——先确保"算对"（②③），最后才用偏好奖励补"好听"（④）。这是 R1 的配方，不是不可违背的定律：Tülu 3 的流水线就是"偏好微调（DPO）在前、RLVR 在后"，说明反序也能训练。R1 之所以这么排，是为了先把推理能力长出来、再用偏好收拾表达。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>整课收成一句话：<strong>偏好信号训不了"算对"，对错要用程序验证器判 0/1（RLVR）</strong>；<strong>0/1 稀疏奖励能逼出长思考（R1-Zero），但要注意长度虚胖（Dr.GRPO）与 baseline 精度（VAPO）</strong>；<strong>最终按"先推理后偏好"分阶段组合（R1）</strong>。回到第 36 课的三个判据——奖励可验证吗、要不要探索、显存够不够——就是本部分第 43 课的收口。</p></div>
@@ -539,7 +539,7 @@
 
 
 
-<script>window.__SITE__={"lesson":42,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.bd8ac5db.json","sem":{"vec":"sem-index.2b510143.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[42]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.361b9c47.js"></script>
+<script>window.__SITE__={"lesson":42,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[42]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.cc424169.js"></script>
 </body>
 </html>
