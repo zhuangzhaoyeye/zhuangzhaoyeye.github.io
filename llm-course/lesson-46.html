@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>第 46 课：Skill 技能｜第一性原理大模型课程</title>
-<meta name="description" content="Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只能执行函数、带不了程序性知识」讲起，把 skill（技能，知识…">
+<meta name="description" content="Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只提供执行接口、流程知识没有可复用的载体」讲起，把 skill（…">
 <meta name="keywords" content="Skill 技能,大模型课程,LLM 教程,算法工程师,推荐算法转大模型">
 <meta name="author" content="zhuangzhaoyeye">
 <meta name="robots" content="index,follow">
@@ -14,16 +14,16 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="第一性原理大模型课程">
 <meta property="og:title" content="第 46 课：Skill 技能｜第一性原理大模型课程">
-<meta property="og:description" content="Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只能执行函数、带不了程序性知识」讲起，把 skill（技能，知识…">
+<meta property="og:description" content="Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只提供执行接口、流程知识没有可复用的载体」讲起，把 skill（…">
 <meta property="og:url" content="https://zhuangzhaoyeye.github.io/llm-course/lesson-46.html">
 <meta property="og:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="第 46 课：Skill 技能｜第一性原理大模型课程">
-<meta name="twitter:description" content="Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只能执行函数、带不了程序性知识」讲起，把 skill（技能，知识…">
+<meta name="twitter:description" content="Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只提供执行接口、流程知识没有可复用的载体」讲起，把 skill（…">
 <meta name="twitter:image" content="https://zhuangzhaoyeye.github.io/llm-course/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 46 课：Skill 技能","description":"Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只能执行函数、带不了程序性知识」讲起，把 skill（技能，知识…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-46.html","position":46,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"第 46 课：Skill 技能","description":"Skill 技能。紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？ 我们从「工具只提供执行接口、流程知识没有可复用的载体」讲起，把 skill（…","inLanguage":"zh-CN","url":"https://zhuangzhaoyeye.github.io/llm-course/lesson-46.html","position":46,"isAccessibleForFree":true,"provider":{"@type":"Person","name":"zhuangzhaoyeye","url":"https://github.com/zhuangzhaoyeye"},"isPartOf":{"@type":"Course","name":"第一性原理大模型课程","url":"https://zhuangzhaoyeye.github.io/llm-course/"}}</script>
 <link rel="stylesheet" href="site.33b0e8da.css">
 <noscript><style>.card-a{display:block!important}.tab-bar,.llm-section,.qna-section{display:none!important}</style></noscript>
 </head>
@@ -362,7 +362,7 @@
 
   <div class="lesson-intro">
     <h2>第 46 课：Skill 技能</h2>
-    <p class="subtitle">紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——<strong>「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？</strong> 我们从「工具只能执行函数、带不了程序性知识」讲起，把 skill（技能，知识打包单元）拆成 SKILL.md 的结构与「渐进披露」省 context 的账，一路讲到它已经变成开放标准（70+ 平台、100 万个 skill），最后收口：<strong>skill 把「怎么做」从一次性 prompt 变成可复用、可移植的知识</strong>。</p>
+    <p class="subtitle">紧接第 45 课《Rule 规则》：那一课把「什么不能变」从模型手里拿走、交给确定性代码。这一课追它的对偶问题——<strong>「怎么做」这件能变、但要做得对的事，怎么沉淀下来反复复用，而不是每次重写 prompt？</strong> 我们从「工具只提供执行接口、流程知识没有可复用的载体」讲起，把 skill（技能，知识打包单元）拆成 SKILL.md 的结构与「渐进披露」省 context 的账，一路讲到它已经变成开放标准（70+ 平台、100 万个 skill），最后收口：<strong>skill 把「怎么做」从一次性 prompt 变成可复用、可移植的知识</strong>。</p>
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
@@ -378,7 +378,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">3</span><span class="rn-text">既然「<b>渐进披露</b>」让 skill 能省 context、装下几十个，而「复用」要跨工具才有意义，<strong>所以</strong>要看它是不是只有 Claude 自己用——Agent Skills 已是<b class="rn-key">开放标准</b>（2025-12 发布、2026-10-22 捐给 AAIF、70+ 平台）。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">既然「<b>开放标准</b>」让 skill 能跨工具复用，<strong>所以</strong>要用好它，就得先界定它管的是哪一层——<b class="rn-key">连接层 vs 知识层</b>：tool 连到函数、skill 存「怎么做」。</span></div>
+        <div class="roadmap-node"><span class="rn-num">4</span><span class="rn-text">既然「<b>开放标准</b>」只规定了「知识包」的格式（不管工具怎么连），<strong>所以</strong>用它之前还要分清它和 tool 各管哪一层——<b class="rn-key">连接层 vs 知识层</b>：tool 连到函数、skill 存「怎么做」。（此步与第 3 步并列，是语义澄清，不是由「开放标准」推出。）</span></div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然「<b>连接层 vs 知识层</b>」把 skill 从 tool 里摘了出来，<strong>所以</strong>它还要和另一个「也能干子任务」的 subagent 划界——复用固定流程用 skill、隔离中间过程用 subagent（<b class="rn-key">skill vs subagent</b>）。</span></div>
         <div class="roadmap-arrow">↓</div>
@@ -393,13 +393,13 @@
   <div class="card" data-card="46-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">要让 agent 每次都用同一套「怎么做」完成一件反复出现的任务，光靠工具（MCP tool）执行函数够吗？不够的话，那套程序性知识该往哪里放？</div><div class="card-q-hint">提示：想一想「部署一次服务」要几步——拉代码、跑测试、构建、上线。工具能帮你执行其中某一步吗？还是它只会执行「一个函数」？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div><strong>tool</strong>（工具，如第 23 课讲的 MCP tool，一个接受参数、执行函数、返回结果的函数）只能「执行」，带不了<strong>程序性知识</strong>（procedural knowledge，即「先做什么、再做什么、遇到什么情况怎么办」的流程）。<strong>skill</strong>（技能，一个含 SKILL.md 的文件夹，教 agent 某件具体任务的流程，可附带脚本与参考资料）要解决的正是「怎么做」这件事——Anthropic 官方明说：Claude Code 擅长通用知识工作，但常缺「真实业务任务需要的程序性知识」，于是发明了 skill（anthropic.com 捐赠公告原文）。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div><strong>tool</strong>（工具，如第 23 课讲的 MCP tool，一个接受参数、执行函数、返回结果的函数）只提供<strong>执行接口</strong>：单次函数调用本身不承载<strong>程序性知识</strong>（procedural knowledge，即「先做什么、再做什么、遇到什么情况怎么办」的流程）。流程并非无处可放——可以写在 system prompt / CLAUDE.md 里，也可以放进 MCP 的 Prompts 模板；但它们要么每次重写、要么不按需加载。<strong>skill</strong>（技能，一个含 SKILL.md 的文件夹，教 agent 某件具体任务的流程，可附带脚本与参考资料）要解决的正是「怎么做」这件事——Anthropic 官方明说：Claude Code 擅长通用知识工作，但常缺「真实业务任务需要的程序性知识」，于是发明了 skill（anthropic.com 捐赠公告原文）。</div>
       <div class="content-section"><p>上一课把「什么不能变」交给 rule。这一课问它的对偶：「怎么做」这件能变、但要做得对的事，怎么复用。</p><p><strong>因为</strong>工具只执行一个函数，带不了流程。<strong>就像</strong>一台只会「按一下做一道工序」的机器：它能焊一个点，但不知道「先焊哪、再装哪」的整套流程——流程要写在别处。<strong>所以</strong>下面算一笔「流程知识 vs 函数执行」的账。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第一笔账：工具执行函数 vs 流程知识</div>
         <div class="step"><div class="step-title">Step 1：一个「部署」任务有几步流程</div>
           <table><tr><th>步骤</th><th>是「函数」还是「知识」</th></tr><tr><td>拉代码</td><td>函数（工具能执行）</td></tr><tr><td>跑测试</td><td>函数</td></tr><tr><td>构建</td><td>函数</td></tr><tr><td>先测后部署的顺序</td><td>流程知识（工具带不了）</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">部署 = 3 个函数 + 1 条「顺序与判断」的流程知识；工具只能做前 3 个，最后一条无处可放。</div>
+          <div class="step-desc" style="margin-top:4px;">部署 = 3 个函数 + 1 条「顺序与判断」的流程知识；工具只能提供前 3 个的<strong>执行接口</strong>，流程本身不在工具里——它可以塞进 system prompt / CLAUDE.md（软约束，每次重写），也可以放进 MCP 的 Prompts 模板；skill 的差别是「可复用、按需加载的文件」。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：把流程写成 prompt 每次重写，成本多高</div>
           <table><tr><th>项</th><th>数值（示意）</th></tr><tr><td>部署流程 prompt</td><td>300 token</td></tr><tr><td>一年做 100 次</td><td>300 × 100 = <strong>30,000 token</strong></td></tr></table>
@@ -459,7 +459,7 @@
         </div>
         <div class="step"><div class="step-title">Step 2：开放带来的规模</div>
           <table><tr><th>指标</th><th>数值</th></tr><tr><td>集成平台</td><td>70+ 个</td></tr><tr><td>公开 skill</td><td>约 100 万个</td></tr><tr><td>累计安装</td><td>约 2.8 亿次</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：累计安装 2.8 亿次 ÷ 100 万个 skill ≈ 280 次/skill（每个 skill 平均被装约 280 次）。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：累计安装 2.8 亿次 ÷ 100 万个 skill ≈ 280 次/skill。<strong>这是两个总量相除的示意均值，不是官方口径</strong>——官方只给了「100 万个 skill 已发布、近 2.8 亿次安装」，没有 per-skill 平均。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：开放标准意味着什么</div>
           <table><tr><th>封闭 vs 开放</th><th>你的 skill</th></tr><tr><td>私有格式</td><td>锁死在某一家</td></tr><tr><td>开放标准</td><td>换工具照样跑</td></tr></table>
@@ -569,7 +569,7 @@
 
 
 
-<script>window.__SITE__={"lesson":46,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[46]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":46,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[46]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>

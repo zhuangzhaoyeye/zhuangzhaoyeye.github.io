@@ -372,7 +372,7 @@
     </div>
 
     <div class="roadmap">
-      <div class="roadmap-title">🗺 本节推理链（6 步：任务约束 → RNN 撞墙逼出 Self-Attention（含 Softmax 加权）→ Causal Mask → BERT 与 GPT 分岔 → Multi-Head → KV Cache，即生成时把已算过的键和值存下来复用、不必每步重算）</div>
+      <div class="roadmap-title">🗺 本节推理链（主线 4 步 + 2 条支链：任务约束 → RNN 撞墙逼出 Self-Attention（含 Softmax 加权）→ Causal Mask → BERT 与 GPT 分岔；支链一：Multi-Head「看几遍」，与节点 4 的「看哪里」正交；支链二：KV Cache——即生成时把已算过的键和值存下来复用）</div>
       <div class="roadmap-flow">
         <div class="roadmap-node">
           <span class="rn-num">1</span>
@@ -391,17 +391,17 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node">
           <span class="rn-num">4</span>
-          <span class="rn-text"><strong>BERT 与 GPT 分岔：可见范围不同，训练目标就不同</strong> — 同一个架构只因"要不要挡未来"，所以分成 BERT（不挡，双向，MLM 完形填空，擅长理解）与 GPT（必须挡，单向，自回归，擅长生成）两条路，这就决定了各自的<b class="rn-key">attention 权重</b>能看到哪些位置</span>
+          <span class="rn-text"><strong>BERT 与 GPT 分岔：可见范围不同，训练目标就不同</strong> — "要不要挡未来"先决定注意力能看到哪些位置；再叠加 Encoder-only / Decoder-only 的结构裁剪与 MLM / 自回归的训练目标，<strong>所以</strong>才形成 BERT（双向、完形填空、擅长理解）与 GPT（单向、自回归、擅长生成）两条路，这决定了各自的<b class="rn-key">attention 权重</b>能看到哪些位置</span>
         </div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node">
           <span class="rn-num">5</span>
-          <span class="rn-text"><strong>Multi-Head：一个头不够用</strong> — 无论 BERT 还是 GPT，前面算的都是单个头：一个词只有一组 attention 权重，表达不了"苹果-甜"（属性）与"苹果-买"（动作）等多种关系，这就要求并行开 h 个 head、各自独立投影，每头一组 <b class="rn-key">每个 head 一组 K/V</b></span>
+          <span class="rn-text"><strong>【支链·看几遍】Multi-Head：一个头不够用</strong> — 无论 BERT 还是 GPT，前面算的都是单个头：一个词只有一组 attention 权重，表达不了"苹果-甜"（属性）与"苹果-买"（动作）等多种关系，这就要求并行开 h 个 head、各自独立投影，每头一组 <b class="rn-key">每个 head 一组 K/V</b></span>
         </div>
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node">
           <span class="rn-num">6</span>
-          <span class="rn-text"><strong>KV Cache：生成时别重算</strong> — 因为 Causal Mask 让旧 token 的 K/V 不会随新 token 改变，所以每一步都可以复用已算过的 <b class="rn-key">每个 head 一组 K/V</b>，不必重算；KV Cache 大小 = 2 × 层数 × KV 头数 × d_k × 序列长 × 每个数的字节数</span>
+          <span class="rn-text"><strong>KV Cache（把已算过的键和值缓存下来，避免每步重算）：生成时别重算</strong> — 因为 Causal Mask 让旧 token 的 K/V 不会随新 token 改变，所以每一步都可以复用已算过的 <b class="rn-key">每个 head 一组 K/V</b>，不必重算；KV Cache 大小 = 2 × 层数 × KV 头数 × d_k × 序列长 × 每个数的字节数</span>
         </div>
       </div>
     </div>
@@ -433,7 +433,7 @@
         <p>打个比方：RNN 读句子像一个人只用<b>一张便签纸</b>做笔记——每读一个词就把便签擦掉重写，便签上只剩当前这一行；读到句尾，开头记的细节早被擦没了。后面所有"遗忘"和"消失"的毛病，都源于这一张便签。</p>
         <p><strong>RNN 的两个致命问题（一前一后）：</strong></p>
         <p><strong>① 前向：hidden state 被反复覆盖，远处信息留不住。</strong>每读一个新词，整个隐藏向量就被重写一次——像一张便签纸擦了又写，读到句尾时开头的细节早被挤没了。这踩中了第一条约束（长距离依赖）。</p>
-        <p><strong>② 反向：梯度消失，开头学不到。</strong>训练时要反向传播（把误差从输出端往回传、据此调参数）。梯度沿时间步往回传，每传一步就乘一个小于 1 的数，传到开头几乎为零——模型根本看不到句首在说什么。这进一步加剧了远距离遗忘：即便信息勉强传到句尾，梯度也回不到句首去调参数。</p>
+        <p><strong>② 反向：梯度消失，开头学不到。</strong>训练时要反向传播（把误差从输出端往回传、据此调参数）。梯度沿时间步往回传：每步乘子小于 1 时按指数衰减（大于 1 时反而会爆炸），传得越远越接近零——模型很难看到句首在说什么。这进一步加剧了远距离遗忘：即便信息勉强传到句尾，梯度也回不到句首去调参数。</p>
         <p><strong>③ 串行慢。</strong>第 100 个词必须等前 99 个词全算完。GPU 有几千个核心，RNN 的时间步却只能一个一个来——<strong>并行度用不上</strong>。这踩中了第二条约束（必须可并行）。</p>
       </div>
       <div class="calc-block">
@@ -969,7 +969,7 @@
 
 
 
-<script>window.__SITE__={"lesson":1,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[1]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":1,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[1]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>

@@ -393,7 +393,7 @@
   <div class="card" data-card="33-1">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">1</div><div class="card-q-content"><div class="card-q-text">代码跑通了，结论就成立吗？</div><div class="card-q-hint">提示：跑通只说明"没崩"。想一个能正常结束、不报错、结果却物理上不可能的脚本长什么样？</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>科研代码有一类失败专门"不喊出来"：<strong>静默错误</strong>（<code>silent error</code>，指程序正常运行、输出看似合理，但物理含义已被悄悄改坏，见 Paimon，arXiv:2606.09422）。它比崩溃更危险，因为没有任何报错提醒你。定量读数来自 Judge Agent（arXiv:2603.25780，2026-03；注意：该文已于 2026-11-09 被作者撤稿，作者称主要结果依赖的研究记录无法核实，以下数字仅作示意）：LLM 生成的仿真代码若不做数学校验（适定性 / 收敛 / 误差界），静默失败率高达 <strong>42%</strong>；同一批代码加上自动校验后降到 <strong>1.5%</strong>。该文还引 SciCode：前沿模型解不出半数研究级计算问题。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>科研代码有一类失败专门"不喊出来"：<strong>静默错误</strong>（<code>silent error</code>，指程序正常运行、输出看似合理，但物理含义已被悄悄改坏，见 Paimon，arXiv:2606.09422）。它比崩溃更危险，因为没有任何报错提醒你。定量读数来自 Judge Agent（arXiv:2603.25780，2026-03；注意：该文已于 2026-11-09 被作者撤稿，作者称主要结果依赖的研究记录无法核实，以下数字仅作示意）：LLM 生成的仿真代码若不做数学校验（适定性 / 收敛 / 误差界），静默失败率高达 <strong>42%</strong>；同一批代码加上自动校验后降到 <strong>1.5%</strong>。该文还引 SciCode：最强模型在最真实的设置下也只能解出约 <strong>4.6%</strong> 的主问题（多数模型 1.5–3%），不是"接近一半"。</div>
       <div class="content-section"><p>第五部分走到这里，选题、规划、长时程执行都讲过了，但有一条底线必须先立住：<strong>代码跑通了，结论就成立吗？</strong></p><p><strong>因为</strong>"跑通"只证明脚本没在运行时崩掉，不证明它算的是你要的东西。论文里的每个结论，最终都只是写进文档的一串 <b>tokens</b>——而 tokens 本身不会告诉你它错没错。<strong>就像</strong>电子秤没坏、数字也在跳，只是单位被人从克偷偷换成了磅，你看不出任何异样。<code>silent error</code>（静默错误）就是这类失败：正常结束、结果看着合理，物理意义却已经错了。<strong>所以</strong>先把"能跑≠对"这条底线讲透。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第一笔账：能跑 ≠ 对</div>
@@ -430,7 +430,7 @@
           <div class="step-desc" style="margin-top:4px;">算术无关的一条清单：三要素任意一项缺失，别人都无法重跑出你的结论——<strong>缺一项就等于没复现</strong>。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：三要素同时可靠的概率</div>
-          <table><tr><th>单要素可靠度</th><th>三项同时可靠 ≈ p³</th></tr><tr><td>0.90</td><td>0.90³ = <strong>0.729</strong></td></tr><tr><td>0.99</td><td>0.99³ ≈ <strong>0.970</strong></td></tr></table>
+          <table><tr><th>单要素可靠度</th><th>三项同时可靠 ≈ p³（假设三者独立）</th></tr><tr><td>0.90</td><td>0.90³ = <strong>0.729</strong></td></tr><tr><td>0.99</td><td>0.99³ ≈ <strong>0.970</strong></td></tr></table>
           <div class="step-desc" style="margin-top:4px;">算术：0.90³ = 0.729、0.99³ ≈ 0.970。<strong>每项 90% 看着不错，三项同时只有约 73%</strong>；要做到 97%，每项都得 ≥99%。可靠性是连乘的，这也是复现清单必须逐项签字的原因。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：泄漏检查与 PaperBench 的粒度</div>
@@ -449,7 +449,7 @@
   <div class="card" data-card="33-3">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">3</div><div class="card-q-content"><div class="card-q-text">谁来判断"这个结论能不能接受"？</div><div class="card-q-hint">提示：自己说自己对不算数。想想要几个独立评审、他们的判断要有一致性才算数。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>科研接受的通用原则是<strong>先评审、后采纳</strong>（<code>evidence-based review before accepting</code>：结论必须由独立证据支撑，且由不参与生产的人来判断）。独立评估者 Beel 等（arXiv:2502.14297，2025）实测 Sakana 的 AI Scientist 后指出：12 个提议实验中 <strong>5 个（42%）</strong>因编码错误失败，生成稿件的质量"像一篇赶出来的本科生论文"。另一面，AI Scientist v1（arXiv:2408.06292）报告其自动评审器用 <strong>5 轮自我反思 + 5 份集成评审</strong> 达到约 <strong>70%</strong> 的判断准确率。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>科研接受的通用原则是<strong>先评审、后采纳</strong>（<code>evidence-based review before accepting</code>：结论必须由独立证据支撑，且由不参与生产的人来判断）。独立评估者 Beel 等（arXiv:2502.14297，2025）实测 Sakana 的 AI Scientist 后指出：12 个提议实验中 <strong>5 个（42%）</strong>因编码错误失败，生成稿件的质量"像一篇赶出来的本科生论文"。另一面，AI Scientist v1（arXiv:2408.06292）报告其自动评审器靠 <strong>5 轮自我反思 + 1-shot 示例</strong> 达到约 <strong>70%</strong> 的判断准确率；<strong>集成评审（5 份）主要作用是降方差，论文明确说它并未显著提升准确率</strong>。</div>
       <div class="content-section"><p>上一张卡片把结果变得可复现。但可复现只说明"能重跑"，不说明"值得信"——<strong>谁来判断这个结论能不能接受？</strong></p><p><strong>因为</strong>生产结论的人天然有确认偏误：自己写的代码、自己跑的数、自己下的判断，很容易只看到支持结论的那部分。评审要读的是由 <b>tokens</b> 构成的完整证据链（数据、日志、代码、复现清单），而不是结论那一句话。<strong>就像</strong>比赛不能既当运动员又当裁判——同一双手既跑又判，规则就失效了。<strong>所以</strong>接受之前必须有独立评审，而且要看多个评审的<strong>一致性</strong>。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第三笔账：独立评审与一致性</div>
@@ -497,11 +497,11 @@
         <div class="label">🧮 第四笔账：过评审的真实概率</div>
         <div class="step"><div class="step-title">Step 1：真实投稿结果</div>
           <table><tr><th>项</th><th>数值</th></tr><tr><td>投稿篇数</td><td>3</td></tr><tr><td>通过篇数</td><td>1</td></tr><tr><td>评审给分</td><td>6、7、6 → 均分 <strong>6.33/10</strong></td></tr><tr><td>相对位置</td><td>约 top 45%</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：1 ÷ 3 ≈ 0.333 ≈ 33.3%（仅代表这 3 篇的 workshop 结果）。口径：workshop 录用率 60–70%，远高于主会。<strong>"过评审"是真的，但要看清级别。</strong></div>
+          <div class="step-desc" style="margin-top:4px;">算术：1 ÷ 3 ≈ 0.333 ≈ 33.3%（仅代表这 3 篇的 workshop 结果）。口径：workshop 的录用率显著高于主会（具体比例需查该 workshop 统计）。<strong>"过评审"是真的，但要看清级别。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 2：把通过率算成一个数</div>
-          <table><tr><th>情形（示意）</th><th>通过率</th></tr><tr><td>投 3 篇、录 1 篇（本次实测）</td><td>1 ÷ 3 ≈ 33.3%</td></tr><tr><td>投 43 篇、录 3 篇（示意）</td><td>3 ÷ 43 ≈ <strong>6.98%</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：3 ÷ 43 ≈ 0.0698 = 6.98%（此行为<strong>示意</strong>：以"投 43 篇、录 3 篇"为例，说明一旦放到更严的录用比例，通过率会掉到个位数百分比）。<strong>别被"第一篇过评审"的新闻冲昏头——分母决定一切。</strong></div>
+          <table><tr><th>情形（示意）</th><th>通过率</th></tr><tr><td>投 3 篇、录 1 篇（本次实测）</td><td>1 ÷ 3 ≈ 33.3%</td></tr><tr><td>投 100 篇、录 7 篇（纯示意）</td><td>7 ÷ 100 = <strong>7%</strong></td></tr></table>
+          <div class="step-desc" style="margin-top:4px;">算术：7 ÷ 100 = 7%（此行为<strong>纯示意</strong>，与 ICBINB 的真实投稿数无关——真实情况是 43 篇投稿里有 3 篇 AI 生成）。<strong>别被"第一篇过评审"的新闻冲昏头——分母决定一切。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 3：高分 ≠ 可信</div>
           <table><tr><th>视角</th><th>发现</th></tr><tr><td>workshop 评审</td><td>均分 6.33，通过</td></tr><tr><td>外部复评（针对 AI Scientist）</td><td>幻觉数值 / 新颖性被高估</td></tr><tr><td>含义</td><td>评审看的是"呈现"，复评看的是"证据"</td></tr></table>
@@ -584,7 +584,7 @@
 
 
 
-<script>window.__SITE__={"lesson":33,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[33]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":33,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[33]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>

@@ -366,7 +366,7 @@
 
     <div class="lesson-goal">
       <div class="goal-label">🎯 学完这 6 步你将能够：</div>
-      <div class="goal-text">① 算清「靠 prompt 求模型别越界」的漏网率：单次照做 95%、跑 100 次漏 5 次，硬约束是 0<br>② 说清 rule 的三种形态（持久指令 / hooks / guardrail）各由谁执行、触发几次，并用「执行者是谁」划出软硬分界<br>③ 算出 guardrail 并行 vs 阻塞的账：时延 max(5,10)=10s vs 5+10=15s，以及并行白烧 800 token 的代价，并讲清 rule 的边界（不是鉴权、不是幂等）</div>
+      <div class="goal-text">① 算清「靠 prompt 求模型别越界」的漏网率：单次照做 95%、跑 100 次<strong>期望</strong>漏 5 次；只有确定性校验（白名单 / 参数校验）才是 0<br>② 说清 rule 的三种形态（持久指令 / hooks / guardrail）各由谁执行、触发几次，并用「执行者是谁」划出软硬分界<br>③ 算出 guardrail 并行 vs 阻塞的账：时延 max(5,10)=10s vs 5+10=15s，以及并行白烧 800 token 的代价，并讲清 rule 的边界（不是鉴权、不是幂等）</div>
     </div>
 
     <div class="roadmap">
@@ -407,10 +407,10 @@
         </div>
         <div class="step"><div class="step-title">Step 3：软约束 vs 硬约束的漏网</div>
           <table><tr><th>约束方式</th><th>性质</th><th>100 次漏网</th></tr><tr><td>求它别越界</td><td>软（靠采样）</td><td>5 次</td></tr><tr><td>代码拦截</td><td>硬（写死）</td><td><strong>0</strong> 次</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">软约束把保证押在模型这次采样上（漏 5 次），硬约束把保证押在写死的代码上（漏 0 次）。</div>
+          <div class="step-desc" style="margin-top:4px;">软约束把保证押在模型这次采样上（期望漏 5 次）；硬约束把保证押在 harness 的代码上——但<strong>只有确定性校验（白名单 / 正则 / 参数校验）才是 0 漏</strong>，判定若交给 LLM 型 guardrail，仍会漏检。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>rule 解决的<strong>不是</strong>「让模型更听话」，而是「让约束不依赖模型听不听话」——软约束把保证押在采样上（100 次漏 5），硬约束把保证押在代码上（0 漏）。这就是「确定性外壳」在「约束」这件事上的具体含义。</p></div>
+      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>rule 解决的<strong>不是</strong>「让模型更听话」，而是「让约束不依赖模型听不听话」——软约束把保证押在采样上（100 次期望漏 5），硬约束把保证押在代码上。注意「硬」不等于「0 漏」：判定若是确定性校验才是 0，判定若交给 LLM 型 guardrail，拦截虽强制、识别仍可能漏。</p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','45-1')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','45-1')">🤔 你可能还想问</button></div>
       <div id="tab-ai-45-1" class="llm-section"><button class="llm-btn" onclick="startChat('45-1')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="45-1"><div class="chat-toolbar"><button onclick="copyChat('45-1')">📋 复制对话</button><button onclick="clearChat('45-1')">🗑 清空</button><button onclick="stopLLM('45-1')" id="stop-btn-45-1" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('45-1')" id="regenerate-btn-45-1" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="45-1"><div class="role-label">AI 助教</div><div class="msg-content">👋 对「软约束为什么靠不住」有疑问？比如「模型为什么会无视提示」「漏网率怎么算」？<br><br>告诉我你的 agent 每天大概跑多少次危险操作，我帮你估算软约束会漏几次。</div></div><div class="chat-input-row"><textarea data-input="45-1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('45-1')}" rows="1" placeholder="例如：靠 prompt 求它别越界，能保证吗？"></textarea><button onclick="sendLLM('45-1')">发送</button></div></div></div>
       <div id="tab-qna-45-1" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('45-1')">🔄 换一批</button></div><div class="qna-list" data-qna="45-1"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -454,11 +454,11 @@
       <div class="calc-block">
         <div class="label">🧮 第三笔账：软硬分界划在哪</div>
         <div class="step"><div class="step-title">Step 1：用「执行者」判软硬</div>
-          <table><tr><th>形态</th><th>执行者</th><th>模型能绕过吗</th><th>性质</th></tr><tr><td>持久指令</td><td>模型</td><td>能（采样无视）</td><td>软</td></tr><tr><td>hooks</td><td>harness 代码</td><td>不能</td><td>硬</td></tr><tr><td>guardrail</td><td>harness 代码</td><td>不能</td><td>硬</td></tr></table>
+          <table><tr><th>形态</th><th>执行者</th><th>模型能绕过吗</th><th>性质</th></tr><tr><td>持久指令</td><td>模型</td><td>能（采样无视）</td><td>软</td></tr><tr><td>hooks</td><td>harness 代码</td><td>不能</td><td>硬（判定是确定性代码）</td></tr><tr><td>guardrail</td><td>harness 代码</td><td>不能</td><td>硬（拦截强制；判定可能由模型给出，会漏检）</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">执行者是模型 → 软（模型可以选择不听）；执行者是代码 → 硬（模型越不过去）。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：软约束为什么「不能保证」</div>
-          <table><tr><th>约束</th><th>100 次危险调用漏网</th></tr><tr><td>软（模型执行）</td><td>100 × 5% = <strong>5</strong> 次</td></tr><tr><td>硬（代码执行）</td><td><strong>0</strong> 次</td></tr></table>
+          <table><tr><th>约束</th><th>100 次危险调用漏网（期望）</th></tr><tr><td>软（模型执行）</td><td>100 × 5% = <strong>5</strong> 次（期望）</td></tr><tr><td>硬·确定性校验（白名单 / 参数校验）</td><td><strong>0</strong> 次</td></tr><tr><td>硬·LLM 型 guardrail</td><td>判定靠模型分类，<strong>可能漏检</strong>（拦截是强制的，识别不是）</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">复用第一张卡的数字：软约束把保证押在采样上，5% 的漏网率在 100 次里就是 5 次。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：什么时候软约束也够用</div>
@@ -466,7 +466,7 @@
           <div class="step-desc" style="margin-top:4px;">软硬不是好坏，是按风险选——风险低的地方软约束就够，风险高的地方必须上代码。</div>
         </div>
       </div>
-      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>软硬的分界不是「语气强弱」，是<strong>执行者</strong>——模型执行的指令是软约束（可绕过、100 次漏 5），harness 执行的代码是硬约束（0 绕过）。所以判断一条规则靠不靠谱，只问一句：「它最后一步，是不是确定性代码在拦？」</p></div>
+      <div class="highlight-box"><div class="label">🎯 关键认知</div><p>软硬的分界不是「语气强弱」，是<strong>执行者</strong>——模型执行的指令是软约束（可绕过、100 次期望漏 5），harness 执行的代码是硬约束（模型无法覆盖）。但「硬」只保证<strong>拦得住就一定拦</strong>：判定如果是确定性校验，才是 0 漏；判定如果交给 LLM 型 guardrail，仍可能识别不出来。所以还要追问一句：「它最后一步的判定，是确定性代码还是模型？」</p></div>
       <div class="tab-bar"><button class="tab-btn active" onclick="switchTab(this,'ai','45-3')">💡 自定义问答</button><button class="tab-btn" onclick="switchTab(this,'qna','45-3')">🤔 你可能还想问</button></div>
       <div id="tab-ai-45-3" class="llm-section"><button class="llm-btn" onclick="startChat('45-3')">💡 对这张卡片有疑问？点我开始对话</button><div class="llm-chat" data-llm="45-3"><div class="chat-toolbar"><button onclick="copyChat('45-3')">📋 复制对话</button><button onclick="clearChat('45-3')">🗑 清空</button><button onclick="stopLLM('45-3')" id="stop-btn-45-3" style="display:none">⏹ 停止</button><button onclick="regenerateLLM('45-3')" id="regenerate-btn-45-3" style="display:none">🔄 重新生成</button></div><div class="chat-messages" data-chat="45-3"><div class="role-label">AI 助教</div><div class="msg-content">👋 对「软 vs 硬」有疑问？比如「system prompt 里写规则算软还是硬」「能不能把软约束也变硬」？<br><br>告诉我你想约束的动作和它执行的方式，我帮你判断它软还是硬。</div></div><div class="chat-input-row"><textarea data-input="45-3" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendLLM('45-3')}" rows="1" placeholder="例如：软硬的分界线到底划在哪？"></textarea><button onclick="sendLLM('45-3')">发送</button></div></div></div>
       <div id="tab-qna-45-3" class="qna-section" style="display:none;"><div class="qna-header"><div class="qna-title">🤔 学生最可能追问的 5 个问题</div><button class="qna-refresh-btn" onclick="refreshQnA('45-3')">🔄 换一批</button></div><div class="qna-list" data-qna="45-3"><div class="qna-loading"><span class="spinner"></span> AI 正在生成问题…</div></div></div>
@@ -519,7 +519,7 @@
         </div>
         <div class="step"><div class="step-title">Step 3：把幂等甩给 rule 会怎样（反例）</div>
           <table><tr><th>项</th><th>结果</th></tr><tr><td>重复提交</td><td>2 次</td></tr><tr><td>每次参数</td><td>都合法</td></tr><tr><td>rule 放行</td><td>2 次 → 扣 <strong>2</strong> 次款</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">重复提交 2 次、每次参数都合法，rule 每次都放行；幂等要靠工具自身的幂等键，rule 看不到「这是第二次」。</div>
+          <div class="step-desc" style="margin-top:4px;">重复提交 2 次、每次参数都合法，rule 每次都放行。hook 能读 <code>tool_input</code>、自己记次数做近似去重，但真正的幂等要靠服务端的幂等键。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>rule 的边界 = <strong>它只在「动作要发生的那一刻」起作用</strong>——管「这一步该不该发生」，不管「你是谁」（鉴权）、不管「做两遍是否一样」（幂等）。把这些甩给 rule，等于在门禁上堆了一堆它天生看不见的东西，防线反而漏。</p></div>
@@ -542,7 +542,7 @@
           <div class="step-desc" style="margin-top:4px;">模型负责「怎么变」，rule 负责「什么不能变」——两者分工，不是同一个东西。</div>
         </div>
         <div class="step"><div class="step-title">Step 2：有 rule vs 没有 rule 的净效果</div>
-          <table><tr><th>情形</th><th>100 次危险调用漏网</th></tr><tr><td>无 rule（软约束 95% 照做）</td><td>100 × 5% = <strong>5</strong> 次</td></tr><tr><td>有 rule（硬约束）</td><td><strong>0</strong> 次</td></tr></table>
+          <table><tr><th>情形</th><th>100 次危险调用漏网</th></tr><tr><td>无 rule（软约束 95% 照做）</td><td>100 × 5% = <strong>5</strong> 次（期望）</td></tr><tr><td>有 rule（确定性校验）</td><td><strong>0</strong> 次</td></tr></table>
           <div class="step-desc" style="margin-top:4px;">复用第一张卡的数字：rule 把「约束」从采样概率（漏 5）变成确定性（漏 0）。</div>
         </div>
         <div class="step"><div class="step-title">Step 3：外壳上先装 rule、再装什么</div>
@@ -569,7 +569,7 @@
 
 
 
-<script>window.__SITE__={"lesson":45,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[45]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":45,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[45]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>

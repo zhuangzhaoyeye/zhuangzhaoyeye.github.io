@@ -407,7 +407,7 @@
         </div>
         <div class="step"><div class="step-title">Step 3：一次工具调用其实是两次模型往返</div>
           <table><tr><th>工具调用次数</th><th>模型往返次数</th><th>说明</th></tr><tr><td>1</td><td><strong>2</strong></td><td>第 1 次决定调用，第 2 次读结果继续</td></tr><tr><td>3</td><td><strong>6</strong></td><td>每次调用都多一次往返</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：调用 3 次工具，模型至少要跑 <strong>6 次</strong>往返（2 × 3）。<strong>这就是「调用」的真实成本结构：模型输出参数是一次，读到结果再继续是另一次</strong>，延迟与 token 都按这个倍数放大。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：<strong>串行</strong>调用 3 次工具，模型至少要跑 <strong>6 次</strong>往返（2 × 3）；若 3 个工具并行（见第 5 张卡片），只需 2 次往返。<strong>这就是「调用」的真实成本结构：模型输出参数是一次，读到结果再继续是另一次</strong>，延迟与 token 都按这个倍数放大。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>工具调用<strong>不是模型在跑代码</strong>，而是一条四步协议：<strong>定义 → 意图 → 执行 → 回填</strong>。理解这一点，后面所有工程问题都会变清楚：为什么要 schema（约束「意图」的格式）、为什么要重试（「执行」会失败）、为什么要挑工具与压结果（后两张卡片）、以及为什么接入方式需要一套统一协议（这正是下一课要单独讲的 MCP）。</p></div>
@@ -583,7 +583,7 @@
 
 
 
-<script>window.__SITE__={"lesson":22,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[22]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":22,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[22]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>

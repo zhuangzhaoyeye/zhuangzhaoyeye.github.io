@@ -382,7 +382,7 @@
         <div class="roadmap-arrow">↓</div>
         <div class="roadmap-node"><span class="rn-num">5</span><span class="rn-text">既然「<b>把系统包成 Server</b>」，<strong>所以</strong>紧接着要问谁能调什么：本地用 stdio、远程用 Streamable HTTP，再用 OAuth 的 token 与用户同意划清权限边界。<b class="rn-key">传输与鉴权配套</b>。</span></div>
         <div class="roadmap-arrow">↓</div>
-        <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text">既然接入、原语、鉴权都已就位，「<b>传输与鉴权配套</b>」，<strong>所以</strong>最后看协议自身的可运维性：早期有状态会话要求粘性路由与共享存储，2026-07-28 版改成无状态，请求自带路由信息、列表结果可按 cache 的 ttlMs 缓存。<b class="rn-key">协议也要能横向扩</b>。</span></div>
+        <div class="roadmap-node"><span class="rn-num">6</span><span class="rn-text">既然传输与鉴权已落地，<strong>所以</strong>还要看协议自身的可运维性：早期有状态会话要求粘性路由与共享存储，2026-07-28 版改成无状态，请求自带路由信息、列表结果可按 cache 的 ttlMs 缓存。<b class="rn-key">协议也要能横向扩</b>。</span></div>
       </div>
     </div>
 
@@ -449,7 +449,7 @@
         </div>
         <div class="step"><div class="step-title">Step 3：一条请求其实是 2 条消息</div>
           <table><tr><th>动作</th><th>消息数</th><th>说明</th></tr><tr><td>请求</td><td>1</td><td>客户端 → 服务器</td></tr><tr><td>响应</td><td>1</td><td>服务器 → 客户端</td></tr><tr><td>合计</td><td><strong>2</strong></td><td>一次调用 2 条消息</td></tr><tr><td>连调 3 个工具</td><td><strong>6</strong></td><td>2 × 3</td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术：一次工具调用最少 2 条消息（请求 + 响应），连调 3 个工具就是 6 条。注意「消息数」是协议层的计数，<strong>不等于</strong>进模型 <b>context</b> 的 token——真实会话在 tools/call 前通常还有 initialize、tools/list 等消息，而真正进 context 的是工具返回的结果，两者别混为一谈。</div>
+          <div class="step-desc" style="margin-top:4px;">算术：一次工具调用最少 2 条消息（请求 + 响应），连调 3 个工具就是 6 条。注意「消息数」是协议层的计数，<strong>不等于</strong>进模型 <b>context</b> 的 token——旧版（2026-07-28 之前）会话在 tools/call 前还有 initialize 握手与 tools/list 等消息；2026-07-28 版已移除握手，协议信息改由每个请求的 _meta 携带。真正进 context 的是工具返回的结果，两者别混为一谈。</div>
         </div>
       </div>
       <div class="highlight-box"><div class="label">🎯 关键认知</div><p>MCP 是一个「宿主—客户端—服务器」三层协议：<strong>宿主管编排、客户端管连接、服务器管能力</strong>。消息走 JSON-RPC 2.0（请求必填 jsonrpc / method，且带 id；params 视方法可有），每个响应用 id 配对——理解这条固定的路，后面所有工程问题（原语、鉴权、扩容）都会落到某一个角色身上。</p></div>
@@ -583,7 +583,7 @@
 
 
 
-<script>window.__SITE__={"lesson":23,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[23]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":23,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[23]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>

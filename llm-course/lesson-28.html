@@ -489,7 +489,7 @@
 
   <!-- ============ CARD 4 ============ -->
   <div class="card" data-card="28-4">
-    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">Agent 读到的外部文本，和你的指令在模型眼里有区别吗？</div><div class="card-q-hint">提示：Agent 读进来的外部文本，和你的指令，在模型眼里有区别吗？再想它会"照做"什么。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
+    <div class="card-q" onclick="toggleCard(this)"><div class="card-num">4</div><div class="card-q-content"><div class="card-q-text">Agent 读到的外部文本，和你的指令在模型眼里有区别吗？</div><div class="card-q-hint">提示：从"模型只能看到 token"出发——两种文本在 token 流里被区分开了吗？再想它会"照做"什么。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
       <div class="card-bg"><div class="bg-label">知识背景</div>对模型来说，<strong>系统指令、用户问题、工具返回的网页内容都是同一套 token 序列</strong>——没有类型区分。这正是<strong>提示注入</strong>（prompt injection）的根源：一段外部文本里写着"忽略以上指令"，模型可能真的照做。MCP 规范也明确：<strong>工具描述不可全信</strong>，调用前应取得用户同意。</div>
       <div class="content-section"><p>上一张卡片说过程也要能评。但比"评测"更靠前的是"别出事"——<strong>为什么必须先解决权限与安全？</strong></p><p><strong>因为</strong>Agent 会真的执行动作（改数据、发邮件、调接口），而它读进来的外部文本与你的指令在 <b>context</b> 里长得一模一样，无法从"这段来自网页"推出"它不是指令"。<strong>就像</strong>给小孩一把万能钥匙之前，得先装好锁、划好能进的房间——否则钥匙越强，风险越大。<strong>所以</strong>要先把威胁与防线摊开。</p></div>
@@ -519,13 +519,13 @@
   <div class="card" data-card="28-5">
     <div class="card-q" onclick="toggleCard(this)"><div class="card-num">5</div><div class="card-q-content"><div class="card-q-text">要让一个跑通的 Agent 上线，token 与延迟的账要怎么算？</div><div class="card-q-hint">提示：算一算一次任务要几次模型调用、多少 token；再想用户能等的延迟上限是多少。</div></div><span class="card-arrow">▾</span><input type="checkbox" class="card-check" onclick="event.stopPropagation(); toggleCardCheck(this)" title="标记已学完"></div>
     <div class="card-a">
-      <div class="card-bg"><div class="bg-label">知识背景</div>Agent 的成本结构与单次问答完全不同：一次任务要多次模型往返、每次都要带上工具定义与历史（承第 20/21 课），所以 <b>tokens</b> 按步数放大；延迟则受"多轮串联"影响，用户感知的是<strong>尾部延迟</strong>（P95），而不是平均值。</div>
+      <div class="card-bg"><div class="bg-label">知识背景</div>Agent 的成本结构与单次问答完全不同：一次任务要多次模型往返、每次都要带上工具定义与历史（承第 21 课），所以 <b>tokens</b> 按步数放大；延迟则受"多轮串联"影响，用户感知的是<strong>尾部延迟</strong>（P95），而不是平均值。</div>
       <div class="content-section"><p>上一张卡片把安全关进了笼子。但一个"又对又安全"的 Agent 仍可能被叫停——<strong>为什么成本和延迟能把它拦下来？</strong></p><p><strong>因为</strong>Agent 的每次任务都是多次模型调用叠加：一次问答约 200 token，10 步 Agent 每步重发一次历史，累计 200 × 55 = 11,000 token；延迟也随轮次串起来，尾部延迟被放大。<strong>就像</strong>预算有限的项目：方案再好，超支就只能砍。<strong>所以</strong>要把成本与延迟的账算清楚。</p></div>
       <div class="calc-block">
         <div class="label">🧮 第五笔账：成本与延迟的来源</div>
         <div class="step"><div class="step-title">Step 1：一次 Agent 任务的 token 账</div>
           <table><tr><th>项</th><th>数值（示意：以单次 200 token、10 步为例）</th></tr><tr><td>一次问答输入</td><td>200 token</td></tr><tr><td>10 步任务、每步重发历史</td><td>200 × (1+…+10) = 200 × 55 = <strong>11,000 token</strong></td></tr><tr><td>倍数</td><td>11,000 ÷ 200 = <strong>55×</strong></td></tr></table>
-          <div class="step-desc" style="margin-top:4px;">算术（示意：以单次 200 token、10 步为例）：同一个问题，走 Agent 要 <strong>11,000 token</strong>，是单次问答的 <strong>55 倍</strong>（承第 20 课的平方增长口径；此处每步按 200 token 假设，与第 26 课"每步 2,000 token"是不同假设，两处都属示意、不能直接比对）。<strong>能力提升是真实的，账单也是真实的。</strong></div>
+          <div class="step-desc" style="margin-top:4px;">算术（示意：以单次 200 token、10 步为例）：同一个问题，走 Agent 要 <strong>11,000 token</strong>，是单次问答的 <strong>55 倍</strong>（承第 21 课的平方增长口径；此处每步按 200 token 假设，与第 26 课"每步 2,000 token"是不同假设，两处都属示意、不能直接比对）。<strong>能力提升是真实的，账单也是真实的。</strong></div>
         </div>
         <div class="step"><div class="step-title">Step 2：用户感知的是尾部延迟</div>
           <table><tr><th>指标</th><th>含义</th><th>为什么重要</th></tr><tr><td>平均延迟</td><td>所有请求的均值</td><td>掩盖掉最慢的那批</td></tr><tr><td>P95 延迟</td><td>95% 请求都不超过它</td><td><strong>用户体验由它决定</strong></td></tr><tr><td>Agent 特点</td><td>多轮串联，尾部被放大</td><td>一步慢、整条慢</td></tr></table>
@@ -583,7 +583,7 @@
 
 
 
-<script>window.__SITE__={"lesson":28,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.68e3367d.json","sem":{"vec":"sem-index.ab87cef1.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[28]=document.getElementById('lesson-container').innerHTML;</script>
-<script src="site.cc424169.js"></script>
+<script>window.__SITE__={"lesson":28,"pages":{"1":"./","2":"lesson-2.html","3":"lesson-3.html","4":"lesson-4.html","5":"lesson-5.html","6":"lesson-6.html","7":"lesson-7.html","8":"lesson-8.html","9":"lesson-9.html","10":"lesson-10.html","11":"lesson-11.html","12":"lesson-12.html","13":"lesson-13.html","14":"lesson-14.html","15":"lesson-15.html","16":"lesson-16.html","17":"lesson-17.html","18":"lesson-18.html","19":"lesson-19.html","20":"lesson-20.html","21":"lesson-21.html","22":"lesson-22.html","23":"lesson-23.html","24":"lesson-24.html","25":"lesson-25.html","26":"lesson-26.html","27":"lesson-27.html","28":"lesson-28.html","29":"lesson-29.html","30":"lesson-30.html","31":"lesson-31.html","32":"lesson-32.html","33":"lesson-33.html","34":"lesson-34.html","35":"lesson-35.html","36":"lesson-36.html","37":"lesson-37.html","38":"lesson-38.html","39":"lesson-39.html","40":"lesson-40.html","41":"lesson-41.html","42":"lesson-42.html","43":"lesson-43.html","44":"lesson-44.html","45":"lesson-45.html","46":"lesson-46.html","47":"lesson-47.html","48":"lesson-48.html"},"index":"search-index.44669e6d.json","sem":{"vec":"sem-index.593ac211.bin","api":"https://tutor.taleverse.cn/s"}};window.__SITE__.lessons={};window.__SITE__.lessons[28]=document.getElementById('lesson-container').innerHTML;</script>
+<script src="site.b17b7c05.js"></script>
 </body>
 </html>
